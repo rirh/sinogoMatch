@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fontstyle.css" />
+    <style>
+        html,
+        body {
+            background: #f4f4f4;
+        }
+
+        #header {
+            background: #fff;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            height: 0.98rem;
+        }
+
+        #header h1 {
+            font-size: 0.36rem;
+            height: 0.98rem;
+            line-height: 0.98rem;
+            font-weight: normal;
+            margin: 0 auto;
+            color: #666;
+        }
+
+        #header .back-icon {
+            width: .16rem;
+            height: .30rem;
+            position: absolute;
+            left: 0.28rem;
+            top: .35rem;
+        }
+
+        #main {
+            height: 100%;
+            position: relative;
+        }
+
+        #main .content {}
+
+        .content .logo {
+            margin-top: .985rem;
+            margin-bottom: .985rem;
+            height: 1.61rem;
+            background: url(../../image/icon_logo.png) no-repeat center center;
+            background-size: 4.43rem 1.61rem;
+        }
+
+        .content .input-content {
+            width: 86%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .content .input-content:before {
+            position: absolute;
+            border-bottom: 1px solid #feed81;
+            right: 0;
+            bottom: 1.06rem;
+            left: 0;
+            content: "";
+            display: block;
+            -webkit-transform: scaleY(0.5);
+            -webkit-transform-origin: 0 0;
+            z-index: 3;
+        }
+
+        .content .input-content .input-item {
+            height: 1rem;
+            line-height: 1rem;
+            border-radius: 0.1rem;
+            background: #FFFFFF;
+            position: relative;
+        }
+
+        .content .input-content .input-item .userlogo {
+            height: 1rem;
+            width: 1rem;
+            background: url(../../image/icon_user.png) no-repeat center center;
+            background-size: 0.3rem 0.33rem;
+            float: left;
+            position: relative;
+        }
+
+        .content .input-content .input-item .userlogo:before {
+            position: absolute;
+            border-right: 1px solid #aaaaaa;
+            right: 0.1rem;
+            top: 0.15rem;
+            bottom: 0.15rem;
+            content: "";
+            display: block;
+            -webkit-transform: scaleX(0.5);
+            -webkit-transform-origin: 0 0;
+        }
+
+        .content .input-content .input-item .passlogo {
+            height: 1rem;
+            width: 1rem;
+            background: url(../../image/icon_pass.png) no-repeat center center;
+            background-size: 0.27rem 0.32rem;
+            float: left;
+            position: relative;
+        }
+
+        .content .input-content .input-item .passlogo:before {
+            position: absolute;
+            border-right: 1px solid #aaaaaa;
+            right: 0.1rem;
+            top: 0.15rem;
+            bottom: 0.15rem;
+            content: "";
+            display: block;
+            -webkit-transform: scaleX(0.5);
+            -webkit-transform-origin: 0 0;
+        }
+
+        .content .input-content .input-item input {
+            float: left;
+            height: 1rem;
+            font-size: 0.28rem;
+            color: #333333;
+            padding-left: 0.2rem;
+        }
+
+        .content .input-content .input-item .passshow {
+            position: absolute;
+            margin-right: 0.2rem;
+            background: url(../../image/icon_pass_shown.png) no-repeat center center;
+            background-size: 0.4rem 0.29rem;
+            width: 0.6rem;
+            height: 1rem;
+            top: 0;
+            right: .32rem;
+        }
+
+        .content .passforget {
+            height: 0.77rem;
+            line-height: 0.77rem;
+            width: 86%;
+            margin: 0 auto;
+        }
+
+        .content .passforget span {
+            float: right;
+            color: #1ebeb7;
+            font-size: 0.28rem;
+        }
+
+        .content .btn-login {
+            width: 86%;
+            margin: 0 auto;
+            margin-top: 1.04rem;
+            height: .88rem;
+            line-height: .88rem;
+            text-align: center!important;
+            color: #FFF;
+            font-size: 0.34rem;
+            background: #f90;
+            background-size: 100%;
+            border-radius: 0.1rem;
+        }
+
+        .content .btn-regist {
+            width: 86%;
+            margin: 0 auto;
+            height: 1.11rem;
+            line-height: 1.11rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.3rem;
+            background: #fff;
+            background-size: 100%;
+            border-radius: .1rem;
+        }
+
+        input {
+            outline: none;
+        }
+
+        .tips {
+            width: 86%;
+            margin: 0 auto;
+            color: #ff8344;
+            font-size: .26rem;
+            margin-top: .2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" class="flex-wrap flex-vertical">
+        <div id="header">
+            <img src="../../image/icon_arrow_left.png" alt="" class="back-icon" tapmode="active" @click="close">
+            <h1>登录</h1>
+        </div>
+        <div class="flex-con">
+            <div class="content">
+                <div class="logo">
+                </div>
+                <div class="input-content">
+                    <div class="input-item">
+                        <span class="userlogo"></span>
+                        <input type="tel" @blur="verPhone" v-model="phoneNum" placeholder="请输入手机号" />
+                    </div>
+                    <div class="input-item">
+                        <span class="passlogo">	</span>
+                        <input class="password" v-model="Password" type="password" placeholder="请输入密码" />
+                    </div>
+                </div>
+                <div class="passforget">
+                    <span @click="openWindow('passforget')">忘记密码？</span>
+                </div>
+                <div class="btn-login" @click="login">
+                    登 录
+                </div>
+                <div class="tips">
+                    <p>提示：如果没有账号，关注“中国围棋大会”，用其注册账号来此登录</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript">
+	var userId ;
+    imready = function() {
+    	api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    userId = Xret.userId;
+                } else {
+                }
+            } else {
+            }
+        });
+        initVue();
+        assigment.unSwlight(); //捕获苹果端左滑返回事件和安卓端返回按钮事件
+        api.addEventListener({
+	        name:'keyback'
+        },function(ret,err){
+        	assigment.close();
+        });
+    };
+    var assigment; //全局控制器Controller
+    initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+        var date = vueDateManager();
+        var methods = vueMethodsManager();
+        assigment = new Vue({
+            el: '#main', //绑定元素
+            data: date, //本页面的静态动态全部数据
+            methods: methods, //本页面的全部方法
+
+        })
+    };
+    //
+    vueDateManager = function() {
+        //初始化Vue数据date为一个json数组
+        var date = {};
+        date.phoneNum = "";
+        date.Password = "";
+        date.isPhone = false;
+        console.log("数据管理者" + JSON.stringify(date));
+        return date;
+
+    };
+    vueMethodsManager = function() {
+        //时间管理中心 每个Vue事件的处理都可以在这管理
+        var methods = {};
+        methods.changeInputType = function() {
+            var passInput = $api.dom(".password")
+            var cType = $api.attr(passInput, "type");
+            if (cType == 'password') {
+                $api.attr(passInput, "type", "text");
+            } else {
+                $api.attr(passInput, "type", "password");
+            }
+        };
+        methods.unSwlight = function() { //捕获苹果端左滑返回事件和安卓端返回按钮事件
+            api.addEventListener({
+                name: 'swiperight'
+            }, function(ret, err) {
+              console.log("捕获苹果手机侧滑返回功能");
+            });
+        }
+        methods.openWindow = function(winname) { //打开指定的wein
+            api.openWin({
+                name: winname,
+                url: winname + ".html"
+            });
+
+        }
+        methods.verPhone = function() { //过滤账号只可能是11到12位
+            if (assigment.phoneNum.length == 11 || assigment.phoneNum.length == 12) {
+                assigment.isPhone = true
+            } else {
+                assigment.isPhone = false
+            }
+        }
+        methods.login = function() { //登录
+            if (!assigment.phoneNum) {
+                alert("请输入手机号");
+                return;
+            };
+            if (!assigment.isPhone) {
+                alert("请输入正确的手机号");
+                return;
+            };
+            if (!assigment.Password) {
+                alert("请输入密码");
+                return;
+            };
+
+            api.showProgress();
+            var body = {
+                "userPhone": assigment.phoneNum,
+                "password": assigment.Password,
+            }
+            console.log("studentLogin请求数据" + JSON.stringify(body));
+            ajaxPost("/user/login", body, function(ret, err) { //先判断此手机号码是否注册
+                api.hideProgress();
+                if (ret) {
+                    console.log("studentLogin成功返回数据" + JSON.stringify(ret));
+                    if (ret.code == 0) {
+                        api.setPrefs({
+                            key: 'studentInfo',
+                            value: ret.data
+                        });
+                        api.setPrefs({
+                            key: 'canLode',
+                            value: true
+                        });
+                        api.sendEvent({
+                            name: 'viewReady',
+                            extra: {
+                                key1: 0,
+                                frame:api.pageParam.frame
+                            }
+                        });
+                        api.closeToWin({
+	                        name: 'root'
+                        });
+                        setTimeout("api.closeWin()", 1000); //关闭当前页面
+                    } else {
+                        alert(ret.msg)
+                    }
+                } else {
+                    console.log(JSON.stringify(err));
+                    alert(err.msg)
+                }
+            })
+        }
+        methods.close = function() {
+            //TODO
+            if(userId){
+	            api.sendEvent({
+	                name: 'goMtchList',
+	                extra: {
+	                    key1: 'value1',
+	                }
+	            });
+            }else{
+            	console.log("我要进入比赛页啦！")
+		       api.sendEvent({
+                    name: 'viewReady',
+                    extra: {
+                        key1: 0,
+                        frame:'frame1'
+                    }
+                });
+                api.closeToWin({
+                    name: 'root'
+                });
+            }
+            api.closeWin();
+        }
+        console.log("事件管理者：" + JSON.stringify(methods));
+        return methods;
+
+
+
+
+    }
+</script>

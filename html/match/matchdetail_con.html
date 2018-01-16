@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		html,
+		body {
+			background: #FFF;
+		}
+
+		#header {}
+
+		#header .match-info {
+			min-height: 1.97rem;
+			background: #F9F9F9;
+			padding-top: 0.45rem;
+		}
+
+		#header .match-info .img {
+			float: left;
+			width: 2.41rem;
+			height: 1.52rem;
+			background: url(../../image/eg_match_img.png) no-repeat center center;
+			background-size: 100%;
+			margin-left: 0.3rem;
+		}
+
+		#header .match-info .info {
+			float: left;
+			margin-left: 0.3rem;
+		}
+
+		#header .match-info .info .match-name {
+			color: #333;
+			font-weight: bold;
+			font-size: 0.28rem;
+		}
+
+		#header .match-info .info .match-date {
+			color: #666;
+			font-size: 0.26rem;
+			margin-top: 0.08rem;
+		}
+
+		#header .match-info .info .match-sponsor {
+			max-width: 4.43rem;
+			color: #666;
+			font-size: 0.20rem;
+			margin-top: 0.08rem;
+		}
+
+		#header .match-rule {
+			height: 0.9rem;
+			line-height: 0.9rem;
+			position: relative;
+			background: #F6F6F6;
+		}
+
+		#header .match-rule:before {
+			position: absolute;
+			border-top: 1px solid #e9e9e9;
+			top: 0;
+			left: 0;
+			right: 0;
+			content: "";
+			display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+
+		#header .match-rule:after {
+			position: absolute;
+			border-bottom: 1px solid #e9e9e9;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			content: "";
+			display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+
+		#header .match-rule>div {
+			float: left;
+			width: 25%;
+			font-size: 0.24rem;
+			color: #666;
+			text-align: center;
+			position: relative;
+		}
+
+		#header .match-rule .rule-item {
+			width: 80%;
+			margin: 0 auto;
+		}
+
+		#header .match-rule .rule-item .i1 {
+			float: left;
+			width: 0.34rem;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			background: url(../../image/icon_integral.png) no-repeat center left;
+			background-size: 0.34rem 0.34rem;
+		}
+
+		#header .match-rule .rule-item .i2 {
+			float: left;
+			width: 0.34rem;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			background: url(../../image/icon_boardsize.png) no-repeat center left;
+			background-size: 0.34rem 0.34rem;
+		}
+
+		#header .match-rule .rule-item .i3 {
+			float: left;
+			width: 0.34rem;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			background: url(../../image/icon_piece.png) no-repeat center left;
+			background-size: 0.34rem 0.34rem;
+		}
+
+		#header .match-rule .rule-item .i4 {
+			float: left;
+			width: 0.34rem;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			background: url(../../image/icon_time.png) no-repeat center left;
+			background-size: 0.34rem 0.34rem;
+		}
+
+		#header .match-start {
+			height: 0.96rem;
+			line-height: 0.96rem;
+			background: #F6F6F6;
+			position: relative;
+		}
+
+
+
+		#header .match-start .s1 {
+			margin-left: 0.3rem;
+			font-size: 0.28rem;
+			color: #333;
+			position: absolute;
+			left: 0;
+			top:-.1rem;
+		}
+
+		#header .match-start .s2 {
+			position: absolute;
+			left: 1.62rem;
+			top:-.1rem;
+			font-size: 0.26rem;
+			color: #666;
+		}
+
+		#header .match-start .s3 {
+			float: right;
+			margin-right: 0.3rem;
+			font-size: 0.28rem;
+			color: #333;
+		}
+
+		#header .match-rounds .rounds-title {
+			height: 0.81rem;
+			line-height: 0.81rem;
+			background: #ececec;
+			position: relative;
+			padding-left: 0.3rem;
+			font-size: 0.28rem;
+			color: #333;
+			border-left: 6px solid #FF9900;
+		}
+	   .small_size{
+	   	font-size: .18rem!important;
+	   }
+	</style>
+</head>
+
+<body>
+	<div id="header">
+		<div class="match-info">
+			<div class="img"></div>
+			<div class="info">
+				<div class="match-name">{{message.matchItemName}}</div>
+				<div class="match-date">{{message.matchItemBegin.substr(0,11)}}至{{message.matchItemEnd.substr(0,11)}}</div>
+				<div class="match-sponsor">主办方：{{message.matchOrganizer}}</div>
+			</div>
+		</div>
+		<div class="match-rule">
+			<div>
+				<div class="rule-item">
+					<div class="i1"></div>
+					<div>{{message.matchItemArrange|mavg}}</div>
+				</div>
+			</div>
+			<div>
+				<div class="rule-item">
+					<div class="i2"></div>
+					<div>{{message.matchItemChessboard==0?"未知":message.matchItemChessboard}}路棋子</div>
+				</div>
+			</div>
+			<div>
+				<div class="rule-item">
+					<div class="i3"></div>
+					<div :class="{'small_size':message.matchHandicapTag.length>4}">{{message.matchHandicapTag?message.matchHandicapTag:(message.matchHandicapType==1?'标准让子':'无')}}</div>
+				</div>
+			</div>
+			<div>
+				<div class="rule-item">
+					<div class="i4"></div>
+					<div>{{message.matchLimitTime==0?"不限时":"包干"}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="match-start">
+			<span class="s1">开始时间：</span>
+			<span class="s2">{{message.matchItemBegin.substr(0,11)}}</span>
+			<!-- <span class="s3">展开</span> -->
+		</div>
+		<div class="match-rounds">
+			<div class="rounds-title">
+				比赛轮次
+			</div>
+		</div>
+	</div>
+	<div id="content">
+
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript">
+	var assigment; //全局控制器Controller
+	initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+		var date = vueDateManager();
+		var methods = vueMethodsManager();
+		assigment = new Vue({
+			el: '#header', //绑定元素
+			data: date, //本页面的静态动态全部数据
+			methods: methods, //本页面的全部方法
+			created: function() {
+				Vue.config.silent = true;
+			}
+		})
+	}
+	Vue.filter('mavg', function(matchItemArrange) {
+		// 返回处理后的值
+		var integral;
+		if (matchItemArrange == 0) integral = "无需编排";
+		else if (matchItemArrange == 1) integral = "积分编排";
+		else if (matchItemArrange == 2) integral = "麦克马洪";
+		return integral;
+	});
+	Vue.filter('micap', function(value) {
+		// 返回处理后的值
+		var matchLimitTime;
+		if (value == 0) matchLimitTime = "不限时";
+		else if (value == 1) matchLimitTime = 1 * 60 + "秒";
+		else matchLimitTime = "包干";
+		return matchLimitTime;
+	});
+
+	vueDateManager = function() {
+		//初始化Vue数据date为一个json数组
+		var date = {};
+		date.message = {
+			"matchItemRound": 9,
+			"matchItemRemark": "急急急",
+			"matchActivityId": 17,
+			"matchItemTeam": 1,
+			"matchItemName": "九路棋王赛",
+			"matchItemEnd": "",
+			"matchRules": "",
+			"matchItemChessboard": 9,
+			"matchItemArrange": 2,
+			"matchOrganizer": "国家体育总局棋牌运动管理中心，中国围棋协会，内蒙古自治区体育局，鄂尔多斯市人民政府",
+			"matchLimitTime": 0,
+			"matchItemIntro": "<p>选手按照麦克马洪制（从20级到9段，职业棋手按9段计算）进行9轮积分编排，多胜（多败）会碰到更高（更低）段位的选手。黑先贴2又3/4子。用时每方10分钟包干。冠军奖金1万元，前24名总奖金6万元，7胜及以上有奖品,总奖品4万元。冠军授予“中国九路棋王”称号。若业余5段以上人数超过50人，前3名授予业余6段，若前3名中有6段及以上者可顺延至第6名。业余6段以上人数超过20人，第1名授予业余7段，可顺延至第3名。前6名授予业余6段，可顺延到第12名。<br/></p><p><br/></p><p><br/></p><p><br/></p><p><br/></p><p><br/></p>",
+			"matchHandicapType": 1,
+			"id": 11,
+			"matchHandicapNum": 0,
+			"currentRound": null,
+			"matchOnlineTeam": false,
+			"matchHandicapTag": "黑先贴2又3/4子",
+			"matchItemBegin": "",
+			"matchItemNumber": 0
+		};
+		console.log("数据管理者" + JSON.stringify(date));
+		return date;
+
+	}
+	vueMethodsManager = function() {
+		//时间管理中心 每个Vue事件的处理都可以在这管理
+		var methods = {};
+		methods.init = function() {
+			console.log(JSON.stringify(api.pageParam.msg));
+			assigment.message = api.pageParam.message;
+			assigment.openFrame(assigment.message.currentRound, assigment.message.matchItemRound, assigment.message)
+				// $.isLoading("hide");
+				// if (!result) return;
+				// var bannerInfo = "",
+				// 	integral = "",
+				// 	intro = $('<div></div>').html(result.matchItemIntro).text(),
+				// 	integral = "",
+				// 	checkerboard = "",
+				// 	concede = "";
+				// //标题信息：
+				// bannerInfo += '<dt><img src="../../asset/image/defaultImg.png"></dt><dd><h4 id="Tile">' + result.matchItemName + '</h4><p id="Time">' + result.matchItemBegin.slice(0, 10) + ' 到 ' + result.matchItemEnd.slice(0, 10) + '</p></dd>';
+				// $(".bannerInfo").html(bannerInfo);
+				// //编排：
+				// if (result.matchItemArrange == 0) integral = "无需编排";
+				// else if (result.matchItemArrange == 1) integral = "积分编排";
+				// else if (result.matchItemArrange == 2) integral = "麦克马洪";
+				// $(".integral span").text(integral);
+				// //棋盘：
+				// if (result.matchItemChessboard == 0) checkerboard = "未知";
+				// else if (result.matchItemChessboard != 0) checkerboard = result.matchItemChessboard + "路棋盘";
+				// $(".checkerboard span").text(checkerboard);
+				// //是否让子：
+				// concede = result.matchHandicapTag ? result.matchHandicapTag : "无"
+				// $(".concede span").text(concede);
+				// //是否限时：
+				// var matchLimitTime = "";
+				// if (result.matchLimitTime == 0) matchLimitTime = "不限时";
+				// else if (result.matchLimitTime == 1) matchLimitTime = 1 * 60 + "秒";
+				// else matchLimitTime = "包干";
+				// $(".untimed span").text(matchLimitTime);
+				// //详情信息：开始时间/结束时间/轮次
+				// $(".timeB").text(result.matchItemBegin.slice(0, 16));
+				// $(".timeE").text(result.matchItemEnd.slice(0, 16));
+				// $(".round").text(result.matchItemRound == 0 ? "待定" : result.matchItemRound);
+				// //报名范围：
+				// var rangeStr = "";
+				// if (result.matchRules.length == 0) {
+				// 	rangeStr = "无"
+				// } else if ((result.matchRules.length > 0)) {
+				// 	$.each(result.matchRules, function(i, v) {
+				// 		if (v.matchRuleType == 1) { //1=性别
+				// 			rangeStr += v.matchRuleMax == 0 ? "男 " : "女 ";
+				// 		} else if (v.matchRuleType == 2) { //2=年龄
+				// 			if (v.matchRuleMax == 0 && v.matchRuleMin == 0) {
+				// 				rangeStr += "年龄不限 ";
+				// 			} else if (v.matchRuleMin == 0) {
+				// 				rangeStr += v.matchRuleMax + "岁以下 ";
+				// 			} else if (v.matchRuleMax == 0) {
+				// 				rangeStr += v.matchRuleMin + "岁以上 ";
+				// 			} else {
+				// 				rangeStr += v.matchRuleMin + "岁-" + v.matchRuleMax + "岁 ";
+				// 			}
+				// 		} else if (v.matchRuleType == 3) { // 3=段位
+				// 			if (v.matchRuleMin == 0 && v.matchRuleMax == 0) {
+				// 				rangeStr += "段级位不限 "
+				// 			} else if (v.matchRuleMin == 0) {
+				// 				rangeStr += getRankFn(v.matchRuleMax) + "以下 "
+				// 			} else if (v.matchRuleMax == 0) {
+				// 				rangeStr += getRankFn(v.matchRuleMin) + "以上 "
+				// 			} else {
+				// 				rangeStr += getRankFn(v.matchRuleMin) + " - " + getRankFn(v.matchRuleMax) + " ";
+				// 			}
+				// 		}
+				// 	});
+				// };
+				// $(".ageRange").text(rangeStr);
+				// //副文本： 介绍/备注
+				// $(".matchItemIntro").html(intro);
+				// $(".remark").html(result.matchItemRemark);
+				// //删掉空标签
+				// $(".matchText p").each(function() {
+				// 	if ($(this).text().length == 0) $(this).remove();
+				// });
+
+
+
+
+
+		};
+		methods.openFrame = function(index, total, message) {
+			var offset = $api.offset($api.byId("header"));
+			var y = offset.h;
+			//通过pageParam传递值
+			var message = {
+				'index': index,
+				'total': total,
+				'message': message
+			}
+			api.openFrame({
+				name: 'rounds_content',
+				url: 'rounds_content.html',
+				rect: {
+					x: 0,
+					y: y,
+					w: api.winWidth,
+					h: 'auto'
+				},
+				pageParam: {
+					msg: message
+				}
+			});
+
+		}
+
+		methods.confirmationRelease = function() { //确认发布作业
+			//TODO
+
+
+
+		}
+		console.log("事件管理者：" + JSON.stringify(methods));
+		return methods;
+	}
+	imready = function() {
+		// api.parseTapmode(); //默认页面加载完成后，引擎会对 dom 里面的元素进行 tapmode 属性解析，若是之后用代码创建的 dom 元素，则需要调用该方法后 tapmode 属性才会生效
+		// $api.fixStatusBar($api.dom('header'));
+		initVue();
+		assigment.init();
+
+
+	};
+</script>
+
+</html>

@@ -1,0 +1,473 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <style>
+        header {
+            background-color: #FFFFFF;
+            height: 0.88rem;
+            line-height: 0.88rem;
+        }
+
+        header ul li {
+            height: 0.88rem;
+            line-height: 0.88rem;
+            text-align: center;
+            display: none;
+            color: #333;
+            position: relative;
+            font-size: 0.34rem;
+        }
+
+        header ul li.active {
+            display: block;
+        }
+
+        #footer {
+            background-color: #FFFFFF;
+            position: relative;
+        }
+
+        #footer ul li {
+            padding-top: 0.5rem;
+            padding-bottom: 0.1rem;
+            background: url() no-repeat center top;
+            background-size: 0.36rem 0.35rem;
+            font-size: 0.24rem;
+            text-align: center;
+        }
+        #footer ul li span {
+            position: absolute;
+            right: 32.5%;
+            top: .1rem;
+            height: .3rem;
+            width: .3rem;
+            border-radius: 50%;
+            background: #f00;
+            color: #fff;
+            text-align: center;
+            line-height: .3rem;
+            font-size: .16rem;
+            display: none;
+        }
+
+        #footer ul li.active {
+            color: #FF8344;
+        }
+
+        #footer ul li:nth-child(1) {
+            background-image: url(./image/icon_schedule_unselected.jpg);
+        }
+
+        #footer ul li:nth-child(2) {
+            background-image: url(./image/icon_match_unselected.png);
+        }
+
+        #footer ul li:nth-child(3) {
+            background-image: url(./image/icon_notice_unselected.png);
+        }
+
+        #footer ul li:nth-child(4) {
+            background-image: url(./image/icon_mine_unselected.png);
+        }
+
+        #footer ul li:nth-child(1).active {
+            background-image: url(./image/icon_schedule_selected.png);
+        }
+
+        #footer ul li:nth-child(2).active {
+            background-image: url(./image/icon_match_selected.png);
+        }
+
+        #footer ul li:nth-child(3).active {
+            background-image: url(./image/icon_notice_selected.png);
+        }
+
+        #footer ul li:nth-child(4).active {
+            background-image: url(./image/icon_mine_selected.png);
+        }
+
+        .flex-con {
+            overflow: auto
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="border-b frame0">日程</li>
+                <li class="border-b active frame1">比赛</li>
+                <li class="border-b frame2">通知</li>
+                <li class="border-b frame3">我的</li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+        <div id="footer" class="border-t">
+            <div style="height:0.2rem;"></div>
+            <ul class="flex-wrap">
+                <li tapmode="hover" onclick="openTab( 'frame0' );" class="frame0 flex-con ">日程</li>
+                <li tapmode="hover" onclick="openTab( 'frame1' );" class="frame1 flex-con active">比赛</li>
+                <li tapmode="hover" onclick="openTab( 'frame2' );" class="frame2 flex-con">通知<span></span></li>
+                <li tapmode="hover" onclick="openTab( 'frame3' );" class="frame3 flex-con">我的</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/common.js"></script>
+<script type="text/javascript">
+    var userId;
+
+    imready = function() {
+        api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err) {
+            console.log("ret...." + JSON.stringify(ret));
+            console.log("err...." + JSON.stringify(err));
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    userId = Xret.userId;
+                    //****************20170807 新增极光推送*******************************
+                    //https://www.jpush.cn 账号 ：huzhihui@sinogo.org密码Zqss2017.
+                    ajPushInit();
+
+                } else {}
+            } else {}
+            openTab("frame1");
+        });
+        api.addEventListener({
+            name: 'msgChange'
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.value.key1 > 0) {
+                    $api.text($api.dom("#footer ul li span"), ret.value.key1);
+                    $api.css($api.dom("#footer ul li span"), 'display:block');
+                } else {
+                    $api.css($api.dom("#footer ul li span"), 'display:none');
+                }
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+
+        api.addEventListener({
+            name: 'viewReady'
+        }, function(ret, err) {
+            if (ret.value) {
+                if (ret.value.frame) {
+                    api.getPrefs({
+                        key: 'studentInfo'
+                    }, function(ret_u, err_u) {
+                        if (ret_u) {
+                            if (ret_u.value != "") {
+
+                                var Xret = JSON.parse(ret_u.value);
+                                userId = Xret.userId;
+                                openTab(ret.value.frame);
+                                ajPushInit(); //注册 成功以后调用此方法
+
+                            } else {
+                                userId = 0;
+                                openTab('frame1');
+                            }
+                        } else {
+                            userId = 0;
+                            openTab('frame1');
+                        }
+                    });
+                }
+            }
+        });
+        if (api.systemType == 'ios') {
+            var fs = api.require('fs');
+            fs.readDir({
+                path: '/var/mobile/Containers/Data/Application/13D1B762-1AC0-4A25-90BC-D97E41557CB9/Library/Caches/APICloud/Cache/getPicture'
+            }, function(ret, err) {
+                console.log(JSON.stringify(ret))
+                console.log(JSON.stringify(err))
+            });
+
+            fs.rmdir({
+                path: "/var/mobile/Containers/Data/Application/13D1B762-1AC0-4A25-90BC-D97E41557CB9/Library/Caches/APICloud/Cache/getPicture"
+            }, function(ret, err) {
+                console.log(JSON.stringify(ret))
+                console.log(JSON.stringify(err))
+            });
+        }
+        if (api.systemType != 'ios') {
+            var fs = api.require('fs');
+            fs.rmdir({
+                path: api.fsDir + "/picture"
+            }, function(ret, err) {
+                if (ret.status) {
+                    //alert(JSON.stringify(ret));
+                } else {
+                    //alert(JSON.stringify(err));
+                }
+            });
+        }
+    }
+
+    lodeparm = function(port,server,param, callBack) {
+        ajaxRequestWithGet(port,server,param, function(ret, err) {
+            callBack(ret, err);
+        })
+    };
+
+    ajPushInit = function() {
+        if (api.appName == 'AppLoader') {
+            return;
+        }
+        var ajpush = api.require('ajpush');
+        // 设置小圆点为0
+        ajpush.setBadge({
+                badge: 0
+            })
+            //初始化极光推送
+        ajpush.init(function(ret) {
+            if (ret && ret.status) {
+                //success
+
+            }
+        });
+        var port = 8090;
+        var server = "/user/tags/get";
+        var param = [{name:"userId",value:userId}]
+        lodeparm(port,server,param, function(ret, err) {
+            if (ret) {
+                console.log("获取推送tag返回数据" + JSON.stringify(ret));
+                var tag = [];
+                if (ret.code == 0) {
+                    if (ret.data.activityIds) {
+                        for (var i = 0; i < ret.data.activityIds.length; i++) {
+                            tag.push("activityId" + ret.data.activityIds[i]);
+                        };
+                    }
+                    if (ret.data.groupIds) {
+                        for (var i = 0; i < ret.data.groupIds.length; i++) {
+                            tag.push("groupId" + ret.data.groupIds[i]);
+                        };
+                    }
+                    if (ret.data.itemIds) {
+                        for (var i = 0; i < ret.data.itemIds.length; i++) {
+                            tag.push("itemId" + ret.data.itemIds[i]);
+                        };
+                    }
+                    console.log(JSON.stringify(tag));
+
+
+
+                }
+                var param = {
+                    tags: tag
+                };
+                ajpush.bindAliasAndTags(param, function(ret,err) {
+                    var statusCode = ret.statusCode;
+
+                });
+            } else {
+                api.toast({
+                    msg: err.msg,
+                    duration: 2000,
+                    location: 'bottom'
+                });
+
+
+            }
+        });
+        var body = {
+            receiverId: userId,
+            status: 0,
+        }
+        ajaxPost("/message/read/verify", body, function(ret, err) {
+            console.log("未读消息" + JSON.stringify(ret));
+            if (err.body > 0) {
+                $api.text($api.dom("#footer ul li span"), err.body);
+                $api.css($api.dom("#footer ul li span"), 'display:block');
+            } else {
+                console.log(err.msg);
+            }
+        });
+
+        // 添加激光推送的事件
+        // 收到消息以后首先记录消息的个数然后给出notification
+        ajpush.setListener(
+            function(ret) {
+                var count = api.getPrefs({
+                    sync: true,
+                    key: 'iosmessagecount'
+                });
+                if (!count) {
+                    count = 1;
+                } else {
+                    count++;
+                }
+                api.setPrefs({
+                    key: 'iosmessagecount',
+                    value: count
+                });
+                $api.text($api.dom("#footer ul li span"), count);
+                $api.css($api.dom("#footer ul li span"), 'display:block');
+                api.notification({
+                    notify: {
+                        title: ret.title,
+                        content: ret.content,
+                        extra: ret.extra
+                    }
+                }, function(ret, err) {
+                    //toastAtMiddle(ret.id)
+                    openTab("frame2");
+
+                });
+            }
+        );
+        //弹窗点击事件
+        if (api.systemType == 'ios') {
+            api.addEventListener({
+                name: 'noticeclicked'
+            }, function(ret, err) {
+                if (ret && ret.value) {
+                    openTab("frame2");
+                }
+            })
+        } else {
+            api.addEventListener({
+                name: 'appintent'
+            }, function(ret, err) {
+                if (ret && ret.appParam.ajpush) {
+                    openTab("frame2");
+                }
+            })
+        }
+    }
+
+    function goLogin() {
+        // api.setPrefs({
+        //     key: 'studentInfo',
+        //     value: ""
+        // });
+        // api.openWin({
+        //     name: 'login',
+        //     url: './html/login/login.html'
+        // });
+
+        funIniGroup();
+    }
+    //previous page id, current page id
+    var prevPid = '',
+        curPid = '';
+    //save opened frame name
+    var frameArr = [];
+
+    //frame whether open
+    function isOpened(frmName) {
+        var i = 0,
+            len = frameArr.length;
+        var mark = false;
+        for (i; i < len; i++) {
+            if (frameArr[i] === frmName) {
+                mark = true;
+                return mark;
+            }
+        }
+        return mark;
+    }
+    //toggle header
+    function showHeader(type) {
+        if (!type) {
+            return;
+        }
+        var header = $api.dom('header .active');
+        $api.removeCls(header, 'active');
+        var thisHeader = $api.dom('header .' + type);
+        $api.addCls(thisHeader, 'active');
+    }
+
+    //open tab
+    function openTab(type) {
+        if (type === 'frame3' || type === 'frame2' || type == 'frame0') {
+            if (type === 'frame2') {
+                api.sendEvent({
+                    name: 'viewappear',
+                    extra: {
+                        key1: 'value1'
+                    }
+                });
+
+            }
+            if (!userId) {
+                api.openWin({
+                    name: 'login',
+                    url: './html/login/login.html',
+                    pageParam: {
+                        frame: type
+                    }
+                });
+                return;
+            }
+
+        }
+        showHeader(type);
+        var width = api.winWidth;
+        var nav = $api.byId('footer');
+        var navPos = $api.offset(nav);
+        var header = $api.dom('header');
+        var headerPos = $api.offset(header);
+        console.log(JSON.stringify(headerPos))
+        var height = api.winHeight - navPos.h - headerPos.h;
+        type = type || 'frame1';
+        var actTab = $api.dom('#footer .active');
+        $api.removeCls(actTab, 'active');
+        var thisTab = $api.dom('#footer .' + type);
+        //thisTab = thisTab.parentNode;
+        $api.addCls(thisTab, 'active');
+        //record page id
+        prevPid = curPid;
+        curPid = type;
+        if (prevPid !== curPid) {
+            if (isOpened(type)) {
+                api.setFrameAttr({
+                    name: type,
+                    hidden: false
+                });
+            } else {
+                var rect = {
+                    x: 0,
+                    y: headerPos.h,
+                    w: width,
+                    h: height
+                }
+                api.openFrame({
+                    name: type,
+                    url: 'html/' + type + '.html',
+                    bounces: false, //页面是否能拖动
+                    opaque: true,
+                    vScrollBarEnabled: false,
+                    rect: rect
+                });
+            }
+            if (prevPid) {
+                api.setFrameAttr({
+                    name: prevPid,
+                    hidden: true
+                });
+            }
+            if (!isOpened(type)) {
+                frameArr.push(type);
+            }
+        } else {}
+    }
+</script>

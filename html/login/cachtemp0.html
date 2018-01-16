@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<!-- 此页面Vue工作模板-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>studentCompletion</title>
+    <style >
+        html,
+        body {
+            font-size: 14px;
+            color: #666;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .box {
+            display: -webkit-flex;
+            /* 新版本语法: Chrome 21+ */
+            display: flex;
+            /* 新版本语法: Opera 12.1, Firefox 22+ */
+            display: -webkit-box;
+            /* 老版本语法: Safari, iOS, Android browser, older  WebKit browsers. */
+            display: -moz-box;
+            /* 老版本语法: Firefox (buggy) */
+            display: -ms-flexbox;
+            /* 混合版本语法: IE 10 */
+        }
+
+        summary {
+            outline: none;
+        }
+
+        p {
+            text-indent: 2em;
+        }
+
+        .box div {
+            height: 42px;
+            -webkit-flex: 1;
+            /* Chrome */
+            -ms-flex: 1;
+            /* IE 10 */
+            flex: 1;
+            /* NEW, Spec - Opera 12.1, Firefox 20+ */
+            -webkit-box-flex: 1;
+            /* OLD - iOS 6-, Safari 3.1-6 */
+            -moz-box-flex: 1;
+            /* OLD - Firefox 19- */
+        }
+
+        .a {
+            background-color: #ff8344;
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        .b {
+            background-color: #1ebeb6;
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        .c {
+            background-color: #eee;
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        .simple {
+            width: 80%;
+            margin: 20px auto;
+            border: solid #ff8344 7px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .fancy {
+            width: 80%;
+            margin: 20px auto;
+            padding: 50px;
+            border: solid #ff8344 5px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .ismail {
+            width: 80%;
+            margin: 20px auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .ismail input {
+            outline: none;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .ismail span {
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-wrap flex-vertical">
+        <h1>js学习随机</h1>
+        <div class="flex-con" id="main">
+            <details>
+                <summary>弹性盒子</summary>
+                <p>弹性盒子由弹性容器(Flex container)和弹性子元素(Flex item)组成。 弹性容器通过设置 display 属性的值为 flex 或 inline-flex将其定义为弹性容器。 弹性容器内包含了一个或多个弹性子元素。
+                    <br/> 注意： 弹性容器外及弹性子元素内是正常渲染的。弹性盒子只定义了弹性子元素如何在弹性容器内布局。 弹性子元素通常在弹性盒子内一行显示。默认情况每个容器只有一行。 以下元素展示了弹性子元素在一行内显示，从左到右:
+                </p>
+            </details>
+            <div class="box">
+                <div class="a">
+                </div>
+                <div class="b">
+                </div>
+                <div class="c">
+                </div>
+            </div>
+            <div>
+                <div class="simple">
+                    现在我们一样大了
+                </div>
+                <div class="fancy">
+                    但是我们的padding是不一样的
+                </div>
+            </div>
+            <div class="ismail">
+                <input type="text" name="" oninput="isMail(event)" placeholder="验证邮箱是否正确" value="">
+                <span class="mail">不是邮箱</span>
+            </div>
+            <div class="ismail">
+                <div>
+                    <input type="text" name="" oninput="trim(event)" placeholder="去空格" value="">
+                </div>
+                <div class="trim"></div>
+            </div>
+            <div class="ismail">
+                <div>
+                    <input type="text" name="" oninput="timechange(event)" placeholder="yyyy-MM-dd HH:mm:ss" value="">
+                </div>
+                <time class="dateNow"></time>
+            </div>
+            <div class="ismail" >
+              <input type="text" @keyup:enter="alert(1)" name="" oninput="timechange(event)" placeholder="yyyy-MM-dd HH:mm:ss" value="">
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+<script>
+    isMail = function(event) { //验证是否为邮箱
+        var value = event.srcElement.value;
+        console.log(value);
+        var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
+        if (reg.test(value)) {
+            document.querySelectorAll(".mail")[0].innerHTML = "是邮箱";
+        } else {
+            document.querySelectorAll(".mail")[0].innerHTML = "不是邮箱";
+        }
+    }
+    trim = function(event) { //正则表达式去空格
+        var str = event.srcElement.value;
+        console.log(str);
+        if (str && typeof str === "string") {
+            document.querySelectorAll(".trim")[0].innerHTML = str.replace(/(^\s*)|(\s*)$/g, ""); //去除前后空白符
+        }
+    }
+
+
+    Date.prototype.format = function(formatString) { //任意时间格式化
+
+        /**
+         * 兼容性：ie5+
+         * default
+         * yyyy-MM-dd HH:mm:ss  => 2016-09-01 01:11:00
+         *
+         * other
+         * yyyy-M-d h:m:s       => 2016-9-1 1:11:0
+         * y-M-d h:m:s          => 16-9-1 1:11:0
+         * yyyy.M.d h:m:s       => 2016.9.1 1:11:0
+         * d/M/yyyy             => 1/9/2016
+         * yyyyMMddhhmmss            => 20160901011100
+         * yyyyMdhms            => 2016911110
+         * yy年M月d日 h点m分s秒       => 16年9月1日 1点11分0秒
+         *
+         */
+        var o = {
+            Y: this.getFullYear(),
+            M: this.getMonth() + 1,
+            D: this.getDate(),
+            H: this.getHours(),
+            m: this.getMinutes(),
+            S: this.getSeconds()
+        };
+        var reg = new RegExp('([Yy]+)|(M+)|([Dd]+)|([Hh]+)|(m+)|([Ss]+)', 'g');
+        if (formatString) {
+            return formatString.replace(reg, function(v) {
+                var old = v;
+                if (/m/.test(v)) {
+                    old = o.m;
+                } else if (/y/i.test(v)) {
+                    var y = '' + o.Y;
+                    var le = y.length - (v.length == 1 ? 2 : v.length);
+                    old = y.substring(y.length, le)
+                } else {
+                    var key = v.toUpperCase().substr(0, 1);
+                    old = o[key];
+                    if (v.length > 1 && o[key] < 10) {
+                        old = '0' + old;
+                    }
+                }
+                return old;
+            });
+        } else {
+            return this.format('yyyy-MM-dd HH:mm:ss');
+        }
+    };
+    timechange = function(event) { //正则表达式去空格
+        var str = event.srcElement.value;
+        console.log(str);
+        time=str;
+    }
+    timeNow = function(str) {
+        document.querySelectorAll(".dateNow")[0].innerHTML = new Date().format(str); //去除前后空白符
+    }
+    var time = "yyyy-MM-dd HH:mm:ss";
+    setInterval(function() {
+        timeNow(time);
+    }, 1000);
+</script>
+
+</html>

@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.chessboard {
+    background: rgba(0,0,0,0);
+}
+.chess {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.chess:before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0,0,0,0);
+}
+
+.chess:after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(0,0,0,0);
+}
+.chess.left:before {
+    right: 0;
+    height: 1px;
+}
+
+.chess.left:after {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+}
+
+.chess.right:before {
+    left: 0;
+    height: 1px;
+}
+
+.chess.right:after {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+}
+
+.chess.top:before {
+    left: 0;
+    right: 0;
+    height: 1px;
+}
+
+.chess.top:after {
+    bottom: 0;
+    width: 1px;
+}
+
+.chess.bottom:before {
+    left: 0;
+    right: 0;
+    height: 1px;
+}
+
+.chess.bottom:after {
+    width: 1px;
+}
+
+.chess.top.left:before {
+    right: 0;
+    height: 1px;
+}
+
+.chess.top.right:after {
+    bottom: 0;
+    width: 1px;
+}
+
+.chess.top.right:before {
+    left: 0;
+    height: 1px;
+}
+
+.chess.top.left:after {
+    bottom: 0;
+    width: 1px;
+}
+
+.chess.bottom.left:before {
+    right: 0;
+    height: 1px;
+}
+
+.chess.bottom.left:after {
+    width: 1px;
+}
+
+.chess.bottom.right:before {
+    left: 0;
+    height: 1px;
+}
+
+.chess.bottom.left:after {
+    width: 1px;
+}
+
+.active {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+div.marks>.micon-white{
+    display: block;
+    width:5px;
+    height:5px;
+    margin:5px auto;
+    background: #FFF;
+    border-radius:50%;
+    z-index:100;
+    color: #000;
+    font-style: normal;
+    text-align: center;
+    font-weight:bold;
+}
+div.marks>.micon-black{
+    display: block;
+    width:5px;
+    height:5px;
+    margin:5px auto;
+    background: #000;
+    border-radius:50%;
+    z-index:100;
+    color: #000;
+    font-style: normal;
+    text-align: center;
+    font-weight:bold;
+}
+.mark {
+   width: 15px;
+   height: 15px;
+   background:url(../image/ic_triangle_1.png) no-repeat center center;
+   background-size:10px 10px;
+   z-index:3;
+}
+.mark:before {
+}
+
+.mark:after {
+}
+.active:before {
+    content: none;
+}
+
+.active:after {
+    content: none;
+}
+
+.black {
+    background: #000;
+}
+
+.white {
+    background: #fff;
+}
+.white-word{
+	color:#FFFFFF;
+	font-size:14px;
+	text-align: center;
+}
+.black-word{
+	color:#000000;
+	font-size:14px;
+	text-align: center;
+}

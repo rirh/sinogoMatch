@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>温馨提示</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style scoped>
+		html,
+		body {
+			background: #f6f6f6;
+		}
+
+		#main {
+			width: 100%;
+			height: auto;
+		}
+
+		#main img {
+			width: 4.71rem;
+			height: 1.19rem;
+			margin-top: 1.13rem;
+			margin-left: 1.395rem;
+		}
+
+		#main div {
+			position: relative;
+			text-align: center;
+		}
+
+		#main div p:nth-child(2) {
+			position: absolute;
+			top: 1.5rem;
+			line-height: .88rem;
+			font-size: .36rem;
+			color: #333;
+			width: 100%;
+			text-align: center;
+		}
+
+		#main div p:nth-child(3) {
+			position: absolute;
+			top: 2.5rem;
+			line-height: .5rem;
+			font-size: .28rem;
+			color: #666;
+			width: 4.5rem;
+			text-align: center;
+			margin-left: 1.5rem;
+		}
+
+		#main div img {
+			height: 4.99rem;
+			width: 6.24rem;
+			margin-top: .9rem;
+			margin-left: .63rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="flex-wrap flex-vertical">
+		<div class="flex-con" id="main">
+			<img :src="reminderBgTitle" alt="" />
+			<div>
+				<img :src="reminderBgCase" alt="">
+				<p v-text="reminderTitle"></p>
+				<p v-text="reminderCase"></p>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+
+<script>
+	var assigment; //全局控制器Controller
+	initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+		var date = vueDateManager();
+		var methods = vueMethodsManager();
+		assigment = new Vue({
+			el: '#main', //绑定元素
+			data: date, //本页面的静态动态全部数据
+			methods: methods, //本页面的全部方法
+			init: function() {
+				Vue.config.silent = true;
+
+			}
+		})
+	}
+
+	vueDateManager = function() {
+		//初始化Vue数据date为一个json数组
+		var date = {};
+		date.reminderBgTitle = "../../image/icon_note.png";
+		date.reminderBgCase = "../../image/bg_note.png";
+		date.reminderTitle = "选赛后才会有内容哟";
+		date.reminderCase = "你需要先去报名感兴趣的赛事，每个赛事包含多个比赛项目，选赛后这里就有具体内容啦";
+		console.log("数据管理者" + JSON.stringify(date));
+		return date;
+
+	}
+	vueMethodsManager = function() {
+		//时间管理中心 每个Vue事件的处理都可以在这管理
+		var methods = {};
+
+		methods.confirmationRelease = function() { //确认发布作业
+			//TODO
+
+
+
+		}
+		console.log("事件管理者：" + JSON.stringify(methods));
+		return methods;
+
+
+
+
+	}
+	imready = function() {
+		initVue();
+	};
+</script>
+
+</html>

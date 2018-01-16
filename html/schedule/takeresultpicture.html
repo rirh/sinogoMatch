@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fontstyle.css"/>
+    <style>
+    	body{
+    		font-size:0.24rem;
+    	}
+    	#header{
+		    background-color: rgba(255,255,255,0.8);
+		    text-align: center; 
+		    width: 100%; position: relative;
+		    height:0.88rem;
+		}
+		#header:before{
+			position: absolute;
+			border-bottom: 1px solid #e9e9e9;
+			bottom:0;left:0;right:0;
+			content: "";display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+		#header .back-icon{
+		    display: inline-block; width: 0.88rem; height: 0.88rem;
+		    background: url(../../image/icon_arrow_left.png) no-repeat center center; 
+		    background-size: 0.16rem 0.28rem;
+		    position: absolute; left: 0; bottom: 0;
+		}
+		#header h1{
+		    font-size: 0.34rem;
+		    height: 0.88rem; line-height: 0.88rem; margin: 0 auto; color: #333;
+		    width:5rem;
+		}
+		#header .btn_right{
+			width: 0.95rem; height: 0.88rem;
+			 display: inline-block;
+			 top:0;right:0;
+			line-height: 0.88rem;
+			position:absolute;
+			font-size:0.3rem;
+			text-align: center;
+		}
+    </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+		<div id="top-header"></div>
+		<div id="header">
+			<a class="back-icon" tapmode="active" onclick="closeSelf()" ></a>
+			<h1 id="title">1台</h1>
+			<a tapmode="active" class="btn_right" onclick="btnRight()" >相册</a>
+		</div>
+		<div id="main" class="flex-con">
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	
+	imready = function(){
+		var headerPos = $api.offset($api.byId('header'));
+		var y = headerPos.h;
+		var h = api.winHeight-y;
+		
+		var index = api.pageParam.index;
+		var str = '';
+		if(index){
+			str=index+"台"
+		}else if(index==0){
+			str=api.pageParam.ret.matchItemName
+		}else{
+			str='个人对弈'
+		}
+		$api.byId("title").innerHTML=str
+//		
+		api.openFrame({
+	        name: 'takeresultpicture_con',
+	        url: 'takeresultpicture_con_bd.html',
+	        pageParam:api.pageParam,
+	        bounces:false,
+	        rect: {
+		        x:0,
+	            y:y,
+	            w:api.winWidth,
+	            h:h
+	        }
+        });
+        api.addEventListener({
+	        name:'swiperight'
+        },function(ret,err){
+        });
+        api.addEventListener({
+	        name:'keyback'
+        },function(ret,err){
+        });
+	};
+	
+	function btnRight(){
+		api.getPicture({
+           sourceType: 'album',
+           encodingType: 'jpg',
+           mediaValue: 'pic',
+           allowEdit:false,
+           destinationType: 'url',
+            quality: 50,
+           },function(ret,err){
+           if (ret) {
+           var url = ret.data;
+           api.sendEvent({
+	           name:'selectPic'
+           });
+           if(url){
+           		api.sendEvent({
+                   name:'selectImgChanged',
+                   extra:{
+                   	filePath:url
+                   }
+               });
+//              srcpath = url;
+//              console.log("选择的图片路基你给==="+srcpath)
+//          	$api.dom(".photodiv").innerHTML="<img class='photo' />";
+//      		$api.attr($api.dom(".photo"), "src", url);
+//		    	h1.innerHTML="开始修正图片";
+//		    	goHandleImg();
+//              //gungo(srcpath);
+           }else{
+                toastAtMiddle("已取消")
+           }
+           } else {
+                toastAtMiddle("已取消")
+           }
+       });
+	}
+	
+	function closeSelf(){
+		api.closeFrame({
+			name:"takeresultpicture_con"
+        });
+		api.closeWin({
+        });
+	}
+	
+</script>
+</html>

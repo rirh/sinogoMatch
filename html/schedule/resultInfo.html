@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <style>
+    	body{
+    		font-size: 0.26rem;
+    		background: #F6F6F6;
+    	}
+    	#header{
+		    background-color: rgba(255,255,255,0.8);
+		    text-align: center; 
+		    width: 100%; position: relative;
+		    height:0.88rem;
+		}
+		#header:before{
+			position: absolute;
+			border-bottom: 1px solid #e9e9e9;
+			bottom:0;left:0;right:0;
+			content: "";display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+		#header .back-icon{
+		    display: inline-block; width: 0.88rem; height: 0.88rem;
+		    background: url(../../image/icon_arrow_left.png) no-repeat center center; 
+		    background-size: 0.16rem 0.28rem;
+		    position: absolute; left: 0; bottom: 0;
+		}
+		#header h1{
+		    font-size: 0.34rem;
+		    height: 0.88rem; line-height: 0.88rem; margin: 0 auto; color: #333;
+		    width:5rem;
+		}
+    	#rule{
+    		height:0.9rem;
+    		line-height:0.9rem;
+    		position: relative;
+    		overflow-x: hidden;
+    	}
+    	#rule .header-item{
+    		width:33%;float:left;
+    		position: relative;
+    	}
+    	#rule .header-item img{
+    		width:0.34rem;
+    		height:0.34rem;
+    		position: absolute;
+    		left: 0.34rem;
+    		top: 0.28rem;
+    	}
+    	#rule .header-item span{
+    		width:100%;
+    		margin-left:0.24rem;
+    		text-align: center;
+    		font-size:0.24rem;
+    		color:#999;
+    	}
+    	#rule:before{
+    		position: absolute;
+    		border-top: #eeeeee 1px solid;
+    		top:0;left:0;right:0;
+    		content:"";display:block;
+    		transform: scaleY(0.5);
+    		transform-origin: 0 0;
+    	}
+    	#rule:after{
+    		position: absolute;
+    		border-bottom: #eeeeee 1px solid;
+    		bottom:0;left:0;right:0;
+    		content:"";display:block;
+    		transform: scaleY(0.5);
+    		transform-origin: 0 0;
+    	}
+    	#main .board-size{
+    		margin-left:0.78rem;
+    		margin-top:0.34rem;
+    	}
+    	#main .board-size img{
+    		width:0.34rem;
+    		height:0.34rem;
+    	}
+    	#main .board-size input{
+    		position: relative;
+    	}
+    	#main #content{
+    		position: relative;
+    	}
+    	#main #content .inputfile{
+    		width:6rem;
+    		height:6rem;
+    		margin: 0.2rem auto;
+    		border:1px solid #FF8344;
+    	}
+    	#main .inputfile img{
+    		max-width: 6rem;
+    		max-height: 6rem;
+    		margin: 0 auto;
+    	}
+    	#main .result {
+    		margin-left:0.3rem;
+    		margin-top:0.3rem;
+    		position: relative;
+    		font-size:0.26rem;
+    		color:#666;
+		}
+		.two-points{
+			width:90%;
+			height:2rem;
+			margin: 0.3rem auto;
+			position: relative;
+		}
+		.two-points .black-point{
+			width:48%;
+			float:left;
+			background:#FFF;
+			min-height:2rem;
+			line-height:0.5rem;
+			position: relative;
+			background: url(../../image/icon_chess_black.png) no-repeat left top 0.05rem #FFF;
+			background-size:0.3rem 0.3rem;
+			border-radius: 0.1rem;
+		}
+		.two-points .white-point{
+			width:48%;
+			float:right;
+			background:#f2f2f2;
+			min-height:2rem;
+			line-height:0.5rem;
+			position: relative;
+			background: url(../../image/icon_chess_white.png) no-repeat left top 0.05rem #f2f2f2;
+			background-size:0.3rem 0.3rem;
+			border-radius: 0.1rem;
+		}
+		.two-points > div{
+			color:#333;
+		}
+		.two-points > div span{
+			color:#999;
+		}
+		.two-points .victor{
+			position: absolute;
+			width:0.45rem;
+			height:0.62rem;
+			top:0.1rem;
+			right:0.1rem;
+		}
+		#footer{
+			height:1.8rem;
+			width:70%;
+    		margin:0 auto;
+    		position: relative;
+		}
+		.submit{
+			width:100%;
+    		text-align:center;
+    		height:0.8rem;
+    		line-height:0.8rem;
+    		margin-top:0.1rem;
+    		background:#FF8344;
+    		color:#FFF;
+    		border-radius:0.1rem;
+    		position: relative;
+		}
+		#code{
+			height:0.8rem;
+			line-height:0.8rem;
+		}
+		.btn-code{
+			position:absolute;
+			top:0;
+			right:0.23rem;
+			width:2rem;
+			height:0.66rem;
+			line-height:0.66rem;
+			text-align:center;
+			background:#ffdac5;
+			font-size:0.28rem;
+			color:#666;
+			border-radius: 0.05rem;
+		}
+    </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+		<div id="header">
+			<a class="back-icon" tapmode="active" onclick="closeWin()" ></a>
+			<h1 id="title"></h1>
+		</div>
+		<div id="main" class="flex-con">
+			<script id="rule_template" type="text/x-dot-template">
+				<div class="header-item">
+					<img src="../../image/icon_integral.png" alt="" />
+					<span>{{=it.matchItemArrange==0?'无需编排':(it.matchItemArrange==1?'积分编排':'麦克马洪')}}</span>
+				</div>
+				<div class="header-item">
+					<img src="../../image/icon_piece.png" alt="" />
+					<span>{{=it.matchHandicapTag?it.matchHandicapTag:(it.matchHandicapType==1?'标准让子':'无')}}</span>
+				</div>
+				<div class="header-item">
+					<img src="../../image/icon_time.png" alt="" />
+					<span>{{=it.matchLimitTime==0?'不限时':(it.matchLimitTime==1?'60秒':'包干')}}</span>
+				</div>
+			</script>
+			<div id="rule">
+			</div>
+			<div class="board-size">
+				<img src="../../image/icon_boardsize.png" alt="" />
+				<input type="number" placeholder="棋盘大小" readonly value="19"/>
+			</div>
+			<div id="content" style="display: none;">
+				<div class="inputfile">
+					<img class="photo" alt="" />
+				</div>
+			</div>
+			<div class="result">
+				<div>对弈结果：<span style="font-size:0.32rem;color:#FF8344;" >黑胜</span></div>
+			</div>
+			
+			<script type="text/x-dot-template" id="two_template">
+				<div class="black-point">
+					<img style="display:{{=it.victor==1?'block':'none'}}" class="victor" src="../../image/icon_victor.png" alt="" />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;黑：<span>{{=it.blackId}}</span><br/>
+					姓名：<span>{{=it.blackName}}</span><br/>
+					证件：<span style="font-size:0.2rem;">{{=it.blackIdcard}}</span><br/>
+					电话：<span>{{=it.blackPhone?it.blackPhone:''}}</span><br/>
+				</div>
+				<div class="white-point">
+					<img style="display:{{=it.victor==2?'block':'none'}}" class="victor" src="../../image/icon_victor.png" alt="" />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;白：<span>{{=it.whiteId}}</span><br/>
+					姓名：<span>{{=it.whiteName}}</span><br/>
+					证件：<span style="font-size:0.2rem;">{{=it.whiteIdcard}}</span><br/>
+					电话：<span>{{=it.whitePhone?it.whitePhone:''}}</span><br/>
+				</div>
+			</script>
+			<div class="two-points" id="two_points">
+			</div>
+		</div>
+		<div id="footer" style="display: none;">
+			<input type="number" id="code" placeholder="请输入验证码" />
+			<div tapmode="active" onclick="getCode()" class="btn-code" >
+				获取验证码
+			</div>
+			<div class="submit" onclick="submitResult();">提交</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript">
+	var userId ;
+	var type ;
+	var otherPhone ;
+	imready = function(){
+		console.log(JSON.stringify(api.pageParam));
+		$api.byId("title").innerHTML=api.pageParam.ret.matchItemName;
+		getInnerByDot("rule","rule_template",api.pageParam.ret);
+		var data = api.pageParam.data;
+		type = api.pageParam.type;
+		if(type==0||api.pageParam.isJudge==0){
+			$api.byId("footer").style.display="block";
+		}
+		otherPhone = api.pageParam.otherPhone;
+		var resultStr = getResultStr(parseInt(data.matchResult));
+		console.log(resultStr)
+		$api.dom(".result span").innerHTML=resultStr
+		if(data.resultImage&&data.resultImage!='null'&&data.resultImage!='undefined'){
+			$api.byId("content").style.display="block"
+			$api.attr($api.dom("#content img"), "src", data.resultImage);
+		}
+		api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    studentInfo = Xret;
+                    userId = Xret.userId;
+//                  if(data.playerId==userId){
+                    	data.blackId=data.playerId;
+                    	data.blackIdcard=data.playerIdcard;
+                    	data.blackName=data.playerName;
+                    	data.blackPhone=data.playerPhone;
+                    	data.whiteId=data.opponentId;
+                    	data.whiteIdcard=data.opponentIdcard;
+                    	data.whiteName=data.opponentName;
+                    	data.whitePhone=data.opponentPhone;
+//                  }else{
+//                  	data.blackId=data.opponentId;
+//                  	data.blackIdcard=data.opponentIdcard;
+//                  	data.blackName=data.opponentName;
+//                  	data.whiteId=data.playerId;
+//                  	data.whiteIdcard=data.playerIdcard;
+//                  	data.whiteName=data.playerName;
+//                  }
+					if(data.blackIdcard&&data.blackIdcard.indexOf("*")==-1){
+                   var pre = data.blackIdcard.substr(0,8);
+                   var last = data.blackIdcard.substr(14,4);
+                   data.blackIdcard=pre+"******"+last;
+                   }
+					if(data.whiteIdcard&&data.whiteIdcard.indexOf("*")==-1){
+                   var pre1 = data.whiteIdcard.substr(0,8);
+                   var last1 = data.whiteIdcard.substr(14,4);
+                   data.whiteIdcard=pre1+"******"+last1;
+                   }
+                   	if(data.blackPhone&&data.blackPhone.indexOf("*")==-1){
+                   var pre2 = data.blackPhone.substr(0,3);
+                   var last2 = data.blackPhone.substr(7,4);
+                   data.blackPhone=pre2+"****"+last2;
+                   }
+                   	if(data.whitePhone&&data.whitePhone.indexOf("*")==-1){
+                   var pre3 = data.whitePhone.substr(0,3);
+                   var last3 = data.whitePhone.substr(7,4);
+                   data.whitePhone=pre3+"****"+last3;
+                   }
+                   
+                    data.victor = data.matchResult;
+                    getInnerByDot("two_points","two_template",data);
+                    
+                    var blackOffset = $api.offset($api.dom(".black-point"));
+                    var whiteOffset = $api.offset($api.dom(".white-point"));
+                    if(blackOffset.h!=whiteOffset.h){
+                    	var h = blackOffset.h>whiteOffset.h?blackOffset.h:whiteOffset.h
+                    	$api.dom(".black-point").style.height=h+"px"
+                    	$api.dom(".white-point").style.height=h+"px"
+                    }
+                } else {
+                }
+            } else {
+            }
+        });
+		
+	};
+	
+	function getResultStr(code){
+		//对应1到6  黑胜 白胜 和棋 黑弃权 白弃权 双方弃权 
+		var resultStr = ""
+		switch(code){
+			case 1:
+			resultStr = "黑胜";
+			break;
+			case 2:
+			resultStr = "白胜";
+			break;
+			case 3:
+			resultStr = "和棋";
+			break;
+			case 4:
+			resultStr = "黑弃权";
+			break;
+			case 5:
+			resultStr = "白弃权";
+			break;
+			case 6:
+			resultStr = "双方弃权";
+			break;
+			case 7:
+			resultStr = "无结果";
+			break;
+			case 8:
+			resultStr = "无结果";
+			break;
+		}
+		return resultStr;
+	}
+	
+	function submitResult(){
+		var c = $api.byId("code").value;
+		if(window.currentCode==c){
+			if(api.pageParam.type==0){
+				requestSubmitResult();
+			}else{
+				requestSubmitResultArrange();
+			}
+		}else{
+			alert("验证码错误，请重新确认！")
+		}
+	}
+	
+	function requestSubmitResultArrange(){
+//		参数:Integer tournamentId,Integer matchRound,Long playerId,byte matchResult
+		api.showProgress({
+        });
+		var port = 8091;
+        var server = "/match/player/pairing/result/edit";
+        var param = [];
+        var p1={name:'tournamentId',value:api.pageParam.id}
+        var p2 ={name:'matchRound',value:api.pageParam.round}
+        var p3 ={name:'playerId',value:api.pageParam.blackId}
+        var p4 ={name:'matchResult',value:api.pageParam.data.matchResult}
+        param.push(p1)
+        param.push(p2)
+        param.push(p3)
+        param.push(p4)
+        ajaxRequestWithGet(port,server,param,function(ret,err){
+        	api.hideProgress();
+        	if(ret){
+        		if(ret.code==0&&ret.data==true){
+        			alert("结果提交成功！")
+        			$api.byId("code").style.display="none";
+        			$api.dom(".btn-code").style.display="none";
+        			$api.dom(".submit").innerHTML="返回";
+        			$api.attr($api.dom(".submit"), "onclick", "closeSelf();");
+        			
+//      			api.sendEvent({
+//				        name:'frameClosed',
+//				        extra:{
+//				        	state:true
+//				        }
+//			        });
+        		}else{
+        			alert("提交出错！"+ret.msg)
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+
+        })
+	}
+	
+	function requestSubmitResult(){
+		api.showProgress({
+        });
+        var port = 8091;
+        var server = "/match/player/nopairing/create";
+        var param = [];
+        var p1={name:'tournamentId',value:api.pageParam.id}
+        var p2 ={name:'blackPlayerId',value:api.pageParam.blackId}
+        var p3 ={name:'whitePlayerId',value:api.pageParam.whiteId}
+        var p4 ={name:'matchResult',value:api.pageParam.data.matchResult}
+        param.push(p1)
+        param.push(p2)
+        param.push(p3)
+        param.push(p4)
+        
+        ajaxRequestWithGet(port,server,param,function(ret,err){
+        	api.hideProgress();
+        	if(ret){
+        		if(ret.code==0&&ret.data==true){
+        			alert("结果提交成功！")
+        			$api.byId("code").style.display="none";
+        			$api.dom(".btn-code").style.display="none";
+        			$api.dom(".submit").innerHTML="返回";
+        			$api.attr($api.dom(".submit"), "onclick", "closeSelf();");
+        			
+//      			api.sendEvent({
+//				        name:'frameClosed',
+//				        extra:{
+//				        	state:true
+//				        }
+//			        });
+        		}else{
+        			alert("提交出错！"+ret.msg)
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+
+        })
+	}
+	
+	function closeSelf(){
+		api.closeWin({
+        });
+	}
+	
+	function getCode(){
+		if(!otherPhone||otherPhone=='null'||otherPhone=='undefined'){
+			return alert("选手没有绑定手机，请周边裁判帮助完成提交对弈结果!");
+		}
+		if(window.timerid){
+			return;
+		}
+		var phoneNum = otherPhone//15910587678// 
+		api.showProgress({
+        });
+		requestCode(phoneNum);
+	}
+	
+	function requestCode(phoneNum){//先判断对方手机号。
+		api.showProgress({
+        });
+        //先获取对方信息。。。
+        var port = 8090;
+        var server = "/user/sms/send"
+        var param=[{name:"userId",value:userId},{name:"smsTemplate",value:'matchResultConfirm'},{name:"userPhone",value:phoneNum}]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			api.hideProgress();
+			console.log(JSON.stringify(ret))
+			if(ret){
+		        $api.dom(".btn-code").innerHTML="重新获取("+(60)+")"
+		        window.timerid = setInterval("showCountdown();",1000)
+		        //{"code":0,"data":{"sendResult":true,"verificationCode":"057526"},"msg":"返回成功"}
+		        window.currentCode = ret.data.verificationCode;
+			}
+			else{
+				alert(err.msg)
+			}
+		})
+	}
+	
+	var total=0;
+	function showCountdown(){
+		total+=1000;
+		if(total==60000){
+			clearInterval(window.timerid)
+			$api.dom(".btn-code").innerHTML="获取验证码";
+			window.timerid=undefined 
+			total=0;
+			return;
+		}
+		$api.dom(".btn-code").innerHTML="重新获取("+(60-total/1000)+")"
+	}
+	
+	
+</script>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <style>
+    	html{
+    	}
+    	body{
+    		font-size:0.24rem;
+    	}
+    	#content{
+    		width:92%;
+    		margin:0 auto;
+    		position: relative;
+    	}
+    	#content .tr{
+    		width:100%;
+    		background:#f2f2f2;
+    		height:0.86rem;
+    		line-height:0.86rem;
+    		font-size:0.28rem;
+    		color:#333;
+    	}
+    	#content .tr .first{
+    		width:19%;
+    		float:left;
+    		text-align: center;
+    	}
+    	#content .tr .other{
+    		width:27%;
+    		float:left;
+    		text-align: center;
+    	}
+    	#content table,#content table tr{
+    		width:100%;
+    		text-align: center;
+    	}
+    	#content table tr td{
+    		height:0.86rem;
+    		font-size:0.26rem;
+    		line-height:0.86rem;
+    	}
+    	#content table tr td .player{
+    		min-height:0.42rem;
+    		line-height:0.42rem;
+    	}
+    	#content table tr td .player-none{
+    		height:0.86rem;
+    		font-size:0.26rem;
+    		line-height:0.86rem;
+    	}
+    	#content table tr td .player.verifycode{
+    		min-height:0.42rem;
+    		font-size:0.22rem;
+    		color:#666;
+    	}
+    	#content td .btn{
+    		height:0.55rem;
+    		line-height:0.55rem;
+    		margin:0.15rem auto;
+    		border-radius: 0.1rem;
+    		color:#FFF;
+    	}
+    	#content td .waiting{
+    		background:#884643;
+    		width:1rem;
+    	}
+    	#content td .verifying{
+    		background:#e68d00;
+    		width:1rem;
+    	}
+    	#content td .detail{
+    		color:#FF8344;
+    		background:url(../../image/icon_notes.png) no-repeat center right;
+    		background-size: 0.32rem 0.32rem;
+    		width:1.5rem;
+    	}
+    	#content td .shown{
+    		width:1.5rem;
+    		color:#FF8344;
+    	}
+    	#content td .nodo{
+    		width:1.5rem;
+    		color:#666666;
+    	}
+    	.noarrange{
+    		height:0.86rem;
+    		line-height:0.86rem;
+    		text-align: center;
+    		color:#666;
+    		font-size:0.32rem;
+    		border:1px solid #eee;
+    		display: none;
+    	}
+    </style>
+</head>
+<body>
+	<div id="content">
+		<div class="tr">
+			<div class="first" >台次</div>
+			<div class="other" >黑方</div>
+			<div class="other" >白方</div>
+			<div class="other" >比赛结果</div>
+		</div>
+		<div class="noarrange">您已申请不编排</div>
+		<script type="text/x-dot-template" id="table_template">
+		{{ for(var i=0;i<it.length;i++){ }}
+		<tr style="background:{{=(it[i].self==1&&i==0)?'#f2f2f2':'#FFF'}}">
+			<td width="19%" class="imp">{{=it[i].matchBoard}}</td>
+			<td width="27%" class="color666">
+				<div class="{{=it[i].isShow?'player':'player-none'}}">{{=it[i].playerId}}</div>
+				<div style="display:{{=it[i].isShow?'block;':'none;'}}" class="player">{{=it[i].playerName?it[i].playerName:''}}</div>
+			</td>
+			<td width="27%" class="color666">
+				<div class="{{=it[i].isShow?'player':'player-none'}}">{{=it[i].opponentId}}</div>
+				<div style="display:{{=it[i].isShow?'block;':'none;'}}" class="player">{{=it[i].opponentName?it[i].opponentName:''}}</div>
+			</td>
+			<td width="27%" class="color666">
+				{{ if(isJudge==1){ }}
+				<div class="btn {{=it[i].matchResult==-1?'waiting':(it[i].matchResult==0?'verifying':((it[i].matchResult==1||it[i].matchResult==2||it[i].matchResult==3)?'detail':'shown'))}}" onclick="handleItem(this,{{=i}},{{=it[i].matchResult}},{{=it[i].matchBoard}})">{{=it[i].matchResult==-1?'提交':(it[i].matchResult==0?'审核中':it[i].resultStr)}}</div>
+				{{ }else{ }}
+				<div class="btn {{=it[i].self==1?(it[i].matchResult==-1?'waiting':((it[i].matchResult==1||it[i].matchResult==2||it[i].matchResult==3)?'detail':'shown')):(it[i].matchResult==-1?'nodo':(it[i].matchResult==0?'verifying':((it[i].matchResult==1||it[i].matchResult==2||it[i].matchResult==3)?'detail':'shown')))}}" onclick="handleItem(this,{{=i}},{{=it[i].matchResult}},{{=it[i].matchBoard}})">{{=it[i].self==1?(it[i].matchResult==-1?'提交':(it[i].matchResult==0?'审核中':it[i].resultStr)):(it[i].matchResult==-1?'尚无结果':(it[i].matchResult==0?'审核中':it[i].resultStr))}}</div>
+				{{ } }}
+			</td>
+		</tr>
+		{{ } }}
+		</script>
+		<table border="1" bordercolor="#eeeeee" id="table_content">
+		</table>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript">
+	var isJudge;
+	var userId;
+	imready = function(){
+		//TODO 测试
+//		window.list=[];
+//		for(var i=0;i<8;i++){
+//			var item = {};
+//			item.playerId="111";
+//			item.opponentId="222";
+//			item.isShow=false;
+//			item.matchResult=-1;
+//			window.list.push(item);
+//		}
+//  	getInnerByDot("table_content","table_template",window.list);
+	console.log(JSON.stringify(api.pageParam))
+		window.isShown=true;
+		isJudge = api.pageParam.isJudge;
+		console.log(isJudge)
+		api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    userId = Xret.userId;
+					requestRoundInfo();
+                } else {
+                }
+            } else {
+            }
+        });
+		api.addEventListener({
+	        name:'keywordChanged'
+        },function(ret,err){
+        	//{"value":{"keyword":"阿狸"}}
+        	var key = ret.value.keyword;
+        	if(key){
+	        	var queryList = [];
+	        	for(var i=0;i<window.list.length;i++){
+	        		if(window.list[i].matchBoard==key){
+	        			queryList.push(window.list[i]);
+	        		}
+	        	}
+	        	getInnerByDot("table_content","table_template",queryList);
+        	}else{
+        		getInnerByDot("table_content","table_template",window.list);
+        	}
+        });
+        
+        api.addEventListener({
+	        name:'frameClosed'
+        },function(ret,err){
+        	if(ret.value.state&&ret.value.state==true){
+          		requestRoundInfo();
+        	}
+        });
+		api.addEventListener({
+	        name:'viewappear'
+        },function(ret,err){
+        	console.log("viewappear...")
+        	requestRoundInfo();
+        });
+		api.addEventListener({
+	        name:'showNameStateChanged'
+        },function(ret,err){
+        	//{"value":{"isShow":false}}
+        	console.log(JSON.stringify(ret))
+        	window.isShown = ret.value.isShow;
+        	for(var i=0;i<window.list.length;i++){
+        		window.list[i].isShow=window.isShown;
+        	}
+        	getInnerByDot("table_content","table_template",window.list);
+        });
+	};
+	
+	function requestRoundInfo(){
+		api.showProgress({
+        });
+        var id = api.pageParam.id;
+        var round = api.pageParam.round;
+        var port = 8091;
+        var server = "/judge/item/pairing/round"
+        var param = [{
+        	name:"itemId",
+        	value:id
+        },{
+        	name:"matchRound",
+        	value:round
+        }]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			api.hideProgress();
+        	if(ret){
+        		if(ret.code==0){
+        			fillData(ret);
+        		}else{
+        			alert(ret.msg);
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+		})        
+	}
+	
+	function fillData(ret){
+		var rows = ret.data.rows;
+		var selfIndex = -1;
+		for(var i=0;i<rows.length;i++){
+			rows[i].isShow=window.isShown
+			rows[i].resultStr = getResultStr(rows[i].matchResult);
+			if(rows[i].playerId==userId||rows[i].opponentId==userId){
+				selfIndex = i;
+//				break;
+			}
+		   var item = rows[i];//playerIdCard opponentIdCard
+		   if(item.playerIdCard){
+			   var pre = item.playerIdCard.substr(0,8);
+	           var last = item.playerIdCard.substr(14,4);
+	           item.playerIdCard=pre+"******"+last;
+		   }
+		   if(item.opponentIdCard){
+	           var pre1 = item.opponentIdCard.substr(0,8);
+	           var last1 = item.opponentIdCard.substr(14,4);
+	           item.opponentIdCard=pre1+"******"+last1;
+           }
+		}
+		window.list=rows;
+		console.log(JSON.stringify(window.list))
+		if(isJudge==0){
+			if(selfIndex==-1){
+				//对阵表里没有自己，则此轮他么有编排。
+				$api.dom(".noarrange").style.display="block";
+			}else{
+				var self = window.list[selfIndex];
+				self.self=1;
+				window.list.splice(selfIndex,1);
+				window.list.unshift(self);
+			}
+		}
+		getInnerByDot("table_content","table_template",window.list);
+	}
+	
+	function handleItem(el,index,state,board){
+		if(el.innerHTML=='尚无结果'){
+			return;
+		}
+		state = parseInt(state);
+		if(state==-1){
+			confirmSubmit(index,board);
+		}else if(state==0){
+			toastAtMiddle("该台次正在审核中...")
+		}else{
+			if(state!=1&&state!=2&&state!=3){
+				return;
+			}
+			var str = getResultStr(state);
+			//alert("该台次"+str);
+			var itemInfo = window.list[index]
+			console.log(JSON.stringify(itemInfo))
+			
+			itemInfo.opponentIdcard=itemInfo.opponentIdCard;
+			itemInfo.playerIdcard=itemInfo.playerIdCard;
+			api.openWin({
+	            name: 'resultInfo',
+	            url: 'resultInfo.html',
+	            pageParam:{
+	            	round:0,
+	            	id:api.pageParam.id,
+	            	name:api.pageParam.name,
+            		ret:api.pageParam.ret,
+            		data:itemInfo
+	            }
+            });
+			
+			
+		}
+	}
+	
+	function getResultStr(code){
+		//对应1到6  黑胜 白胜 和棋 黑弃权 白弃权 双方弃权 
+		var resultStr = ""
+		switch(code){
+			case 1:
+			resultStr = "黑胜";
+			break;
+			case 2:
+			resultStr = "白胜";
+			break;
+			case 3:
+			resultStr = "和棋";
+			break;
+			case 4:
+			resultStr = "黑弃权";
+			break;
+			case 5:
+			resultStr = "白弃权";
+			break;
+			case 6:
+			resultStr = "双方弃权";
+			break;
+			case 7:
+			resultStr = "无结果";
+			break;
+			case 8:
+			resultStr = "无结果";
+			break;
+		}
+		return resultStr;
+	}
+	
+	function confirmSubmit(i,board){
+		var itemInfo = window.list[i]
+		var dialogBox = api.require('dialogBox');
+		dialogBox.alert({
+		    texts: {
+		        title: '是否使用智能裁判系统',
+		        content: '提示：选择是，即使用智能裁判系统；否则需要手动录入比赛结果。',
+		        leftBtnTitle: '否',
+		        rightBtnTitle: '是'
+		    },
+		    styles: {
+		        bg: '#fff',
+		        w: 300,
+		        title: {
+		            marginT: 20,
+		            icon: 'widget://res/icon_notice.png',
+		            iconSize: 25,
+		            titleSize: 18,
+		            titleColor: '#FF8344'
+		        },
+		        content: {
+		            color: '#666',
+		            size: 14
+		        },
+		        left: {
+		            marginB: 7,
+		            marginL: 20,
+		            w: 130,
+		            h: 35,
+		            corner: 2,
+		            bg: '#F6F6F6',
+		            size: 12,
+		            color:"#333"
+		        },
+		        right: {
+		            marginB: 7,
+		            marginL: 10,
+		            w: 130,
+		            h: 35,
+		            corner: 2,
+		            bg: '#FFF3e0',
+		            size: 12,
+		            color:"#FF8344"
+		        }
+		    },
+		    tapClose:true
+		}, function(ret) {
+		    if (ret.eventType == 'left') {
+		    /*
+		     *  "opponentId": api.pageParam.whiteId,
+				        "opponentIdcard": api.pageParam.whiteInfo.userIdNumber,
+				        "opponentName": api.pageParam.whiteInfo.userName,
+				        "playerId": api.pageParam.blackId,
+				        "playerIdcard": api.pageParam.blackInfo.userIdNumber,
+				        "playerName": api.pageParam.blackInfo.userName,
+				        "playerPhone":api.pageParam.blackInfo.userPhone,
+				        "opponentPhone":api.pageParam.whiteInfo.userPhone,
+		     */
+		    	api.pageParam.whiteInfo = {
+		    		userIdNumber:itemInfo.opponentIdCard,
+		    		userName:itemInfo.opponentName,
+		    		userPhone:itemInfo.opponentPhone
+		    	}
+		    	api.pageParam.blackInfo = {
+		    		userIdNumber:itemInfo.playerIdCard,
+		    		userName:itemInfo.playerName,
+		    		userPhone:itemInfo.playerPhone
+		    	}
+		    	var otherPhone = itemInfo.playerId==userId?api.pageParam.whiteInfo.userPhone:api.pageParam.blackInfo.userPhone
+		        api.openFrame({
+		           name: 'manualResult',
+		           url: 'manualResult.html',
+		           pageParam:{
+		           	type:1,//编排 都是编排才点。
+		           	id:api.pageParam.id,
+		           	blackId:itemInfo.playerId,
+		           	whiteId:itemInfo.opponentId,
+		           	round:api.pageParam.round,
+		           	whiteInfo:api.pageParam.whiteInfo,
+		           	blackInfo:api.pageParam.blackInfo,
+		           	isJudge:isJudge,
+		           	ret:api.pageParam.ret,
+		           	otherPhone:otherPhone
+		           },
+		           rect: {
+		               x:0,
+		               y:0,
+		               w:api.winWidth,
+		               h:api.winHeight
+		           }
+		       });
+		    }else if(ret.eventType == 'right'){
+		    	var otherPhone = itemInfo.playerId==userId?itemInfo.opponentPhone:itemInfo.playerPhone
+		        
+		    	api.openWin({
+		           name: 'takeresultpicture',
+		           url: 'takeresultpicture.html',
+		           pageParam:{
+		           	index:board,
+		           	type:1,
+		           	id:api.pageParam.id,
+		           	blackId:itemInfo.playerId,
+		           	whiteId:itemInfo.opponentId,
+		           	round:api.pageParam.round,
+	            	isJudge:isJudge,
+	            	ret:api.pageParam.ret,
+		           	otherPhone:otherPhone
+		           }
+		       });
+		    }
+		    var dialogBox = api.require('dialogBox');
+		    dialogBox.close({
+		        dialogName: 'alert'
+		    });
+		});
+	}
+	
+</script>
+</html>

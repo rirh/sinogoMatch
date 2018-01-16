@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<!-- 此页面Vue工作模板-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>studentCompletion</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+
+    <style scoped>
+    #content {
+      background: #ff8344;
+      text-align: center;
+      width: 92%;
+      margin: 0 auto;
+      position: relative;
+      margin-top: .28rem;
+    }
+
+    #content table {
+      border: solid 1px #eee;
+    }
+
+    #content table tr td {
+      border: solid 1px #eee;
+    }
+
+    </style>
+</head>
+
+<body>
+    <div class="flex-wrap flex-vertical">
+        <div class="flex-con" id="main">
+          <table id="content">
+            <tr v-for="item in item2">
+              <td width="20%" class="color666">
+                {{item.td1}}
+              </td>
+              <td width="20%" class="color666">
+                {{item.td2}}
+              </td>
+              <td width="20%" class="color666">
+                {{item.td3}}
+              </td>
+              <td width="20%" class="color666">
+                {{item.td4}}
+              </td>
+              <td width="20%" class="color666">
+                {{item.td5}}
+              </td>
+            </tr>
+          </table>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+
+<script>
+    var assigment; //全局控制器Controller
+    initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+        var date = vueDateManager();
+        var methods = vueMethodsManager();
+        assigment = new Vue({
+            el: '#main', //绑定元素
+            data: date, //本页面的静态动态全部数据
+            methods: methods, //本页面的全部方法
+            created:function(){
+              Vue.config.silent = true;
+            }
+        })
+    }
+
+    vueDateManager = function() {
+        //初始化Vue数据date为一个json数组
+        var date = {};
+        date.item2=[{
+    			td1: "",
+    			td2: "",
+    			td3: "",
+    			td4: "",
+    			td5: "",
+    		}];
+        console.log("数据管理者" + JSON.stringify(date));
+        return date;
+
+    }
+    vueMethodsManager = function() {
+        //时间管理中心 每个Vue事件的处理都可以在这管理
+        var methods = {};
+
+        methods.init = function() { //确认发布作业
+            //TODO
+            console.log(JSON.stringify(api.pageParam));
+            assigment.item2=api.pageParam.name;
+
+
+
+        }
+        console.log("事件管理者：" + JSON.stringify(methods));
+        return methods;
+    }
+    imready = function() {
+        // api.parseTapmode(); //默认页面加载完成后，引擎会对 dom 里面的元素进行 tapmode 属性解析，若是之后用代码创建的 dom 元素，则需要调用该方法后 tapmode 属性才会生效
+        // $api.fixStatusBar($api.dom('header'));
+        initVue();
+        assigment.init();
+
+
+
+    };
+</script>
+
+</html>

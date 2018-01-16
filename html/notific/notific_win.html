@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>通知</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+
+    <style scoped>
+        html,
+        body {
+            background: #f4f4f4;
+        }
+
+        #header {
+            background: #fff;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            height: 0.98rem;
+        }
+
+        #header h1 {
+            font-size: 0.36rem;
+            height: 0.98rem;
+            line-height: 0.98rem;
+            font-weight: normal;
+            margin: 0 auto;
+            color: #666;
+        }
+        #header  a{
+          position: absolute;
+          height: .98rem;
+          width: .98rem;
+          left: 0;
+
+        }
+
+        #header img {
+            width: .16rem;
+            height: .30rem;
+            margin: 0.34rem 0 0 0.28rem;
+
+        }
+        /*****************************************************************************************/
+    </style>
+</head>
+
+<body>
+    <div class="flex-wrap flex-vertical">
+        <div id="header">
+            <a onclick="closeWin()">
+              <img src="../../image/icon_arrow_left.png" alt="" tapmode="active" >
+            </a>
+            <h1>通知
+            </h1>
+        </div>
+        <div class="flex-con" id="main">
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script>
+    openFrame = function() { //作业详情的vframe push放入数据
+        api.openFrame({
+            name: 'notific_frm',
+            url: 'notific_frm.html',
+            bounces: true,
+            rect: {
+                x: 0,
+                y: $api.offset($api.dom("#header")).h,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                value: api.pageParam.value
+            }
+        })
+    };
+    imready = function() {
+        // api.parseTapmode();//默认页面加载完成后，引擎会对 dom 里面的元素进行 tapmode 属性解析，若是之后用代码创建的 dom 元素，则需要调用该方法后 tapmode 属性才会生效
+        openFrame();
+
+    };
+</script>
+
+</html>

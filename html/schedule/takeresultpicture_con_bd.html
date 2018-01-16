@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#header{
+    		height:0.9rem;
+    		line-height:0.9rem;
+    		position: relative;
+    		overflow-x: hidden;
+    	}
+    	#header .header-item{
+    		width:33%;float:left;
+    		position: relative;
+    	}
+    	#header .header-item img{
+    		width:0.34rem;
+    		height:0.34rem;
+    		position: absolute;
+    		left: 0.34rem;
+    		top: 0.28rem;
+    	}
+    	#header .header-item span{
+    		width:100%;
+    		margin-left:0.24rem;
+    		text-align: center;
+    		font-size:0.24rem;
+    		color:#999;
+    	}
+    	#header:before{
+    		position: absolute;
+    		border-top: #eeeeee 1px solid;
+    		top:0;left:0;right:0;
+    		content:"";display:block;
+    		transform: scaleY(0.5);
+    		transform-origin: 0 0;
+    	}
+    	#header:after{
+    		position: absolute;
+    		border-bottom: #eeeeee 1px solid;
+    		bottom:0;left:0;right:0;
+    		content:"";display:block;
+    		transform: scaleY(0.5);
+    		transform-origin: 0 0;
+    	}
+    	
+    	#footer{
+    		height:1.5rem;
+    		position: relative;
+    		margin-bottom: 0.5rem;
+    	}	
+    	#footer .footer1> div{
+    		width:50%;
+    		margin:0 auto;
+    		text-align: center;
+    		float:left;
+    		background:url();
+    		height:100%;
+    		padding-top:0.6rem;
+    	}
+    	#footer  .footer1 > div:nth-child(1){
+    		background:url(../../image/icon_giveup.png) no-repeat top center;
+    		background-size:0.67rem 0.57rem;
+    	}
+    	#footer .footer1 > div:nth-child(2){
+    		background:url(../../image/icon_takepic.png) no-repeat top center;
+    		background-size:0.67rem 0.57rem;
+    	}
+    	#footer .footer2 {
+    		display:none;
+    		width:70%;
+    		margin:0 auto;
+    		position: relative;
+    	}
+    	#footer .footer2 > div{
+    		width:40%;
+    		float:left;
+    		text-align:center;
+    		margin-left:10%;
+    		height:0.8rem;
+    		line-height:0.8rem;
+    		background:#FF8344;
+    		color:#FFF;
+    		border-radius:0.1rem;
+    		position: relative;
+    	}
+    	#footer .footer3 {
+    		display:none;
+    		width:70%;
+    		margin:0 auto;
+    		position: relative;
+    	}
+    	#footer .footer4 {
+    		display:none;
+    		width:70%;
+    		margin:0 auto;
+    		position: relative;
+    	}
+    	#footer .footer5 {
+    		display:none;
+    		width:70%;
+    		margin:0 auto;
+    		position: relative;
+    	}
+    	#footer .footer4 > div{
+    		width:40%;
+    		float:left;
+    		text-align:center;
+    		margin-left:10%;
+    		height:0.8rem;
+    		line-height:0.8rem;
+    		background:#FF8344;
+    		color:#FFF;
+    		border-radius:0.1rem;
+    		position: relative;
+    	}
+    	#footer .footer3 > div{
+    		width:40%;
+    		float:left;
+    		text-align:center;
+    		margin-left:10%;
+    		height:0.8rem;
+    		line-height:0.8rem;
+    		background:#FF8344;
+    		color:#FFF;
+    		border-radius:0.1rem;
+    		position: relative;
+    	}
+    	#main{
+    		width:100%;
+    		position:relative;
+    	}
+    	#main .board-size{
+    		margin-left:0.78rem;
+    		margin-top:0.34rem;
+    		height: 0.34rem;
+    		line-height: 0.34rem;
+    	}
+    	#main .board-size span{
+    		background:url(../../image/icon_boardsize.png) no-repeat top left ;
+    		background-size:0.34rem 0.34rem;
+    		padding-left: 0.38rem;
+    		height: 0.34rem;
+    		line-height: 0.34rem;
+    	}
+    	#main .board-size img{
+    		width:0.34rem;
+    		height:0.34rem;
+    	}
+    	#main .board-size input{
+    		position: relative;
+    	}
+    	#main #content{
+    		position: relative;
+    	}
+    	#main #content .inputfile{
+    		width:7rem;
+    		height:7rem;
+    		margin-top:0.3rem;
+    		margin-left:0.2rem;
+    	}
+    	#main .inputfile img{
+    		max-width: 7rem;
+    		max-height: 7rem;
+    	}
+    	.container{
+			width:7rem;
+	    	height:7rem;
+	    	border:1px solid #eeeeee;
+	    	left:0.2rem;
+	    	top:0rem;
+	    	background:rgba(0,0,0,0);
+	    	position:absolute;
+	    	text-align: center;
+	    	font-size:0.36rem;
+		}
+		.container img{
+			width:0.62rem;
+			height:0.62rem;
+			position: absolute;
+		}
+		.canvasdiv{
+			width:7rem;
+	    	height:7rem;
+	    	border:1px solid #eeeeee;
+	    	position:absolute;
+	    	left:0.2rem;
+	    	background:rgba(0,0,0,0);
+	    	top:0rem;
+	    	color: #333;
+	    	line-height:6rem;
+	    	text-align: center;
+	    	font-size:0.36rem;
+		}
+		.canvasdiv .canvas-line{
+			zoom: 0.25;
+		}
+		.chessboard{
+			width:7rem;
+	    	height:7rem;
+			position:absolute;
+			left:0.2rem;
+			top:0;
+	    	z-index: 10;
+		}
+		.chess{
+			float:left;
+		}
+		.mark-black{
+			background: url("../../image/icon_mark_black.png") no-repeat center center;
+			background-size:5px 5px;
+		}
+		.mark-white{
+			background: url("../../image/icon_mark_white.png") no-repeat center center;
+			background-size:5px 5px;
+		}
+		.mark-point{
+			background: url("../../image/icon_point.png") no-repeat center center;
+			background-size:0.25rem 0.25rem;
+		}
+		.btn-code{
+			position:absolute;
+			top:0;
+			right:0.08rem;
+			width:2rem;
+			height:0.56rem;
+			line-height:0.56rem;
+			text-align:center;
+			background:#ffdac5;
+			font-size:0.28rem;
+			color:#666;
+			border-radius: 0.05rem;
+		}
+		.footer5-sub{
+			width:100%;
+    		text-align:center;
+    		height:0.8rem;
+    		line-height:0.8rem;
+    		background:#FF8344;
+    		color:#FFF;
+    		border-radius:0.1rem;
+    		position: absolute;
+    		top:0.9rem;
+		}
+		#main .result {
+			display:none;
+    		width:70%;
+    		margin:0 auto;
+    		position: relative;
+		}
+		#code{
+			height:0.6rem;
+			line-height:0.6rem;
+			position: absolute;
+			top: 0;left:0;
+		}
+		#temp-code{
+			position: absolute;
+			top: 0;left:0;
+						
+		}
+		.takepic{
+			width:80%;
+    		top:2.5rem;left:10%;
+    		text-align: center;
+    		height:100%;
+    		font-size:0.36rem;
+    		color:#333;
+    		padding-top: 1.2rem;
+    		background:url(../../image/icon_takepic.png) no-repeat top center;
+    		background-size:1.34rem 1.14rem;
+    		position: absolute;
+		}
+    </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+	<script id="header_template" type="text/x-dot-template">
+	<div class="header-item">
+		<img src="../../image/icon_integral.png" alt="" />
+		<span>{{=it.matchItemArrange==0?'无需编排':(it.matchItemArrange==1?'积分编排':'麦克马洪')}}</span>
+	</div>
+	<div class="header-item">
+		<img src="../../image/icon_piece.png" alt="" />
+		<span>{{=it.matchHandicapTag?it.matchHandicapTag:(it.matchHandicapType==1?'标准让子':'无')}}</span>
+	</div>
+	<div class="header-item">
+		<img src="../../image/icon_time.png" alt="" />
+		<span>{{=it.matchLimitTime==0?'不限时':(it.matchLimitTime==1?'60秒':'包干')}}</span>
+	</div>
+	</script>
+	
+	<div id="main" class="flex-con">
+		<div id="header">
+		</div>
+		<div class="board-size">
+			<!--<img src="../../image/icon_boardsize.png" alt="" />-->
+			<span ontouchend="boardSizeChangedDialog();" style="padding-bottom:0.1rem;">棋盘大小：19</span>
+			<!--<input type="number" placeholder="棋盘大小" value="19" onblur="onSizeBlur(this)"/>-->
+		</div>
+		<div id="content" >
+			
+			<div class="inputfile">
+				<div class="takepic" onclick="takePicture();">
+					<span style="color:#FF8344;">拍照</span><br/>
+					<div style="font-size:0.24rem;color:#FF8344;margin-top:0.3rem;background:url(../../image/icon_notes.png) no-repeat center left;background-size: 0.32rem 0.32rem;">请于棋盘正上方拍摄，避免强光照射，如下图！</div>
+					
+					<div style="background:#FFF; height:2.86rem;width:96%;margin:0.3rem auto;position: relative;">
+						<div style="float:left; width:48%;height:2.86rem;" >
+							<img src="../../image/eg_19.png" style="width:2.88rem;height:2.88rem;" alt="" />
+							<div style="font-size:0.26rem;color:#666;">19路示意图</div>
+						</div>
+						<div style="background:#FFF;float:right;width:48%;height:2.86rem;" >
+							<img src="../../image/eg_9_bd.png" style="width:2.88rem;height:2.88rem;" alt="" />
+							<div style="font-size:0.26rem;color:#666;">9路示意图</div>
+						</div>
+					</div>
+				</div>
+				<img class="photo" style="display:none;" alt="" />
+			</div>
+			<div class="canvasdiv"><canvas class="canvas-line"></canvas></div>
+			<div class="container"  >
+				<img class="img1" src="../../image/icon_point.png" alt="" ontouchstart="imgtouchstart(this);" ontouchend="imgtouchend(this,0);" ontouchmove="imgtouchmove(this,0);"/>
+				<img class="img2" src="../../image/icon_point.png" alt="" ontouchstart="imgtouchstart(this);" ontouchend="imgtouchend(this,2);" ontouchmove="imgtouchmove(this,2);"/>
+				<img class="img3" src="../../image/icon_point.png" alt="" ontouchstart="imgtouchstart(this);" ontouchend="imgtouchend(this,4);" ontouchmove="imgtouchmove(this,4);"/>
+				<img class="img4" src="../../image/icon_point.png" alt="" ontouchstart="imgtouchstart(this);" ontouchend="imgtouchend(this,6);" ontouchmove="imgtouchmove(this,6);"/>
+			</div>
+			<div class="chessboard" ></div>
+		</div>
+		<p class="note-scroll" style="display:none;width:80%;text-align:center;margin:0.3rem auto;font-size:0.24rem;color:#FF8344;">提示：点击棋盘，可以手动校对棋子</p>
+		<div class="result">
+		<div>对弈结果：<span style="font-size:0.32rem;color:#FF8344;" >黑胜18子</span></div>
+		<div>黑：11111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;白：11111</div>
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer1" style="display: none" >
+			<div style="display: none" >
+				弃权
+			</div>
+			<div onclick="takePicture();">
+				拍照
+			</div>
+		</div>
+		<div class="footer2">
+			<div onclick="retakePic();">重拍</div>
+			<div onclick="parse();">确定</div>
+		</div>
+		<div class="footer3">
+			<div onclick="retakePic();">重拍</div>
+			<div onclick="goJudgement();">确定</div>
+		</div>
+		<div class="footer4">
+			<div onclick="retakePic();">重拍</div>
+			<div onclick="judgementOk();">确定</div>
+		</div>
+		<div class="footer5">
+			<input type="number" id="code" placeholder="请输入验证码" readonly="readonly"/>
+			<input type="number" id="temp-code" style="opacity:0;height:0.8rem;line-height:0.8rem;" placeholder="请输入验证码" />
+			<div tapmode="active" onclick="getCode()" class="btn-code" >
+				获取验证码
+			</div>
+			<div class="footer5-sub" onclick="submitResult();">提交</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript" src="../../script/sgfutils.js"></script>
+<script src="../../script/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	var srcpath ;
+	var imageSrcPath;
+	
+	var lineCanvas ;
+	var lineCtx;
+	
+	var t ;
+	var l ;
+	var w ;
+	var offset ;
+	
+	var letters = "abcdefghijklmnopqrstuvwxyz";
+	
+	var userId;
+	
+	var type;
+	var id ;
+	var blackId;
+	var whiteId;
+	var isJudge;
+	var otherPhone;
+	
+	var boardSize;
+	
+	var frameOpend=false;
+
+	imready = function(){
+		type = api.pageParam.type;
+		id = api.pageParam.id;
+		$api.byId("footer").style.display="none"
+//		it.matchItemChessboard?'无':it.matchItemChessboard
+		if(api.pageParam.ret){//
+			boardSize = api.pageParam.ret.matchItemChessboard;
+			if(boardSize!=0){
+				$api.dom(".board-size span").innerHTML="棋盘大小："+boardSize;
+				$api.attr($api.dom(".board-size input"), "readonly", "readonly");
+			}else{
+				api.getPrefs({
+	                sync:false,
+	                key:'boardsize'
+                },function(ret,err){
+                	if(ret.value){
+                		boardSize= parseInt(ret.value)
+                	}else{
+                		boardSize=19;
+                	}$api.dom(".board-size span").innerHTML="棋盘大小："+boardSize;
+                });
+			}
+		}else{
+			api.getPrefs({
+                sync:false,
+                key:'boardsize'
+            },function(ret,err){
+            	console.log(JSON.stringify(ret))
+            	if(ret.value&&ret.value!='null'&&ret.value!='undefined'){
+            		boardSize= parseInt(ret.value)
+            	}else{
+            		boardSize=19;
+            	}
+            	$api.dom(".board-size span").innerHTML="棋盘大小："+boardSize;
+            });
+		}
+		blackId = api.pageParam.blackId;
+		whiteId = api.pageParam.whiteId;
+		isJudge = api.pageParam.isJudge;
+		otherPhone = api.pageParam.otherPhone;
+		if(type!=-1){
+		getInnerByDot("header","header_template",api.pageParam.ret);
+		}else{
+			$api.byId("header").style.display="none"
+		}
+		
+		api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    studentInfo = Xret;
+                    userId = Xret.userId;
+                } else {
+                }
+            } else {
+            }
+        });
+		 api.addEventListener({
+	        name:'swiperight'
+        },function(ret,err){
+        });
+		api.addEventListener({
+	        name:'selectImgChanged'
+        },function(ret,err){
+        	$api.dom(".chessboard").style.display="none";
+        	$api.dom(".chessboard").innerHTML="";
+			$api.dom(".result").innerHTML='';
+			$api.dom(".footer1").style.display="none";
+			$api.dom(".footer2").style.display="none";
+			$api.dom(".footer3").style.display="none";
+			$api.dom(".footer4").style.display="none";
+			$api.dom(".footer5").style.display="none";
+			$api.byId("footer").style.display="block"
+						$api.dom(".note-scroll").style.display="none"
+        	srcpath=ret.value.filePath;
+        	$api.dom(".inputfile").innerHTML="<img class='photo' />";
+    		$api.attr($api.dom(".photo"), "src", srcpath);
+	    	imageSrcPath = ret.value.filePath;
+	    	goHandleImg();
+        });
+        
+        lineCanvas = $api.dom(".canvas-line");
+    	
+    	offset = $api.offset($api.dom(".container"));
+		t = offset.t;
+		l = offset.l;
+		img = $api.dom(".container img");
+		w = $api.offset(img).w;
+    	var offsetdiv = $api.offset($api.dom(".canvasdiv"));
+    	$api.attr(lineCanvas,"width",offsetdiv.w*4);
+    	$api.attr(lineCanvas,"height",offsetdiv.h*4);
+    	lineCtx = lineCanvas.getContext("2d");
+    	lineCtx.scale(4,4)
+		lineCtx.strokeStyle="#FF0000"
+		lineCtx.lineWidth=1;
+		
+    	$api.dom(".canvasdiv").style.display="none";
+    	$api.dom(".container").style.display="none";
+    	$api.dom(".chessboard").style.display="none";
+    	
+    	api.addEventListener({
+	        name:'frameclosed'
+        },function(ret,err){
+        	boardSize = parseInt(ret.value.size);
+        	$api.dom(".board-size span").innerHTML="棋盘大小："+boardSize;
+        	api.setPrefs({
+	            key:'boardsize',
+	            value:boardSize
+            });
+        });
+//    	
+//      var data = {
+//      	result:2,
+//      	resultStr:"黑胜",
+//      	resultScore:[30,'1/2']
+//      };
+//		$api.dom(".footer1").style.display="none";
+//		$api.dom(".footer2").style.display="none";
+//		$api.dom(".footer3").style.display="none";
+//		$api.dom(".footer4").style.display="block";
+//		$api.dom(".footer5").style.display="none";
+//		$api.dom(".result").style.display="block";
+//		$api.dom(".result").innerHTML='<div>对弈结果：<span style="font-size:0.32rem;color:#FF8344;" >'+data.resultStr+data.resultScore[0]+"又"+data.resultScore[1]+'子</span></div>'+
+//		'<div>黑：'+blackId+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;白：未知</div>'
+		
+		$api.byId("temp-code").onkeydown = function(){
+			var oEvent = window.event; 
+			if (oEvent.keyCode == 8) {
+				if(window.inputvalue.length>0){
+					window.inputvalue = window.inputvalue.substr(0,(window.inputvalue.length-1));
+					$api.byId("code").value=(window.inputvalue);
+				}
+			}
+		}
+		
+		window.inputvalue="";
+		$api.byId("temp-code").oninput=function(){
+			var value=this.value;
+			
+			window.inputvalue+=value;
+			$api.byId("code").value=(window.inputvalue);
+			this.value='';
+		}
+		$api.byId("code").oninput=function(){
+//     		var value=this.value;
+//     		if(value.length>0){
+//     			var startWord = value.substr(0,1);
+//     			this.value = value.substr(1,value.length-1);
+//     			this.value+=startWord;
+//     		}
+//     		console.log(this.value)
+//     		$api.byId("code").value=this.value;
+       	}
+       	defaultPoints=[50,50,450,50,450,450,50,450]
+		api.addEventListener({
+	        name:'windowclose'
+        },function(ret,err){
+        	$api.dom(".inputfile").innerHTML=""
+        	closeSelf();
+        });
+	};
+	
+	function boardSizeChangedDialog(){
+		api.openFrame({
+	        name: 'newDialog',
+	        url: 'newDialog.html',
+           rect: {
+               x:0,
+               y:0,
+               w:api.winWidth,
+               h:api.winHeight
+           },
+           pageParam:{
+           	size:boardSize
+           }
+        });
+	}
+	
+	function onSizeBlur(el){
+		var value = el.value
+		if(value=='19'||value=='13'||value=='9'){
+			boardSize=parseInt(value);
+		}else{
+			alert("棋盘大小出错，请重新输入！")
+			$(el).focus();
+		}
+	}
+	
+	function getCode(){
+		if(!otherPhone||otherPhone=='null'||otherPhone=='undefined'){
+			return alert("选手没有绑定手机，请周边裁判帮助完成提交对弈结果!");
+		}
+		if(window.timerid){
+			return;
+		}
+		var phoneNum = otherPhone//15910587678// 
+		api.showProgress({
+        });
+		requestCode(phoneNum);
+	}
+	
+	function requestCode(phoneNum){//先判断对方手机号。
+		api.showProgress({
+        });
+        //先获取对方信息。。。
+        var port = 8090;
+        var server = "/user/sms/send"
+        var param=[{name:"userId",value:userId},{name:"smsTemplater",value:'matchResultConfirm'},{name:"userPhone",value:phoneNum}]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			api.hideProgress();
+			console.log(JSON.stringify(ret))
+			if(ret){
+		        $api.dom(".btn-code").innerHTML="重新获取("+(60)+")"
+		        window.timerid = setInterval("showCountdown();",1000)
+		        //{"code":0,"data":{"sendResult":true,"verificationCode":"057526"},"msg":"返回成功"}
+		        window.currentCode = ret.data.verificationCode;
+			}
+			else{
+				alert(err.msg)
+			}
+		})
+	}
+	
+	var total=0;
+	function showCountdown(){
+		total+=1000;
+		if(total==60000){
+			clearInterval(window.timerid)
+			$api.dom(".btn-code").innerHTML="获取验证码";
+			window.timerid=undefined 
+			total=0;
+			return;
+		}
+		$api.dom(".btn-code").innerHTML="重新获取("+(60-total/1000)+")"
+	}
+	
+	function judgementOk(){
+		if(isJudge==1){//裁判提交，无需验证码
+			//closeSelf();
+			requestSubmitResultArrange();
+            return;
+		}
+		if(type==-1){
+			closeSelf();
+		}else{
+			$api.dom(".footer4").style.display="none";
+			$api.dom(".footer5").style.display="block";
+		}
+	}
+	
+	function showChangeDialog(event,id){
+//	    var el = $("#"+id);
+//		el.addClass(' mark-point ');	
+		var detalY = 88/750*api.winWidth;
+		var y ;
+		if(api.systemType=='ios'){
+			y =  event.changedTouches[0].screenY+detalY+20;
+		}else{
+			y = event.changedTouches[0].screenY;
+		}
+		var x = event.changedTouches[0].screenX;
+		//TODO 待优化方案。
+		
+//		var offset = $api.offset($api.byId(id));
+//		console.log(JSON.stringify(offset))
+//		
+//		var dy = 140/750*api.winWidth;
+//		
+//		console.log("x==="+x)
+//		console.log("y==="+y)
+//		x = offset.l+offset.w/2;
+//		y = offset.t+dy+offset.h/2
+//		alert("screenY="+y)
+//		alert("screenX="+x)
+//		alert("clientY="+event.changedTouches[0].clientY)
+//		alert("clientX="+event.changedTouches[0].clientX)
+//		alert("pageY="+event.changedTouches[0].pageY)
+//		alert("pageX="+event.changedTouches[0].pageX)
+		
+		var mnPopups = api.require('MNPopups');
+		mnPopups.open({
+		    rect: {
+		        w: 45,
+		        h: 135
+		    },
+		    position: {
+		        x:x,
+		        y:y
+		    },
+		    styles: {
+		        mask: 'rgba(0,0,0,0.2)',
+		        bg: '#eee',
+		        cell: {
+		            bg: {
+		                normal: '',
+		                highlight: ''
+		            },
+		            h: 45,
+		            icon: {
+		                marginL: 10,
+		                w: 25,
+		                h: 25,
+		                corner: 2
+		            }
+		        },
+		        pointer: {
+		            size: 7,
+		            xPercent: 50,
+		            yPercent: 0,
+		            orientation: 'downward'
+		        }
+		    },
+		    datas: [{
+		        icon: 'widget://res/icon_chess_black.png'
+		    }, {
+		        icon: 'widget://res/icon_chess_white.png'
+		    }, {
+		        icon: 'widget://res/icon_chess_empty.png'
+		    }],
+		    animation: true
+		}, function(ret,err) {
+		    if (ret&&ret.eventType=='click') {
+		    	var index = ret.index;
+		    	var cls = index==0?'mark-white':(index==1)?'mark-black':''
+			    var el = $("#"+id);
+				//el.addClass(' mark-point ');	
+				
+		    	if(el.hasClass("active")){
+		    		el.removeClass("mark-white");
+		    		el.removeClass("mark-black");
+		    		el.addClass(cls);
+		    		if(index==2){
+		    			el.removeClass('active');
+		    		}
+		    	}else{
+		    		el.addClass('active');
+		    		el.addClass(cls);
+		    	}
+		    }else{
+		    }
+		});
+	}
+	
+	function goJudgement(){
+		//window.sgf
+		var sgf = '';
+		var goInfo = window.question.goinfo;
+		var km = goInfo.boardsize==9?"KM[5.5]":"KM[7.5]"
+		
+		sgf+="(;GE["+goInfo.ge + "]CA[gb2312]FF[4]SZ[" + goInfo.boardsize
+				+ "]AP[北京中棋]"+km;
+		
+		var blackChesses =  $api.domAll(".chessboard .chess.mark-white");
+		for(var k=0;k<blackChesses.length;k++){
+			var el = blackChesses[k];
+			var id = $api.attr(el,"id");
+			var splits = id.split("-");
+			var i = splits[1];
+			var j = splits[0]
+			sgf = sgf + "AB[" + letters[j] + letters[i] + "]";
+		}
+		
+		
+		var whiteChesses =  $api.domAll(".chessboard .chess.mark-black");
+		for(var k=0;k<whiteChesses.length;k++){
+			var el = whiteChesses[k];
+			var id = $api.attr(el,"id");
+			var splits = id.split("-");
+			var i = splits[1];
+			var j = splits[0]
+			sgf = sgf + "AW[" + letters[j] + letters[i] + "]";
+		}
+		$api.attr($api.dom(".chessboard"), "ontouchend", "refun();");
+		var chesses = $api.domAll(".chessboard .chess");
+		for(var i=0;i<chesses.length;i++){
+			$api.attr(chesses[i], "ontouchend", "refun()");
+		}
+		
+		sgf+=")"
+		console.log("sgfFile == "+window.sgfFile)
+		api.writeFile({
+		    path: 'fs://'+window.sgfFile,
+		    data: sgf,
+		}, function(ret, err) {
+		    if (ret.status) {
+				judge();
+		    } else {
+				
+		    }
+		});
+	}
+	function refun(){
+		return;
+	}
+	
+	function submitResult(){
+		var c = $api.byId("code").value;
+		if(window.currentCode==c){
+			if(api.pageParam.type==0){//不编排
+				requestSubmitResult();
+			}else{//编排
+				requestSubmitResultArrange();
+			}
+		}else{
+			alert("验证码错误，请重新确认！")
+		}
+	}
+	
+	function requestSubmitResultArrange(){
+//		参数:Integer tournamentId,Integer matchRound,Long playerId,byte matchResult
+		api.showProgress({
+        });
+        var result = window.resultData.result;
+		var port = 8091;
+        var server = "/match/player/pairing/result/edit";
+        var param = [];
+        var p1={name:'tournamentId',value:id}
+        var p2 ={name:'matchRound',value:api.pageParam.round}
+        var p3 ={name:'playerId',value:blackId}
+        var p4 ={name:'matchResult',value:result}
+        var p5 ={name:'fileUrl',value:window.imageUrl}
+        param.push(p1)
+        param.push(p2)
+        param.push(p3)
+        param.push(p4)
+        param.push(p5)
+        ajaxRequestWithGet(port,server,param,function(ret,err){
+        	api.hideProgress();
+        	if(ret){
+        		if(ret.code==0&&ret.data==true){
+        			
+				$api.byId("header").style.display="block";
+        			alert("结果提交成功！")
+        			if(isJudge==1){
+        				closeSelf();
+        			}else{
+        				submitOk();
+    				}
+        		}else{
+        			alert(ret.msg)
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+
+        })
+	}
+	
+	function requestSubmitResult(){
+		api.showProgress({
+        });
+        var result = window.resultData.result;
+        var port = 8091;
+        var server = "/match/player/nopairing/create";
+        var param = [];
+        var p1={name:'tournamentId',value:id}
+        var p2 ={name:'blackPlayerId',value:blackId}
+        var p3 ={name:'whitePlayerId',value:whiteId}
+        var p4 ={name:'matchResult',value:result}
+        var p5 ={name:'fileUrl',value:window.imageUrl}
+        param.push(p1)
+        param.push(p2)
+        param.push(p3)
+        param.push(p4)
+        param.push(p5)
+        
+        ajaxRequestWithGet(port,server,param,function(ret,err){
+        	api.hideProgress();
+        	if(ret){
+        		if(ret.code==0&&ret.data==true){
+				$api.byId("header").style.display="block";
+        			alert("结果提交成功！")
+        			submitOk();
+        		}else{
+        			alert(ret.msg)
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+
+        })
+	}
+	
+	function submitOk(){
+		$api.byId("code").style.display="none"
+		$api.dom(".btn-code").style.display="none"
+		$api.dom(".footer5-sub").innerHTML="返回";
+		$api.dom(".footer5-sub").style.top=0;
+		api.sendEvent({
+	        name:'submitok'
+        });
+		$api.attr($api.dom(".footer5-sub"), "onclick", "closeSelf();");
+	}
+	
+	function closeSelf(){
+//		api.sendEvent({
+////	        name:'frameClosed',
+////	        extra:{
+////	        	state:true
+////	        }
+//      });
+		api.closeWin({
+			name:'takeresultpicture'
+        });
+	}
+	
+	function judge(){
+		$api.byId("header").style.display="none";
+		//第一步，上传图片和sgf
+		$api.dom(".note-scroll").style.display="none"
+		console.log("111111111111111111");
+		api.showProgress({title:"计算中"});
+		console.log(imageSrcPath)
+		uploadFile(imageSrcPath,function(ret,err) {
+			//{"state":"SUCCESS","fileName":"20170622133739947.jpg"}
+			console.log(JSON.stringify(ret) + '上传图片返回值-----' + JSON.stringify(err));
+			if(ret){
+				if(ret.state=='SUCCESS'){
+					window.imageUrl = ret.fileUrl;
+					sgfFile = api.fsDir+"/"+sgfFile;
+					console.log("sgfFIle === "+sgfFile)
+					uploadFile(sgfFile,function(ret1,err1){
+						console.log(JSON.stringify(ret1) + 'SGF返回值-----' + JSON.stringify(err1));
+						if(ret1){
+							if(ret1.state=="SUCCESS"){
+								//sgf上传成功后，调用关联接口进行关联。
+								materialCreate(ret1.fileName);
+							}else{
+								api.hideProgress();
+								alert("sgf上传失败~r");
+							}
+						}else{
+							api.hideProgress();
+							alert("sgf上传失败~");
+						}
+					});
+				}else{
+					api.hideProgress();
+					alert("图片上传失败~r");
+				}
+			}else{
+				api.hideProgress();
+				alert("图片上传失败~");
+			}
+		});
+    }
+    function materialCreate(filename){
+    	var splits = filename.split(".");
+    	var port = 8091;
+    	var server = "/judge/material/create";
+    	var param = [
+    		{
+    			name:"matchTournamentId",
+    			value:id
+    		},{
+    			name:"matchRound",
+    			value:api.pageParam.round
+    		},{
+    			name:"playerId",
+    			value:blackId
+    		},{
+    			name:"opponentPlayerId",
+    			value:whiteId
+    		},{
+    			name:"matchPhotograph",
+    			value:splits[0]
+    		}
+    	]
+    	ajaxRequestWithGet(port,server,param,function(ret,err){
+    		console.log("素材创建完成~！")
+    		//{"statusCode":200,"body":"true","msg":"服务器返回数据格式错误","code":3}
+    		console.log("ret=="+JSON.stringify(ret))
+    		console.log("err=="+JSON.stringify(err))
+    		if(err.statusCode==200&&err.body=='true'){
+    			judgeScore(splits[0]);
+    		}else{
+    			api.hideProgress();
+    			alert("素材创建失败！")
+    		}
+    	})
+    }
+    
+    function judgeScore(name){
+		console.log("开始解析胜负~！")
+    	var port = 8091;
+    	var server = "/judge/process/score";
+    	var param = [
+    		{
+    			name:"matchPhotograph",
+    			value:name
+    		},{
+    			name:"playerId",
+    			value:blackId
+    		},{
+    			name:"scoreDescriptor",
+    			value:'aftermath'
+    		}
+    	]
+    	ajaxRequestWithGet(port,server,param,function(ret,err){
+			console.log("胜负解析成功~！")
+    		if(ret){
+    			var data = getResult(ret);
+    			var resultScore = ret.resultScore;
+    			window.resultData=data;
+				$api.dom(".footer1").style.display="none";
+				$api.dom(".footer2").style.display="none";
+				$api.dom(".footer3").style.display="none";
+				$api.dom(".footer4").style.display="block";
+				$api.dom(".footer5").style.display="none";
+				$api.dom(".result").style.display="block";
+				var str = '';
+				var dt = 1;
+				if(data.result==1){
+					dt = 1;
+					str+="黑胜";
+					str+=data.resultScore[0]==0?data.resultScore[1]+"子":(data.resultScore[0]+"又"+data.resultScore[1]+"子");
+				}else if(data.result==2){
+					dt = -1;
+					str+="白胜"
+					str+=data.resultScore[0]==0?data.resultScore[1]+"子":(data.resultScore[0]+"又"+data.resultScore[1]+"子");
+				}else{
+					dt = 0;
+					str = data.resultStr;
+				}
+				var d = whiteId==0?'none':'block'
+				var blackCount = 0;
+				var whiteCount = 0;
+				var kM = boardSize==9?5.5:7.5;
+				if(dt!=0){
+					blackCount =(resultScore*dt + kM + boardSize*boardSize)/2
+					whiteCount = boardSize*boardSize - blackCount;
+					str +="  <span style='font-size:0.24rem;color:#666;'>（黑："+blackCount+"子，白："+whiteCount+"子）</span>"
+				}
+    			$api.dom(".result").innerHTML='<div>对弈结果：<span style="font-size:0.32rem;color:#FF8344;" >'+str+'</span></div>'+
+				'<div style="display:'+d+'">黑：'+blackId+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;白：'+whiteId+'</div>' +
+				'<div style="color:#FF8344">提示：此处结果不计算让子</div>'
+				
+    			api.hideProgress();
+    		}else{
+    			api.hideProgress();
+    			alert("胜负分析失败"+err.msg)
+    		}
+    		console.log("ret=="+JSON.stringify(ret))
+    		console.log("err=="+JSON.stringify(err))
+    	})
+    }
+    
+    var decimals = [0,0.25,0.5,0.75];
+    var fractions = ['','1/4','1/2','3/4'];
+    
+    function calcScore(score){
+		score = score/2;
+		//9.25
+		var s1 = Math.floor(score);
+		var delta = score - s1;
+		var s2 = '';
+    	for(var i=0;i<decimals.length;i++){
+    		if(delta==decimals[i]){
+    			s2=fractions[i];
+    			break;
+    		}
+    	}
+    	return [s1,s2];
+    }
+    
+    function getResult(ret){
+    	var result = ret.resultDescriptor
+    	var r = -1;
+    	var rstr = "无结果"
+    	var rscore = '0'
+    	switch (result){
+    		case "NO_RESULT":
+    			r=-1;
+    			rstr="无结果"
+    			rscore = '0'
+    		break;
+    		case "BLACK_WINS":
+    			var scores = calcScore(ret.resultScore);
+				r=1;
+    			rstr="黑胜"
+    			rscore = scores
+    		break;
+    		case "WHITE_WINS":
+    			var scores = calcScore(ret.resultScore);
+				r=2;
+    			rstr="白胜"
+    			rscore = scores
+    		break;
+    		case "JIGO":
+    			r=3;
+    			rstr="和棋"
+    			rscore = "0"
+    		break;
+    		case "BOTH_LOSE":
+    			r=7;
+    			rstr="双方输"
+    			rscore = "0"
+    		break;
+    		case "BOTH_WIN":
+    			r=8;
+    			rstr="双方赢"
+    			rscore = "0"
+    		break;
+    	}
+    	var data = {
+    		result:r,
+    		resultStr:rstr,
+    		resultScore:rscore
+    	}
+		return data;    	
+    }
+    
+    function uploadFile(filename,callback){
+		var data = {};
+		data.files = {
+			"upfile" : filename
+		}
+		ajaxUploadFile(data,function(ret,err){
+			callback(ret,err);
+		})
+    }
+    
+	function takePicture(){
+    	$api.dom(".chessboard").innerHTML="";
+    	$api.dom(".chessboard").style.display="none";
+		api.getPicture({
+			sourceType:'camera',
+		    encodingType: 'jpg',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		    allowEdit:false,
+		    quality: 50,
+		    saveToPhotoAlbum:true
+        },function(ret,err){
+        	if (ret) {
+		        var url = ret.data;
+		        if(url){
+					$api.dom(".result").innerHTML='';
+					$api.dom(".footer1").style.display="none";
+					$api.dom(".footer2").style.display="none";
+					$api.dom(".footer3").style.display="none";
+					$api.dom(".footer4").style.display="none";
+					$api.dom(".footer5").style.display="none";
+					$api.dom(".note-scroll").style.display="none"
+					$api.byId("footer").style.display="block"
+    				imageSrcPath =url;
+		        	srcpath = url;
+		        	$api.dom(".inputfile").innerHTML="<img class='photo' />";
+		    		$api.attr($api.dom(".photo"), "src", srcpath);
+			    	
+			    	goHandleImg();
+		        }else{
+		        	toastAtMiddle("已取消")
+		        }
+        	} else {
+		        toastAtMiddle("已取消")
+		    }
+        });
+	}
+	
+	function retakePic(){
+		$api.dom(".footer1").style.display="none";
+		$api.dom(".footer2").style.display="none";
+		$api.dom(".footer3").style.display="none";
+		$api.dom(".footer4").style.display="none";
+		$api.dom(".footer5").style.display="none";
+		$api.dom(".result").innerHTML='';
+		takePicture();
+	}
+	
+	function parse(){
+		if(srcpath){
+    		var bdgoutils = api.require('bdgoutils');
+    		if(!bdgoutils){
+    			return alert("模块加载失败！")
+    		}
+			api.showProgress({
+				text: '正在处理，请稍后...',
+	        });
+			console.log(JSON.stringify(window.points))
+			console.log("window.deltax=="+window.deltax)
+	        for(var i=0;i<window.points.length;i++){
+	        	window.points[i]=window.points[i]*window.deltax
+	        }
+			console.log(JSON.stringify(window.points))
+	        if(api.systemType=='ios'){
+	        	parseForiOS(bdgoutils);
+	        }else{
+	        	parseForAndroid(bdgoutils);
+	        }
+    	}else{
+    		alert("请先选择图片")
+    	}
+	}
+	
+	function dealWithSgf(str){
+		var sgf = '';
+		var arr = $api.strToJson(str);
+		var tempArr = [];
+		for(var i=0;i<arr.length;i++){
+			for(var j=0;j<arr[i].length;j++){
+				tempArr.push(arr[i][j]);
+			}
+		}
+		var date = new Date();
+		date = date.format("yyyyMMddhhmmss");
+		sgf = sgf + "(;GE[demo+" + date + "]CA[gb2312]FF[4]SZ[" + boardSize
+				+ "]AP[北京中棋]";
+		var tempArr2 = [];
+		var offset = (19 - boardSize) / 2;
+		for (var i = 0; i < boardSize; i++) {
+			for (var j = 0; j < boardSize; j++) {
+				tempArr2[i * boardSize + j] = tempArr[(i + offset) * 19 + j + offset];
+			}
+		}
+		for (var i = 0; i < boardSize; i++) {
+			for (var j = 0; j < boardSize; j++) {
+				if (tempArr2[(i * boardSize + j)] == 1) {
+					sgf = sgf + "AB[" + this.letters[j] + this.letters[i] + "]";
+				} else if (tempArr2[(i * boardSize + j)] == 2) {
+					sgf = sgf + "AW[" + this.letters[j] + this.letters[i] + "]";
+				}
+			}
+		}
+		sgf = sgf + ")";
+		return sgf;
+	}
+	
+	function parseForiOS(bdgoutils){
+		var request = {
+			points:JSON.stringify(window.points),
+			boardSize:boardSize,//iOS的默认19.
+			file: srcpath
+		}
+		var date = new Date();
+		window.sgfFile = date.format("yyyyMMddhhmmss")+".sgf";
+		console.log(JSON.stringify(request))
+		bdgoutils.parseImages(request,function(ret,err){
+			api.hideProgress();
+			console.log(JSON.stringify(ret))
+			if(ret){
+				var url = ret.outPath;
+				$api.dom(".container").style.display="none";
+				$api.dom(".canvasdiv").style.display="none";
+				$api.dom(".inputfile").innerHTML="<img class='photo' />";
+	    		$api.dom(".footer1").style.display="none";
+	    		$api.dom(".footer2").style.display="none";
+	    		$api.dom(".footer3").style.display="block";
+				$api.dom(".footer4").style.display="none";
+				$api.dom(".footer5").style.display="none";
+				$api.dom(".note-scroll").style.display="block"
+				$api.dom(".note-scroll").innerHTML="提示：点击棋盘，可以手动校对棋子"
+								
+				$api.dom(".inputfile").innerHTML="";
+	    		var _img = $("<img>")
+	    		_img.addClass("photo");
+	    		_img.attr("src", url);
+	    		$(".inputfile").append(_img);
+	        	var sgfPath = ret.sgfPath;
+	    		api.readFile({
+	                sync:false,
+	                path:sgfPath
+	            },function(ret_r,err_r){
+	            	if(ret_r&&ret_r.status){
+	            		console.log(JSON.stringify(ret_r))
+	            		window.sgf = ret_r.data;
+			        	var edgePoints = $api.strToJson(ret.edgePoints);
+			        	console.log("edgePoints == "+JSON.stringify(edgePoints))
+			        	$api.dom(".chessboard").style.display="block";
+			        	var img = new Image();  
+						img.src = url;  
+						img.onload = function(){
+							var realWidth = img.width;
+							var realHeight = img.height;
+							console.log("realWidth = = "+realWidth)
+							console.log("realHeight = = "+realHeight)
+							var showWidth = $api.offset($api.dom(".photo")).w;
+							var showHeight = $api.offset($api.dom(".photo")).h;
+							console.log("showWidth = = "+showWidth)
+							console.log("showHeight = = "+showHeight)
+							
+							var deltax2 = realWidth/showWidth;
+			        		console.log("deltax2 == "+deltax2)
+							//只使用四舍五入后的deltax
+							window.deltax2 = deltax2.toFixed(2);
+							for(var i=0;i<edgePoints.length;i++){
+								edgePoints[i]=edgePoints[i]/deltax2;
+							}
+			        		console.log("edgePoints2 == "+JSON.stringify(edgePoints))
+				        	var parentdiv = $('<div>');
+							parentdiv.attr('id', "testid");
+							
+							var width = edgePoints[2]-edgePoints[0]
+							var height = edgePoints[7]-edgePoints[1];
+							var itemWidth = width/(boardSize-1);
+							var itemHeight = height/(boardSize-1);
+							console.log(width)
+							console.log(height)
+							
+							var left = (edgePoints[0]-itemWidth/2);
+							left = left.toFixed(2);
+							var top = (edgePoints[1]-itemWidth/2);
+							top = top.toFixed(2);
+							console.log("real left == "+left)
+							console.log("real top == "+top)
+							width = (width+itemWidth)
+							height = (height+itemWidth)
+							console.log("real width == "+width)
+							console.log("real height == "+height)
+							
+							var itemWidth = width/(boardSize);
+							var itemHeight = height/(boardSize==19?(boardSize-1):(boardSize==13?(boardSize-0.5):boardSize));
+							console.log("itemWidth==="+itemWidth);
+							console.log("itemHeight==="+itemHeight);
+							
+							$(parentdiv).css("position","absolute");
+							$(parentdiv).css("left",(left)+"px");
+							$(parentdiv).css("top",(top)+"px");
+							$(parentdiv).css("width",width+"px");//=;
+							$(parentdiv).css("height",height+"px");//=;
+							$(parentdiv).css("background","rgba(0,0,0,0)");
+							
+							$('.chessboard').append(parentdiv);
+							for(var i=0;i<boardSize;i++){
+								for(var j=0;j<boardSize;j++){
+									var _div = $('<div>');
+						            _div.addClass('chess');
+						            _div.attr('id', j + '-' + i);
+						            _div.attr("ontouchend","mouthdown()")
+						            
+						            $(_div).css("width",itemWidth+"px");
+						            $(_div).css("height",itemHeight+"px");
+//						            $(_div).css("background",getRandomColor());
+						            $(parentdiv).append(_div);
+								}
+							}
+//							$(".chess").css("width",itemWidth+"px");
+//							$(".chess").css("height",itemHeight+"px");
+							window.question = parseSGF(sgf);
+							console.log(JSON.stringify(question))
+							initLayout(question.question_layout);
+						}
+					}else{
+						alert("识别失败！");
+					}
+				});
+//				}else{
+//					$api.dom(".container").style.display="none";
+//					$api.dom(".canvasdiv").style.display="none";
+//					var msg = ''
+//					if(ret.resultCode==1){
+//						msg = '未找到红色标识物，请确保棋盘四角贴有红色标识！'
+//					}else if(ret.resultCode==2){
+//						msg = '请确认是否对准棋盘，或者校准线位置正确！'
+//					}else{
+//						msg = '请避免强光照射或者较大阴影！'
+//					}
+//					alert("识别失败，"+msg+"并重新拍照！");
+//				}
+			}else{
+				$api.dom(".container").style.display="none";
+				$api.dom(".canvasdiv").style.display="none";
+				alert(err.msg)
+			}
+		});
+	}
+	
+	function parseForAndroid(bdgoutils){
+		var request = {
+			points:window.points,
+			filePath:srcpath
+		}
+		var date = new Date();
+		window.sgfFile = date.format("yyyyMMddhhmmss")+".sgf";
+		console.log(JSON.stringify(request))
+		bdgoutils.parseImage(request,function(ret,err){
+			api.hideProgress();
+			console.log(JSON.stringify(ret))
+			//{"resultCode":0,"outPathWithmark":"","outPath":"","result":""}
+			if(ret){
+				if(ret.status==true){
+					var data = ret.data;
+			        $api.dom(".container").style.display="none";
+					$api.dom(".canvasdiv").style.display="none";
+					$api.dom(".inputfile").innerHTML="<img class='photo' />";
+		    		$api.dom(".footer1").style.display="none";
+		    		$api.dom(".footer2").style.display="none";
+		    		$api.dom(".footer3").style.display="block";
+					$api.dom(".footer4").style.display="none";
+					$api.dom(".footer5").style.display="none";
+					$api.dom(".note-scroll").style.display="block"
+					$api.dom(".note-scroll").innerHTML="提示：点击棋盘，可以手动校对棋子"
+					$api.dom(".inputfile").innerHTML="";
+		    		var _img = $("<img>")
+		    		_img.addClass("photo");
+		    		_img.attr("src", data.rectPath);
+		    		$(".inputfile").append(_img);
+		    		
+		    		var sgfPath = data.sgfPath;
+		    		api.readFile({
+	                    sync:false,
+	                    path:sgfPath
+                    },function(ret_r,err_r){
+                    	if(ret_r&&ret_r.status){
+                    		console.log(JSON.stringify(ret_r))
+	                		window.sgf = ret_r.data;
+				        	var edgePoints = data.edgePoints;
+				        	$api.dom(".chessboard").style.display="block";
+				        	var img = new Image();  
+							img.src = data.rectPath;  
+							img.onload = function(){
+								var realWidth = img.width;
+								var realHeight = img.height;
+								
+								var showWidth = $api.offset($api.dom(".photo")).w;
+								var showHeight = $api.offset($api.dom(".photo")).h;
+								
+								var deltax2 = realWidth/showWidth;
+								
+								//只使用四舍五入后的deltax
+								window.deltax2 = deltax2.toFixed(2);
+								for(var i=0;i<edgePoints.length;i++){
+									edgePoints[i]=edgePoints[i]/deltax2;
+								}
+					        	var parentdiv = $('<div>');
+								parentdiv.attr('id', "testid");
+								
+								var width = edgePoints[2]-edgePoints[0]
+								var height = edgePoints[7]-edgePoints[1];
+								var itemWidth = width/(boardSize-1);
+								var itemHeight = height/(boardSize-1);
+								console.log(width)
+								console.log(height)
+								
+//				        		edgePoints=dealWithPoints(edgePoints,itemWidth,itemHeight);
+//								width = (edgePoints[6]-edgePoints[0])
+//								height = (edgePoints[3]-edgePoints[1]);
+//								console.log("now  width=="+width)
+//								console.log("now  height=="+height)
+								
+								var left = (edgePoints[0]-itemWidth/2);
+								left = left.toFixed(2);
+								var top = (edgePoints[1]-itemWidth/2);
+								top = top.toFixed(2);
+								console.log("real left == "+left)
+								console.log("real top == "+top)
+								width = (width+itemWidth);
+								height = (height+itemWidth);
+								console.log("real width == "+width)
+								console.log("real height == "+height)
+								
+								itemWidth = itemWidth;
+								itemHeight = itemHeight;
+								console.log("itemWidth==="+itemWidth);
+								console.log("itemHeight==="+itemHeight);
+								
+								$(parentdiv).css("position","absolute");
+								$(parentdiv).css("left",(left)+"px");
+								$(parentdiv).css("top",(top)+"px");
+								$(parentdiv).css("width",width+"px");//=;
+								$(parentdiv).css("height",height+"px");//=;
+								$(parentdiv).css("background","rgba(0,0,0,0)");
+								
+								$('.chessboard').append(parentdiv);
+								for(var i=0;i<boardSize;i++){
+									for(var j=0;j<boardSize;j++){
+										var _div = $('<div>');
+							            _div.addClass('chess');
+							            _div.attr('id', j + '-' + i);
+							            _div.attr("ontouchend","mouthdown()")
+							            $(parentdiv).append(_div);
+									}
+								}
+								$(".chess").css("width",itemWidth+"px");
+								$(".chess").css("height",itemHeight+"px");
+								window.question = parseSGF(sgf);
+								console.log(JSON.stringify(question))
+								initLayout(question.question_layout);
+							}
+	                	}else{
+	                		alert(err_r.msg)
+	                	}
+                    });
+				}else{
+					$api.dom(".container").style.display="none";
+					$api.dom(".canvasdiv").style.display="none";
+					alert("棋盘识别出现异常，请重新拍照！");
+				}
+			}else{
+				$api.dom(".container").style.display="none";
+				$api.dom(".canvasdiv").style.display="none";
+				alert(err.msg)
+			}
+		});
+	}
+	
+	function dealWithPoints(points,itemWidth,itemHeight){
+		//int* result_final = new int[line_num*line_num];
+		var offset = (19 - boardSize) / 2;
+		
+		for(var i=0;i<points.length;i++){
+			var w = i%2==0?itemWidth:itemHeight
+			if(i<3||i==7){
+			points[i]=	points[i]+offset*w;
+			}else{
+			points[i]=	points[i]-offset*w;
+			}
+		}
+		return points;
+//		for (int i = 0; i < line_num; i++)
+//		{
+//			for (int j = 0; j < line_num; j++)
+//			{
+//				result_final[i*line_num + j] = result[(i + offset)*n + j + offset];
+//			}
+//		}
+	}
+	
+	function mouthdown(event){
+	 	var event = event || window.event,
+        target = event.target,
+         data = target.id.split('-');//6-5
+	    var x = data[0],
+	        y = data[1];
+	    var i = 1 * y,
+	        j = 1 * x;
+        showChangeDialog(event,j+"-"+i);
+	}
+	
+	
+	function initLayout(layout){
+		for(var i=0;i<layout.length;i++){
+			var sub = layout[i];
+			pushStones(sub)
+		}
+	}
+	
+	function pushStones(sub,s){
+		var id = sub.id;
+		var el = $("#"+id);
+		el.addClass(" active ")
+		if(sub.color==1){//1白2黑
+			el.addClass(' mark-black ');	
+		}else{
+			el.addClass(' mark-white ');	
+		}
+	}
+	
+	var getRandomColor = function(){
+	  return '#'+Math.floor(Math.random()*16777215).toString(16); 
+	}
+	function goHandleImg(){
+    	//Android
+    	/*
+    	 *     "name”:”bdgoutils",
+			    "class”:”BDGo",
+			    "methods":["parseImages","getEdgePoints"]
+    	 */
+//  	var bdgoutils = api.require('bdgoutils');
+    	var bdgoutils = api.require('bdgoutils');
+    	if(api.systemType=='ios'){
+    		handleImgiOS(bdgoutils);
+    	}else{
+    		handleImgAndroid(bdgoutils);
+    	}
+    }
+    
+    function handleImgiOS(bdgoutils){
+    	var request = {
+    		filePath:srcpath,
+    		boardSize:boardSize
+    	}
+    	api.showProgress();
+    	console.log(JSON.stringify(request))
+    	bdgoutils.getEdgePoints(request,function(ret,err){
+    		console.log("ret="+JSON.stringify(ret));
+    		console.log("err="+JSON.stringify(err));
+    		api.hideProgress();
+    		var outPath = ret.outPath_1000;
+    		if(ret){
+				console.log(outPath)
+				$api.dom(".inputfile").innerHTML="";
+				var _img = $("<img>")
+				_img.addClass("photo");
+				_img.attr("src",outPath);
+				$(".inputfile").append(_img);
+				console.log($api.dom(".inputfile").innerHTML)
+				$api.dom(".footer1").style.display="none";
+				$api.dom(".footer2").style.display="block";
+				$api.dom(".footer3").style.display="none";
+				$api.dom(".footer4").style.display="none";
+				$api.dom(".footer5").style.display="none";
+	    		$api.dom(".note-scroll").style.display="block"
+				$api.dom(".note-scroll").innerHTML="提示：请拖动四个红色图标，保证四条红线恰好覆盖在棋盘外边缘上！"
+		    	window.points = $api.strToJson(ret.points);
+		    	// 创建对象  
+				var img = new Image();  
+				img.src = outPath;  
+				img.onload = function(){
+					var realWidth = img.width;
+					var realHeight = img.height;
+					
+					var showWidth = $api.offset($api.dom(".photo")).w;
+					var showHeight = $api.offset($api.dom(".photo")).h;
+					
+					var deltax = realWidth/showWidth;
+					console.log(points.length);
+					//只使用四舍五入后的deltax
+					window.deltax = deltax.toFixed(2);
+					for(var i=0;i<points.length;i++){
+						points[i]=points[i]/deltax;
+					}
+					showHandle();
+				}
+    		}else{
+    			toastAtMiddle("识别失败！");
+    		}
+    	});
+	}
+    
+    function handleImgAndroid(bdgoutils){
+    	var splits = srcpath.split(".");
+    	console.log(srcpath)
+    	api.showProgress();
+    	var request = {
+    		filePath:srcpath,
+    		boardSize:boardSize
+    	}
+    	bdgoutils.getEdgePoints(request,function(ret,err){
+			api.hideProgress();
+			//{"status":true,"data":{"originPath":"/storage/emulated/0/UZMap/A6943656901716/picture/p-9958c4d7_orig.jpg","points":[216.8955841064453,347.75921630859375,800.3722534179688,328.6002197265625,929.2907104492188,971.132080078125,48.032325744628906,959.7276000976562]}}
+			console.log(JSON.stringify(ret));
+			if(ret){
+				if(ret.status==true){
+					var data = ret.data;
+					var url = data.originPath;
+		    		$api.dom(".inputfile").innerHTML="";
+		    		var _img = $("<img>")
+		    		_img.addClass("photo");
+		    		_img.attr("src",url);
+		    		$(".inputfile").append(_img);
+		    		$api.dom(".footer1").style.display="none";
+		    		$api.dom(".footer2").style.display="block";
+		    		$api.dom(".footer3").style.display="none";
+					$api.dom(".footer4").style.display="none";
+					$api.dom(".footer5").style.display="none";
+					$api.dom(".note-scroll").style.display="block"
+					$api.dom(".note-scroll").innerHTML="提示：请拖动四个红色图标，保证四条红线恰好覆盖在棋盘外边缘上！"
+			    	window.points = data.points;
+			    	// 创建对象  
+					var img = new Image();  
+					img.src = url;  
+					img.onload = function(){
+						var realWidth = img.width;
+						var realHeight = img.height;
+						
+						var showWidth = $api.offset($api.dom(".photo")).w;
+						var showHeight = $api.offset($api.dom(".photo")).h;
+						
+						var deltax = realWidth/showWidth;
+						
+						//只使用四舍五入后的deltax
+						window.deltax = deltax.toFixed(2);
+						for(var i=0;i<points.length;i++){
+							points[i]=points[i]/deltax;
+						}
+						showHandle();
+					}
+				}else{
+					alert("图形识别失败！请尝试手动校准！");
+					var path = ret.data.originPath;
+					console.log(path)
+					$api.dom(".inputfile").innerHTML="";
+		    		var _img = $("<img>")
+		    		_img.addClass("photo");
+		    		_img.attr("src",path);
+		    		$(".inputfile").append(_img);
+		    		$api.dom(".footer1").style.display="none";
+		    		$api.dom(".footer2").style.display="block";
+		    		$api.dom(".footer3").style.display="none";
+					$api.dom(".footer4").style.display="none";
+					$api.dom(".footer5").style.display="none";
+					
+			    	window.points = ret.data.points;
+			    	// 创建对象  
+					var img = new Image();  
+					img.src = path;  
+					img.onload = function(){
+						var realWidth = img.width;
+						var realHeight = img.height;
+						
+						var showWidth = $api.offset($api.dom(".photo")).w;
+						var showHeight = $api.offset($api.dom(".photo")).h;
+						
+						var deltax = realWidth/showWidth;
+						
+						console.log("realWidth="+realWidth+"--realHeight=="+realHeight+"--showWidth=="+showWidth+"--showHeight=="+showHeight)
+						//只使用四舍五入后的deltax
+						window.deltax = deltax.toFixed(2);
+						console.log("window.deltax=="+window.deltax)
+						for(var i=0;i<points.length;i++){
+							points[i]=points[i]/deltax;
+						}
+						showHandle();
+					}
+				}
+			}else{
+				alert(err.msg)
+			}
+    	})
+    }
+    
+    
+    function imgtouchstart(el,event){
+      	var event = event || window.event;
+		el.style.top=(event.changedTouches[0].clientY-t-w/2)+"px"
+		el.style.left=(event.changedTouches[0].clientX-l-w/2)+"px"
+		
+    }
+    function imgtouchmove(el,index,event){
+      	var event = event || window.event;
+		el.style.top=(event.changedTouches[0].clientY-t-w/2)+"px"
+		el.style.left=(event.changedTouches[0].clientX-l-w/2)+"px"
+		window.points[index]=(event.changedTouches[0].clientX-l)
+		window.points[index+1]=(event.changedTouches[0].clientY-t)
+		initCanvas();
+    }
+    function imgtouchend(el,index,event){
+      	var event = event || window.event;
+		el.style.top=(event.changedTouches[0].clientY-t-w/2)+"px"
+		el.style.left=(event.changedTouches[0].clientX-l-w/2)+"px"
+		window.points[index]=(event.changedTouches[0].clientX-l)
+		window.points[index+1]=event.changedTouches[0].clientY-t
+		initCanvas();
+    }
+    
+    function setImgPosition(){
+		var imgs = $api.domAll(".container img");
+		console.log(JSON.stringify(window.points))
+		//[122,44,139,953,931,901,941,69,1,1,1,1]
+		$api.dom(".img1").style.left=(window.points[0]-w/2)+"px"
+		$api.dom(".img1").style.top=(window.points[1]-w/2)+"px"
+		
+		$api.dom(".img2").style.left=(window.points[2]-w/2)+"px"
+		$api.dom(".img2").style.top=(window.points[3]-w/2)+"px"
+		
+		$api.dom(".img3").style.left=(window.points[4]-w/2)+"px"
+		$api.dom(".img3").style.top=(window.points[5]-w/2)+"px"
+		
+		$api.dom(".img4").style.left=(window.points[6]-w/2)+"px"
+		$api.dom(".img4").style.top=(window.points[7]-w/2)+"px"
+    }
+    
+	 function initCanvas(){
+	    lineCtx.clearRect(0,0,750,750);  
+		lineCtx.beginPath();
+		for(var i=0;i<window.points.length;i+=2){
+			var startx = window.points[i];
+			var starty = window.points[i+1];
+			var endx = window.points[((i+2==8)?0:(i+2))];
+			var endy = window.points[((i+3==9)?1:(i+3))];
+			lineCtx.moveTo(startx,starty);
+			lineCtx.lineTo(endx,endy);
+			lineCtx.stroke();
+			lineCtx.fill();
+		}
+    	
+    }
+    
+    function showHandle(){
+		$api.dom(".container").style.display="block";
+		$api.dom(".canvasdiv").style.display="block";
+		
+		setImgPosition();
+		initCanvas();
+    }
+	
+    function initView(w,itemw){
+    	var half = itemw/2
+    	
+		$(".chessboard").css("width",(w)+"px");
+		$(".chessboard").css("height",(w)+"px");
+		$(".chessboard").css("padding",half+"px");
+		
+		$(".chess").css("width",itemw+"px");
+		$(".chess").css("height",itemw+"px");
+		$(".chess").css("line-height",itemw+"px");
+		
+		$(".active").css("width",itemw+"px");
+		$(".active").css("height",itemw+"px");
+		$(".active").css("line-height",itemw+"px");
+		$(".mark").css("width",itemw+"px");
+		$(".mark").css("height",itemw+"px");
+		$(".mark").css("line-height",itemw+"px");
+		$(".mark").css("background-size",itemw+"px,"+itemw+'px');
+		
+		var c1 = '.chess:before {top: '+half+'px;}'
+		var c2 = '.chess:after {left: '+half+'px;}'
+		var c3 = '.chess.left:before {left: '+half+'px;top: '+half+'px;}'
+		var c4 = '.chess.left:after {left: '+half+'px;}'
+		var c5 = '.chess.right:before {right: '+half+'px;top: '+half+'px;}'
+		var c6 = '.chess.right:after {left: '+half+'px;}'
+		var c7 = '.chess.top:before {top: '+half+'px;}'
+		var c8 = '.chess.top:after {top: '+half+'px;left:'+half+'px;}'
+		var c9 = '.chess.bottom:before {top: '+half+'px;}'
+		var c10 = '.chess.bottom:after {left: '+half+'px;bottom: '+half+'px;}'
+		var c11 = '.chess.top.left:before {left: '+half+'px;top: '+half+'px;}'
+		var c12 = '.chess.top.right:after {left: '+half+'px;top: '+half+'px;}'
+		var c13 = '.chess.top.right:before {right: '+half+'px;top: '+half+'px;}'
+		var c14 = '.chess.top.left:after {left: '+half+'px;top: '+half+'px;}'
+		var c15 = '.chess.bottom.left:before {left: '+half+'px;top: '+half+'px;}'
+		var c16 = '.chess.bottom.left:after {left: '+half+'px;bottom: '+half+'px;}'
+		var c17 = '.chess.bottom.right:before {right: '+half+'px;top: '+half+'px;}'
+		var c18 = '.chess.bottom.right:after {left: '+half+'px;bottom: '+half+'px;}'
+		
+		
+		document.styleSheets[0].insertRule(c1, 0);
+		document.styleSheets[0].insertRule(c2, 0);
+		document.styleSheets[0].insertRule(c3, 0);
+		document.styleSheets[0].insertRule(c4, 0);
+		document.styleSheets[0].insertRule(c5, 0);
+		document.styleSheets[0].insertRule(c6, 0);
+		document.styleSheets[0].insertRule(c7, 0);
+		document.styleSheets[0].insertRule(c8, 0);
+		document.styleSheets[0].insertRule(c9, 0);
+		document.styleSheets[0].insertRule(c10, 0);
+		document.styleSheets[0].insertRule(c11, 0);
+		document.styleSheets[0].insertRule(c12, 0);
+		document.styleSheets[0].insertRule(c13, 0);
+		document.styleSheets[0].insertRule(c14, 0);
+		document.styleSheets[0].insertRule(c15, 0);
+		document.styleSheets[0].insertRule(c16, 0);
+		document.styleSheets[0].insertRule(c17, 0);
+		document.styleSheets[0].insertRule(c18, 0);
+	
+	}
+</script>
+</html>

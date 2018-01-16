@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		body {}
+
+		.rounds-content {
+			position: relative;
+		}
+
+		.rounds-content .rc-item {
+			margin-left: 0.44rem;
+			height: 0.99rem;
+			padding-top: 0.22rem;
+			position: relative;
+		}
+
+		.rounds-content .rc-item:before {
+			position: absolute;
+			border-left: 1px solid #eeeeee;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			content: "";
+			display: block;
+			-webkit-transform: scaleX(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+
+		.rounds-content .rc-item .circle1 {
+			position: absolute;
+			width: 0.3rem;
+			height: 0.3rem;
+			background: #FF9900;
+			border-radius: 0.15rem;
+			top: 0.57rem;
+			left: -0.15rem;
+			z-index: 3;
+		}
+
+		.rounds-content .rc-item .circle2 {
+			position: absolute;
+			width: 0.14rem;
+			height: 0.14rem;
+			background: #FFFFFF;
+			border-radius: 0.07rem;
+			top: 0.65rem;
+			left: -0.07rem;
+			z-index: 3;
+		}
+
+		.rounds-content .rc-item .item-inner {
+			height: 0.99rem;
+			line-height: 0.99rem;
+			background: #F9F9F9;
+			position: relative;
+			padding-left: 0.66rem;
+			font-size: 0.28rem;
+		}
+
+		.rounds-content .rc-item .item-inner:before {
+			position: absolute;
+			border-left: 1px solid #eeeeee;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			content: "";
+			display: block;
+			-webkit-transform: scaleX(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+
+		.rounds-content .rc-item.pass .item-inner {
+			color: #FF9900;
+			background: #F2F2F2;
+		}
+
+		.rounds-content .rc-item.current .item-inner {
+			color: #683523;
+			background: #FFe0b1;
+		}
+
+		.rounds-content .rc-item.future .item-inner {
+			color: #666666;
+			background: #F2F2F2;
+		}
+
+		.rounds-content .rc-item.future .item-inner span {
+			color: #333333;
+		}
+
+		.rounds-content .rc-item.current .circle1 {
+			background: #683523;
+		}
+
+		.rounds-content .rc-item.future .circle1 {
+			background: #666666;
+		}
+	</style>
+</head>
+
+<body>
+	<script type="text/x-dot-template" id="rounds_template">
+		{{ for(var i=0;i<it.length;i++){ }}
+		<div class="rc-item {{=it[i].class}}" onclick="goRoundDetail('{{=it[i].class}}','{{=it[i].round}}',{{=i}});">
+			<div class="circle1">&nbsp;</div>
+			<div class="circle2">&nbsp;</div>
+			<div class="item-inner">
+				<span>{{=it[i].round}}</span>
+			</div>
+			</div>
+			{{ } }}
+	</script>
+	<div class="rounds-content" id="rounds_content">
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript">
+	var index = 0;
+	var total = 0;
+	var id = 0;
+	imready = function() {
+		index = api.pageParam.msg.message.currentRound;
+		total = api.pageParam.msg.message.matchItemRound;
+		id = api.pageParam.msg.message.id;
+		console.log("轮次接受数据当前轮:" + index + "总轮次:" + total + "id:" + id);
+		var list = [];
+		var nowDate = new Date();
+		var dateLong = nowDate.getTime();
+		//TODO 以下为组装数据，实际应该通过接口获取数据。。循环下半部分是客户端自行调整数据，识别出对应class，以便正确展示
+		for (var i = 0; i < total; i++) {
+			var item = {};
+			item.round = "第" + (i + 1) + "轮";
+			if((i+1)==index){//当前轮
+				item.class='current'
+			}else if((i+1)>index){
+				item.class='future'
+			}else{
+				item.class='pass'
+			}
+			list.push(item)
+		}
+		getInnerByDot("rounds_content", "rounds_template", list);
+	};
+
+	function goRoundDetail(cls, round, i) {
+		// if (cls == 'future') {
+		// 	toastAtMiddle("该轮次尚未开始!")
+		// } else if (cls == 'current') {
+		// 	toastAtMiddle("该轮次正在进行!")
+		// } else {
+		// 	api.openWin({
+		// 		name: 'rounddetail',
+		// 		url: 'rounddetail_title.html',
+		// 		pageParam: {
+		// 			round: round
+		// 		}
+		// 	});
+		// }
+		if (i + 1 <= index && index != 0 && index != null) { //如果当前下标小于等于当前轮次或者当前轮次不等于空或者null可以进入结果详情页面
+			api.openWin({
+				name: 'rounddetail',
+				url: 'rounddetail_title.html',
+				pageParam: {
+					msg: api.pageParam.msg.message,
+					index:(i+1)
+				}
+			});
+		} else {
+			toastAtMiddle("该轮次尚未开始!")
+		}
+
+	}
+</script>
+
+</html>

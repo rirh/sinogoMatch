@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<!-- 此页面Vue工作模板-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <style scoped>
+        html,
+        body {
+            background: #f4f4f4;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        #main .user_info {
+            height: 3.56rem;
+            width: 100%;
+            text-align: center;
+            background: url(../image/bg_icon_person.png) no-repeat center center;
+            background-size: 100% 100%;
+        }
+
+        #main .user_info div img {
+            margin-top: .6rem;
+            height: 1.24rem;
+            width: 1.24rem;
+            border-radius: 50%;
+        }
+
+        #main .user_info p span {
+            background: #aaa;
+            color: #fff;
+            border-radius: .1rem;
+            font-size: .24rem;
+            width: auto;
+            padding: .03rem;
+            padding: 0.03rem .23rem 0.03rem .23rem;
+        }
+
+        #main .user_info blockquote {
+            margin-top: .05rem;
+            vertical-align: middle;
+        }
+
+        #main .user_info blockquote span {
+            color: #333;
+            font-size: .28rem;
+            width: auto;
+            vertical-align: middle;
+        }
+
+        #main .user_info blockquote em {
+            background: #f40;
+            color: #fff;
+            border-radius: .05rem;
+            font-size: .22rem;
+            width: auto;
+            vertical-align: middle;
+            /*margin-top: .05rem;*/
+        }
+
+        dl {
+            margin-top: .82rem;
+        }
+
+        dl dd {
+            height: .80rem;
+            background: #fff;
+            position: relative;
+            line-height: .80rem;
+            width: 100%;
+        }
+
+        dl dd span {
+            color: #666;
+            font-size: .28rem;
+            /*vertical-align: middle;*/
+            margin-left: .83rem;
+            line-height: .83rem;
+            /*background: #eee;*/
+        }
+
+        dl dd img:nth-child(1) {
+            position: absolute;
+            left: .23rem;
+            height: .4rem;
+            width: .4rem;
+            top: .2rem
+        }
+
+        dl dd img:nth-child(3) {
+            position: absolute;
+            width: .16rem;
+            height: .31rem;
+            top: .245rem;
+            right: .23rem;
+        }
+
+        #main .btn-exit {
+            width: 86%;
+            margin: 0 auto;
+            margin-top: 4.04rem;
+            height: .88rem;
+            line-height: .88rem;
+            text-align: center!important;
+            color: #FFF;
+            font-size: 0.34rem;
+            background: #f90;
+            background-size: 100%;
+            border-radius: 0.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-wrap flex-vertical">
+        <div class="flex-con" id="main">
+            <div class="user_info" v-cloak>
+                <div>
+                    <img :src="userIcon" alt="">
+                </div>
+                <p><span>ID：{{idNumber|mnum}}</span></p>
+                <blockquote>
+                    <span>{{userName}}</span>
+                    <em>{{dan}}</em>
+                </blockquote>
+            </div>
+            <dl>
+                <dd @click="goJudgment">
+                    <img src="../image/icon_judgment.png" alt="">
+                    <span>智能裁判</span>
+                    <img src="../image/icon_arrow_right.png" alt="">
+                </dd>
+            </dl>
+            <div class="btn-exit" @click="exit">
+                退 出
+            </div>
+            <footer id="footer" tapmode="" @click="confirmationRelease()">
+            </footer>
+        </div>
+
+    </div>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script>
+    var assigment; //全局控制器Controller
+    initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+        var data = vueDateManager();
+        var methods = vueMethodsManager();
+        assigment = new Vue({
+            el: '#main', //绑定元素
+            data: data, //本页面的静态动态全部数据
+            methods: methods, //本页面的全部方法
+        })
+    }
+    Vue.filter("mnum", function(value) {
+
+
+        return (Array(6).join(0) + value).slice(-6)
+
+    })
+    vueDateManager = function() {
+        //初始化Vue数据date为一个json数组
+        var data = {};
+        data.userIcon = "../image/icon_def_icon.png";
+        data.idNumber = 0;
+        data.userName = "";
+        data.dan = "";
+        console.log("数据管理者" + JSON.stringify(data));
+        return data;
+
+    }
+    vueMethodsManager = function() {
+        //时间管理中心 每个Vue事件的处理都可以在这管理
+        var methods = {};
+        methods.relodemsg = function() {
+            var islode = api.getPrefs({
+                sync: true,
+                key: 'canLode'
+            });
+            console.log(islode);
+            var value = islode;
+            var flag = value === "false" ? false : true;
+            if (flag) { //是否刷新
+                assigment.init();
+            } else {
+                console.log("没登录我是不会刷新的")
+            }
+        };
+        methods.exit = function() { //退出
+            api.removePrefs({
+                key: 'studentInfo'
+            });
+            api.setPrefs({
+                key: 'canLode',
+                value: false
+            });
+
+            api.openWin({
+                name: 'login',
+                url: './login/login.html',
+                pageParam:{frame:'frame1'}
+            });
+        };
+        methods.init = function() { //加载数据
+            api.getPrefs({
+                key: 'studentInfo'
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.value != "") {
+                        var Xret = JSON.parse(ret.value);
+                        assigment.idNumber = Xret.userId;
+                        assigment.userName = Xret.userName;
+                        assigment.dan = assigment.getRank(Xret.rank, Xret.grading);
+                    } else {
+                        //assigment.exit();
+                    }
+
+                } else {
+                    alert(JSON.stringify(err));
+                }
+            });
+        };
+        methods.goJudgment = function() { //打开智能裁判
+        	api.getPrefs({
+	            sync:false,
+	            key:'isFirst'
+            },function(ret,err){
+            	if(ret&&ret.value=='false'){
+            		api.openWin({
+		                name: 'takeresultpicture',
+		                url: 'schedule/takeresultpicture.html',
+		                pageParam: {
+		                    type: -1, //自己玩
+		                    id: 0,
+		                    blackId: assigment.idNumber,
+		                    whiteId: 0,
+		                    round: 0
+		                }
+		            });
+            	}else{
+            		api.alert({
+            			title: '提示',
+					    msg: '此处不保存结果\r\n\r\n如需提交参赛结果，请前往【日程】，在相应比赛项目下，使用智能裁判提交！',
+                    },function(ret,err){
+                    	api.setPrefs({
+	                        key:'isFirst',
+	                        value:'false'
+                        });
+                        api.openWin({
+			                name: 'takeresultpicture',
+			                url: 'schedule/takeresultpicture.html',
+			                pageParam: {
+			                    type: -1, //自己玩
+			                    id: 0,
+			                    blackId: assigment.idNumber,
+			                    whiteId: 0,
+			                    round: 0
+			                }
+			            });
+                    });
+            	}
+            });
+            
+
+        }
+        methods.getRank = function(rank, grading) { //获取段位
+            if (rank == 1) {
+                var arr = ["20级", "19级", "18级", "17级", "16级", "15级", "14级", "13级", "12级", "11级", "10级", "9级", "8级", "7级", "6级", "5级", "4级", "3级", "2级", "1级", "1段", "2段", "3段", "4段", "5段", "6段", "7段"];
+                for (var i = 0; i < arr.length; i++) {
+                    res = arr[parseInt(grading) - 1]
+                }
+                rank = '业余' + res;
+            } else {
+                var arr1 = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+                for (var i = 0; i < arr1.length; i++) {
+                    res = arr1[parseInt(grading) - 1]
+                }
+                rank = '职业' + res + '段';
+            }
+            return rank;
+        };
+        methods.lister = function() { //监听刷新事件
+
+            api.addEventListener({
+                name: 'viewappear'
+            }, function(ret, err) {
+                if (ret) {
+                    console.log("监听事件进入true" + api.frameName);
+                    assigment.relodemsg();
+                } else {
+                    console.log("监听事件进入false" + api.frameName);
+                    // assigment.init();
+                }
+            });
+        }
+        console.log("事件管理者：" + JSON.stringify(methods));
+        return methods;
+    }
+
+    imready = function() {
+        console.log("打开了frame3 页面");
+        initVue();
+        assigment.relodemsg();
+        assigment.lister();
+        api.addEventListener({
+            name: 'viewReady'
+        }, function(ret, err) {
+            if (ret) {
+            	assigment.init();
+            } else {
+            }
+        });
+
+    };
+</script>
+
+</html>

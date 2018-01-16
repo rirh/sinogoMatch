@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#header{
+		    background-color: rgba(255,255,255,0.8);
+		    text-align: center; 
+		    width: 100%; position: relative;
+		    height:0.88rem;
+		}
+		#header:before{
+			position: absolute;
+			border-bottom: 1px solid #e9e9e9;
+			bottom:0;left:0;right:0;
+			content: "";display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+		#header .back-icon{
+		    display: inline-block; width: 0.88rem; height: 0.88rem;
+		    background: url(../../image/icon_arrow_left.png) no-repeat center center; 
+		    background-size: 0.16rem 0.28rem;
+		    position: absolute; left: 0; bottom: 0;
+		}
+		#header h1{
+		    font-size: 0.34rem;
+		    height: 0.88rem; line-height: 0.88rem; margin: 0 auto; color: #333;
+		    width:5rem;
+		}
+		.note{
+			width: 70%;
+			margin: 2rem auto;
+			color:#FF8344;
+			font-size:0.34rem;
+			text-align: center;
+			height:1.2rem;
+			line-height:1.2rem;
+		}
+		.btn{
+			width:70%;
+			margin: 0 auto;
+			background: #FF8344;
+			color:#FFF;
+			font-size:0.34rem;
+			height:0.9rem;
+			line-height:0.9rem;
+			text-align: center;
+			border-radius: 0.1rem;
+			
+		}
+    </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+		<div id="header">
+			<a class="back-icon" tapmode="active" onclick="closeWin()" ></a>
+			<h1 id="title"></h1>
+		</div>
+		<div id="main" class="flex-con">
+			<div class="note">提示：该轮比赛还未编排</div>
+			
+			<div class="btn" >申请此轮不编排</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var isArrange;
+	var userId;
+	imready = function(){
+		$api.byId("title").innerHTML=api.pageParam.name+"("+api.pageParam.round+")"
+		api.showProgress();
+		api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    userId = Xret.userId;
+                    requestIsArrange();
+                } else {
+                }
+            } else {
+            }
+        });
+		
+//		exchange();
+	};
+	
+	function  requestIsArrange(){
+		var port = 8091
+		var server = "/match/player/item/status";
+		var param=[{name:'playerId',value:userId},{name:'itemId',value:api.pageParam.id}]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			api.hideProgress();
+			if(ret){
+				if(ret.code==0){
+					var data = ret.data;
+					if(!data||data=='null'){
+						alert("数据异常！");
+						return api.closeWin();
+					}
+//					if(data.pairingStatus==0){//后台未编排，可以进行编排
+						if(data.playerType==1){//正常状态
+							isArrange=true;
+						}else if(data.playerType==3){//已申请不编排
+							isArrange=false;
+						}
+						exchange();
+//					}else{
+//						alert("比赛已经进行编排！");
+//						api.closeWin();
+//					}
+				}else{
+					alert(ret.msg)
+						return api.closeWin();
+				}
+			}else{
+				alert(err.msg);
+			}
+		})
+		
+	}
+	
+	function exchange(){
+		if(isArrange){//未编排的编排
+			$api.dom(".note").innerHTML="提示：该轮比赛还未编排！";
+			$api.dom(".btn").innerHTML="申请此轮不编排";
+			$api.attr($api.dom(".btn"), "ontouchend", "dealWithApply(0)");
+		}else{
+			$api.dom(".note").innerHTML="您已提交不编排申请";
+			$api.dom(".btn").innerHTML="撤销不编排申请";
+			$api.attr($api.dom(".btn"), "ontouchend", "dealWithApply(1)");
+		}
+	}
+	
+	function requestApply(type){
+		api.showProgress({
+        });
+		var port = 8091;
+		var server = "/match/player/item/status/update"
+		var param=[{name:"playerId",value:userId},{name:"itemId",value:api.pageParam.id},{name:"playerType",value:type}]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			api.hideProgress();
+			if(err.statusCode==200){//正常
+				var body = err.body;
+				if(body=='true'){
+					isArrange=type==3?false:true;
+					exchange()
+				}else{
+					alert("申请失败，请重试！")
+				}
+			}
+			console.log("ret-"+JSON.stringify(ret))
+			console.log("err-"+JSON.stringify(err))
+		})
+	}
+	
+	function dealWithApply(del){//0，申请不编排；1，申请撤销
+		if(del==0){
+			requestApply(3)
+		}else{
+			requestApply(1)
+		}
+	}
+	
+</script>
+</html>

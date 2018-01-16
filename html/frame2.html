@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<!-- 此页面Vue工作模板-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>通知</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style scoped>
+        html,
+        body {
+            background: #f4f4f4;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        dd {
+            width: 100%;
+            border-bottom: solid 1px #d9d9d9;
+            position: relative;
+        }
+
+        dd span img {
+            height: .61rem;
+            width: .61rem;
+            margin: .35rem .24rem 0 .27rem;
+        }
+
+        dd .text_box {
+            text-align: left;
+        }
+
+        dd .text_box h4 {
+            margin-top: .35rem;
+            font-size: .3rem;
+            font-weight: lighter;
+            color: #333;
+        }
+
+        dd .text_box h4 span {
+          height: .15rem;
+          width: .15rem;
+          border-radius: 50%;
+          background: #f00;
+          margin-left: .05rem;
+        }
+
+        dd .text_box h5 {
+            font-size: .24rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        dd p {
+            width: 6.38rem;
+            right: 0;
+            margin: .1rem 0 .1rem 1.12rem;
+            color: #666;
+            font-size: .26rem;
+        }
+
+        dd p span {
+            width: 96%;
+            margin-left: .05rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            -webkit-text-overflow: ellipsis;
+            -moz-text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #main .empty {
+            text-align: center;
+        }
+
+        #main .empty img {
+            height: 1.65rem;
+            width: 1.83rem;
+            display: block;
+            margin: 0 auto;
+            margin-top: 3rem;
+        }
+
+        #main .empty span {
+            font-size: .48rem;
+            color: #666;
+            width: 100%;
+            height: 5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-wrap flex-vertical">
+        <div class="flex-con" id="main">
+            <div class="empty" v-show="!empty">
+                <img src="../image/icon_empty.png" alt="">
+                <span>暂无通知</span>
+            </div>
+            <dl v-show="empty">
+                <dd @click="goNotificDetail(notice)" v-for="notice in notice" v-cloak>
+                    <div class="">
+                        <span><img src="../image/icon_tips.png" alt=""></span>
+                        <span class="text_box">
+                          <h4>{{notice.messageTitle}}<span v-show="notice.status==0"></span></h4>
+                          <h5>{{notice.messageTime}}</h5>
+                        </span>
+                    </div>
+                    <p>
+                        <span >{{notice.messageContent|textescplis}}</span>
+                    </p>
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script>
+    var assigment; //全局控制器Controller
+    initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+        var date = vueDateManager();
+        var methods = vueMethodsManager();
+        assigment = new Vue({
+            el: '#main', //绑定元素
+            data: date, //本页面的静态动态全部数据
+            methods: methods, //本页面的全部方法
+            created: function() {
+                Vue.config.silent = true;
+            }
+        })
+    }
+    Vue.filter("textescplis",function(value){
+      var temp= value.split("<br/>").join("");
+      return $api.trimAll(temp.split("&nbsp;").join(""));
+      // return value.replace(new RegExp("</br>","g"), '')
+    })
+
+    vueDateManager = function() {
+        //初始化Vue数据date为一个json数组
+        var date = {};
+        date.pageSize = 20;
+        date.page = 1;
+        date.empty = false; //无数据开关ui
+        date.loadEnd = false; //是否加载底部
+        date.notice = [{
+            "createTime": "",
+            "createUser": "",
+            "id": 0,
+            "messageContent": "",
+            "messageTime": "",
+            "messageTitle": "",
+            "messageType": 0,
+            "messageTypeName": 0,
+            "messageUrl": "",
+            "status": 0
+        }]; //通知默认数据
+        console.log("数据管理者" + JSON.stringify(date));
+        return date;
+
+    }
+    vueMethodsManager = function() {
+        //时间管理中心 每个Vue事件的处理都可以在这管理
+        var methods = {};
+        methods.relodemsg = function() {
+            var islode = api.getPrefs({
+                sync: true,
+                key: 'canLode'
+            });
+            console.log(islode);
+            var value = islode;
+            var flag = value === "false" ? false : true;
+            if (flag) { //是否刷新
+                assigment.init();
+                assigment.msgChange();
+            } else {
+                console.log("没登录我是不会刷新的")
+            }
+        };
+        methods.msgChange = function() {
+            api.getPrefs({
+                key: 'studentInfo'
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.value != "") {
+                        var Xret = JSON.parse(ret.value);
+                        userId = Xret.userId;
+                        var body = {
+                            receiverId: userId,
+                            status: 0,
+                        }
+                        assigment.postMsg("/message/read/verify", body, function(ret, err) {
+                            console.log("消息条数ret" + JSON.stringify(ret));
+                            console.log("消息条数err" + JSON.stringify(err));
+                            if (err.body) {
+                                api.sendEvent({
+                                    name: 'msgChange',
+                                    extra: {
+                                        key1: err.body,
+                                    }
+                                });
+
+                            } else {
+                              console.log(err.body)
+                            }
+                        })
+
+                    }
+                }
+            });
+        };
+
+        methods.init = function() {
+            api.getPrefs({
+                key: 'studentInfo'
+            }, function(ret, err) {
+                if (ret.value != "") {
+                    console.log(JSON.stringify(JSON.parse(ret.value)));
+                    var Xret = JSON.parse(ret.value);
+                    assigment.idNumber = Xret.id;
+                    var path = "/message/receiver/search?messageReceiverId=" + Xret.userId + "&page=" + assigment.page + "&pageSize=" + assigment.pageSize;
+                    // 测试数据
+                    // var path = "/message/receiver/search?messageReceiverId=" + 100008 + "&page=" + assigment.page + "&pageSize=" + assigment.pageSize;
+                    api.showProgress();
+                    ajaxGet(path, function(ret, err) {
+                        api.refreshHeaderLoadDone()
+                        api.hideProgress();
+                        if (ret) {
+                            console.log(JSON.stringify(ret));
+                            //  上拉刷新 下拉加载
+                            assigment.page == ret.totalPage ? assigment.loadEnd = true : assigment.loadEnd = false;
+                            if (assigment.page == 1) { //是否为上拉加载
+                                if (ret.rows.length == 0) { //没有数据
+                                    assigment.empty = false;
+                                } else {
+                                    assigment.empty = true;
+                                    assigment.notice = [];
+                                    for (var i = 0; i < ret.rows.length; i++) {
+                                        assigment.notice.push(ret.rows[i]);
+                                    }
+                                }
+
+                            } else {
+                                for (var i = 0; i < ret.rows.length; i++) {
+                                    assigment.notice.push(ret.rows[i]);
+                                }
+
+                            }
+                        } else {
+                            console.log(JSON.stringify(err));
+                            api.toast({
+                                msg: err.msg,
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+                        }
+                    })
+                } else {
+                    assigment.exit();
+                }
+            });
+        };
+        methods.postMsg = function(path, body, callBack) {
+
+            ajaxPost(path, body, function(ret, err) {
+                callBack(ret, err);
+            })
+        }
+        methods.goNotificDetail = function(value) { //改变每条数据的状态
+            console.log(JSON.stringify(value));
+            api.getPrefs({
+                key: 'studentInfo'
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.value != "") {
+                        var Xret = JSON.parse(ret.value);
+                        userId = Xret.userId;
+                        var body = {
+                            messageId: value.id,
+                            receiverId: userId,
+                            status: 1,
+                        }
+                        assigment.postMsg("/message/status/update", body, function(ret, err) {
+                            console.log("通知查看状态改变返回数据" + JSON.stringify(ret));
+                            console.log("通知查看状态改变返回数据" + JSON.stringify(err));
+                            if (err.body) {
+                                api.openWin({
+                                    name: 'notific_win',
+                                    url: './notific/notific_win.html',
+                                    pageParam: {
+                                        value: value
+                                    }
+                                });
+                            } else {
+                                api.toast({
+                                    msg: err.msg,
+                                    duration: 2000,
+                                    location: 'bottom'
+                                });
+                            }
+                        })
+
+                    }
+                }
+            });
+
+
+        };
+        methods.lister = function() {
+            api.addEventListener({
+                name: 'viewappear'
+            }, function(ret, err) {
+                if (ret) {
+                    console.log("监听事件进入true" + api.frameName);
+                    assigment.relodemsg();
+                } else {
+                    console.log("监听事件进入false" + api.frameName);
+                    assigment.relodemsg();
+                }
+            });
+
+        };
+        methods.exit = function() { //退出
+            api.removePrefs({
+                key: 'studentInfo'
+            });
+            api.openWin({
+                name: 'login',
+                url: './login/login.html',
+            });
+        };
+        console.log("事件管理者：" + JSON.stringify(methods));
+        return methods;
+    }
+    imready = function() {
+        console.log("打开了frame2 页面");
+        initVue();
+        assigment.relodemsg();
+        assigment.lister();
+        //下拉刷新
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+            assigment.page = 1;
+            assigment.relodemsg();
+        });
+        //上拉加载
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            if (assigment.loadEnd) {
+                api.toast({
+                    msg: "没有更多的数据了...",
+                    duration: 2000,
+                    location: 'bottom'
+                });
+                return;
+            }
+            var islode = api.getPrefs({
+                sync: true,
+                key: 'canLode'
+            });
+            console.log("进来了");
+            if (islode) { //是否刷新
+                assigment.page++;
+                assigment.relodemsg();
+            } else {
+                console.log("没登录我是不会刷新的")
+            }
+        });
+
+    };
+</script>
+
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+	<style>
+		html {}
+
+		body {
+			font-size: 0.24rem;
+		}
+
+		#top .search {
+			height: 1.14rem;
+			line-height: 1.14rem;
+			padding-top: 0.28rem;
+			background: #ececec;
+		}
+
+		#top .search .input-div {
+			width: 92%;
+			margin: 0 auto;
+			height: 0.86rem;
+			line-height: 0.86rem;
+			background: #FFF;
+			border-radius: 0.2rem;
+		}
+
+		#top .search .input-div input {
+			height: 0.86rem;
+			font-size: 0.28rem;
+			color: #666;
+			padding-left: 0.26rem;
+			width: 80%;
+			outline: none;
+		}
+
+		#top .search .input-div .search-tag {
+			float: right;
+			background: url(../../image/icon_tai_search.png) no-repeat center right;
+			background-size: 0.42rem 0.42rem;
+			width: 0.42rem;
+			height: 0.86rem;
+			line-height: 0.86rem;
+			margin-right: 0.2rem;
+		}
+
+		#top .showname {
+			height: 0.84rem;
+			line-height: 0.84rem;
+			background: #FFF;
+			position: relative;
+			width: 100%;
+		}
+
+		#top .showname:before {
+			position: absolute;
+			border-bottom: 1px solid #e9e9e9;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			content: "";
+			display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+
+		#top .showname .si {
+			color: #FF9900;
+			font-size: 0.28rem;
+			width: 92%;
+			margin: 0 auto;
+		}
+
+		#top .showname .checkbox {
+			float: right;
+			width: 0.79rem;
+			height: 0.84rem;
+			line-height: 0.84rem;
+			background: url(../../image/ic_unchecked.png) no-repeat center center;
+			background-size: 0.79rem 0.44rem;
+		}
+
+		#top .showname .checkbox.checked {
+			background: url(../../image/ic_checked.png) no-repeat center center;
+		}
+
+		#content {
+			width: 92%;
+			margin: 0 auto;
+			position: relative;
+			margin-top: .28rem;
+		}
+
+		#content .tr {
+			width: 100%;
+			background: #f2f2f2;
+			height: 0.86rem;
+			line-height: 0.86rem;
+			font-size: 0.28rem;
+			color: #333;
+		}
+
+		#content .tr .first {
+			width: 20%;
+			float: left;
+			text-align: center;
+		}
+
+		#content .tr .other {
+			width: 20%;
+			float: left;
+			text-align: center;
+		}
+
+		#content table,
+		#content table tr {
+			width: 100%;
+			text-align: center;
+		}
+
+		#content table tr td {
+			height: 0.86rem;
+			font-size: 0.26rem;
+			line-height: 0.86rem;
+		}
+
+		#content table tr td .player {
+			height: 0.42rem;
+			line-height: 0.42rem;
+		}
+
+		#content table tr td .player-none {
+			height: 0.86rem;
+			font-size: 0.26rem;
+			line-height: 0.86rem;
+		}
+
+		#content table tr td .player.verifycode {
+			font-size: 0.22rem;
+			color: #666;
+		}
+
+		#content td .btn {
+			width: 1rem;
+			height: 0.55rem;
+			line-height: 0.55rem;
+			margin: 0 auto;
+			border-radius: 0.1rem;
+			color: #FFF;
+		}
+
+		#content td .waiting {
+			background: #884643;
+		}
+
+		#content td .verifying {
+			background: #e68d00;
+		}
+
+		#content td .done {
+			background: #1ebfb5;
+		}
+
+		#content table {
+			border: solid 1px #eee;
+		}
+
+		#content table tr td {
+			border: solid 1px #eee;
+			font-size: .2rem;
+			text-align: center;
+			word-wrap: break-word;
+		}
+
+		#wrap .empty {
+			text-align: center;
+		}
+
+		#wrap .empty img {
+			height: 1.65rem;
+			width: 1.83rem;
+			display: block;
+			margin: 0 auto;
+			margin-top: 3rem;
+		}
+
+		#wrap .empty span {
+			font-size: .48rem;
+			color: #666;
+			width: 100%;
+			height: 5rem;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap" v-show="showUi">
+		<div class="empty" v-show="!empty">
+			<img src="../../image/icon_empty.png" alt="">
+			<span>比赛尚未结束，暂无选手成绩</span>
+		</div>
+		<div v-show="empty" id="top">
+			<div class="search">
+				<div class="input-div">
+					<input placeholder="请输入姓名"  @input="OnInput()" v-model="message" />
+					<span class="search-tag"></span>
+				</div>
+			</div>
+		</div>
+		<div id="content" v-show="empty">
+			<div class="tr">
+				<div class="first">{{trs.tr1}}</div>
+				<div class="other">{{trs.tr2}}</div>
+				<div class="other">{{trs.tr3}}</div>
+				<div class="other">{{trs.tr4}}</div>
+				<div class="other">{{trs.tr5}}</div>
+			</div>
+
+			<table>
+				<tr v-for="item in item2">
+					<td width="20%" class="color666">
+						{{item.td1}}
+					</td>
+					<td width="20%" class="color666">
+						{{item.td2}}
+					</td>
+					<td width="20%" class="color666">
+						{{item.td3}}
+					</td>
+					<td width="20%" class="color666">
+						{{item.td4}}
+					</td>
+					<td width="20%" class="color666">
+						{{item.td5}}
+					</td>
+				</tr>
+			</table>
+
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript">
+	var assigment; //全局控制器Controller
+	initVue = function() { //初始化Vue需要的是双向数据绑定 当改变数据以后view会做相应的改变
+		var date = vueDateManager();
+		var methods = vueMethodsManager();
+		assigment = new Vue({
+			el: '#wrap', //绑定元素
+			data: date, //本页面的静态动态全部数据
+			methods: methods, //本页面的全部方法
+		})
+	}
+	vueDateManager = function() {
+		//初始化Vue数据date为一个json数组
+		var date = {};
+		date.pageSize = 2000;
+		date.page = 1;
+		date.showUi=false;
+		date.empty = false; //无数据开关ui
+		date.loadEnd = false; //是否加载底部
+		date.message="";//搜索框的默认值
+		date.port=8091;
+		date.server="/match/player/item/result";
+		date.param=[];
+		date.trs = {
+			tr1: "排名",
+			tr2: "段位",
+			tr3: "姓名",
+			tr4: "积分",
+			tr5: "备注",
+		}; //表头数据
+		date.item2 = [{
+			td1: "排名",
+			td2: "段位",
+			td3: "姓名",
+			td4: "积分",
+			td5: "备注",
+		}]; //表格数据
+		date.item = [{
+			"ranking": 1, //名次
+			"matchResult": 2, //1.1-0  2.0-1  3.1/2-1/2  4.0-0
+			"opponentId": 9910004277, //对手id
+			"opponentIdCard": null, //对生分证号
+			"opponentName": null, //对手名字
+			"playerId": 9910004209, //选手id
+			"playerIdCard": null, // 选手生分证
+			"playerName": "", //选手名字
+			"province": "", //province地址
+			"grading": null, //grading段位
+			"winNum": null, //winNum胜局数
+			"matchScore": null, //matchScore总分
+			"opponentScore": null, //opponentScore对手分
+			"matchRound": null, //matchRound比赛总局数
+			"winPercent": null, //winPercent胜率
+			"drinkNum": null //drinkNum 喝酒数
+		}];
+		console.log("数据管理者" + JSON.stringify(date));
+		return date;
+	}
+	vueMethodsManager = function() {
+		//时间管理中心 每个Vue事件的处理都可以在这管理
+		var methods = {};
+		methods.init = function() {
+			var tag = api.pageParam.msg.tag; //-1不存在的 0 九路棋王赛和正赛 1马拉松赛 2啤酒围棋赛 3 其他赛事 4竞标赛 5让子赛
+			// var tag = 0;
+			switch (tag) {
+				case 0:
+					assigment.trs = {
+						tr1: "名次",
+						tr2: "姓名",
+						tr3: "段位",
+						tr4: "总分",
+						tr5: "对手分",
+					};
+
+					// var msg = api.pageParam.msg.message;
+					//測試數據
+					assigment.param=[{
+						name:"itemId",
+						value:api.pageParam.msg.message.msg.id
+					},{
+						name:"matchRound",
+						value:api.pageParam.msg.message.index
+					},{
+						name:"page",
+						value:assigment.page
+					},{
+						name:"pageSize",
+						value:assigment.pageSize
+					}]
+					assigment.loadMsg(function(ret) {
+						console.log(JSON.stringify(ret));
+						for (var i = 0; i < ret.length; i++) {
+							var list = {};
+							list.td1 = ret[i].ranking;
+							list.td2 = ret[i].playerName;
+							list.td3 = ret[i].grading;
+							list.td4 = ret[i].matchScore;
+							list.td5 = ret[i].opponentScore;
+							assigment.item2.push(list);
+							assigment.item.push(list);
+						}
+						console.log(JSON.stringify(assigment.item2));
+					});
+					break;
+				case 1:
+					assigment.trs = {
+						tr1: "省市",
+						tr2: "姓名",
+						tr3: "段位",
+						tr4: "对局数",
+						tr5: "胜局数",
+					};
+					assigment.param=[{
+						name:"itemId",
+						value:api.pageParam.msg.message.msg.id
+					},{
+						name:"matchRound",
+						value:0
+					},{
+						name:"page",
+						value:assigment.page
+					},{
+						name:"pageSize",
+						value:assigment.pageSize
+					}]
+					assigment.loadMsg(function(ret) {
+						console.log(JSON.stringify(ret));
+						for (var i = 0; i < ret.length; i++) {
+							var list = {};
+							list.td1 = ret[i].province;
+							list.td2 = ret[i].playerName;
+							list.td3 = ret[i].grading;
+							list.td4 = ret[i].matchRound;
+							list.td5 = ret[i].winNum;
+							assigment.item2.push(list);
+							assigment.item.push(list);
+						}
+						console.log(JSON.stringify(assigment.item2));
+					});
+					break;
+				case 2:
+					assigment.trs = {
+
+						tr1: "省市",
+						tr2: "姓名",
+						tr3: "段位",
+						tr4: "胜局数",
+						tr5: "喝酒数",
+					};
+					assigment.param=[{
+						name:"itemId",
+						value:api.pageParam.msg.message.msg.id
+					},{
+						name:"matchRound",
+						value:0
+					},{
+						name:"page",
+						value:assigment.page
+					},{
+						name:"pageSize",
+						value:assigment.pageSize
+					}]
+					assigment.loadMsg(function(ret) {
+						console.log(JSON.stringify(ret));
+						for (var i = 0; i < ret.length; i++) {
+							var list = {};
+							list.td1 = ret[i].province;
+							list.td2 = ret[i].playerName;
+							list.td3 = ret[i].grading;
+							list.td4 = ret[i].winNum;
+							list.td5 = ret[i].drinkNum;
+							assigment.item2.push(list);
+							assigment.item.push(list);
+
+						}
+						console.log(JSON.stringify(assigment.item2));
+					});
+					break;
+				case 3:
+					assigment.trs = {
+						tr1: "名次",
+						tr2: "姓名",
+						tr3: "段位",
+						tr4: "积分",
+						tr5: "对手分",
+					};
+					assigment.param=[{
+						name:"itemId",
+						value:api.pageParam.msg.message.msg.id
+					},{
+						name:"matchRound",
+						value:0
+					},{
+						name:"page",
+						value:assigment.page
+					},{
+						name:"pageSize",
+						value:assigment.pageSize
+					}]
+					assigment.loadMsg(function(ret) {
+						console.log(JSON.stringify(ret));
+						for (var i = 0; i < ret.length; i++) {
+							var list = {};
+							list.td1 = ret[i].ranking;
+							list.td2 = ret[i].playerName;
+							list.td3 = ret[i].grading;
+							list.td4 = ret[i].matchScore;
+							list.td5 = ret[i].opponentScore;
+							assigment.item2.push(list);
+							assigment.item.push(list);
+
+						}
+						console.log(JSON.stringify(assigment.item2));
+					});
+					break;
+				case 4:
+					assigment.trs = {
+						tr1: "名次",
+						tr2: "姓名",
+						tr3: "段位",
+						tr4: "积分",
+						tr5: "对手分",
+					};
+					assigment.param=[{
+						name:"itemId",
+						value:api.pageParam.msg.message.msg.id
+					},{
+						name:"matchRound",
+						value:0
+					},{
+						name:"page",
+						value:assigment.page
+					},{
+						name:"pageSize",
+						value:assigment.pageSize
+					},{
+						name:"groupCode",
+						value:1
+					}]
+					assigment.loadMsg(function(ret) {
+						console.log(JSON.stringify(ret));
+						for (var i = 0; i < ret.length; i++) {
+							var list = {};
+							list.td1 = ret[i].ranking;
+							list.td2 = ret[i].playerName;
+							list.td3 = ret[i].grading;
+							list.td4 = ret[i].matchScore;
+							list.td5 = ret[i].opponentScore;
+							assigment.item2.push(list);
+							assigment.item.push(list);
+
+						}
+						console.log(JSON.stringify(assigment.item2));
+					});
+					break;
+				case 5:
+					assigment.trs = {
+						tr1: "名次",
+						tr2: "姓名",
+						tr3: "段位",
+						tr4: "积分",
+						tr5: "对手分",
+					};
+					assigment.param=[{
+						name:"itemId",
+						value:api.pageParam.msg.message.msg.id
+					},{
+						name:"matchRound",
+						value:0
+					},{
+						name:"page",
+						value:assigment.page
+					},{
+						name:"pageSize",
+						value:assigment.pageSize
+					},{
+						name:"groupCode",
+						value:2
+					}]
+					assigment.loadMsg(function(ret) {
+						console.log(JSON.stringify(ret));
+						for (var i = 0; i < ret.length; i++) {
+							var list = {};
+							list.td1 = ret[i].ranking;
+							list.td2 = ret[i].playerName;
+							list.td3 = ret[i].grading;
+							list.td4 = ret[i].matchScore;
+							list.td5 = ret[i].opponentScore;
+							assigment.item2.push(list);
+							assigment.item.push(list);
+						}
+						console.log(JSON.stringify(assigment.item2));
+					});
+					break;
+				default:
+
+			}
+		};
+		methods.openFrame = function() {
+				var top = $api.offset($api.dom('#top'));
+				var tr = $api.offset($api.dom('#tr'));
+				var y = top.h + tr.h + (28) / 750 * api.frameWidth;
+				var x = $api.offset($api.dom('#content')).l;
+				var w = 690 / 720 * api.frameWidth;
+				api.openFrame({
+					name: 'rounddetail_end',
+					url: 'rounddetail_end.html',
+					rect: {
+						x: 0,
+						y: y,
+						w: api.frameWidth,
+						h: "auto"
+					},
+					pageParam: {
+						name: assigment.item2
+					},
+					bounces: true,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			} //后面再优化
+		methods.loadMsg = function(callback) { //获取网络数据
+			api.showProgress();
+			ajaxRequestWithGet(assigment.port,assigment.server,assigment.param,function(ret, err) {
+				api.refreshHeaderLoadDone()
+				api.hideProgress();
+				if (ret) {
+					assigment.showUi=true;//返回即显示UI
+					console.log("获取列表返回数据:" + JSON.stringify(ret));
+					if (ret.code == 0) {
+						//  上拉刷新 下拉加载
+						assigment.page == ret.data.totalPage ? assigment.loadEnd = true : assigment.loadEnd = false;
+						if (assigment.page == 1) { //是否为上拉加载
+							if (ret.data.rows.length == 0) { //没有数据
+								assigment.empty = false;
+							} else {
+								assigment.empty = true;
+								assigment.item2 = [];
+								assigment.item = [];
+								callback(ret.data.rows);
+							}
+						} else {
+							callback(ret.data.rows);
+						}
+					} else {
+						api.toast({
+							msg: ret.msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+				} else {
+					console.log(JSON.stringify(err));
+					api.toast({
+						msg: err.msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+				}
+			})
+		};
+		methods.OnInput = function(event) {
+			var list = [];
+			console.log(assigment.message);
+			var value = assigment.message;
+			if (value != "") {
+				for (var i = 0; i < assigment.item.length; i++) {
+					console.log(assigment.item[i].td2.indexOf(value) > -1);
+					if (value == assigment.item[i].td1 || assigment.item[i].td2.indexOf(value) > -1) {
+						list.push(assigment.item[i]);
+					}
+				};
+			} else {
+				for (var i = 0; i < assigment.item.length; i++) {
+					list.push(assigment.item[i]);
+				};
+			}
+			console.log("全部数据" + JSON.stringify(assigment.item));
+			assigment.item2 = list;
+			console.log("查找数据" + JSON.stringify(list));
+
+
+		};
+		methods.lister=function(){
+       api.addEventListener({
+           name: 'viewappear'
+       }, function(ret, err){
+           if( ret ){
+						 assigment.page = 1;
+						 assigment.init();
+           }else{
+						 assigment.page = 1;
+						 assigment.init();
+           }
+       });
+
+
+
+		};
+		console.log("事件管理者：" + JSON.stringify(methods));
+		return methods;
+	}
+
+	imready = function() {
+		// api.parseTapmode(); //默认页面加载完成后，引擎会对 dom 里面的元素进行 tapmode 属性解析，若是之后用代码创建的 dom 元素，则需要调用该方法后 tapmode 属性才会生效
+		// $api.fixStatusBar($api.dom('header'));
+		initVue();
+		console.log(api.frameName + "列表参数" + JSON.stringify(api.pageParam));
+		assigment.init();
+		assigment.lister();
+		//下拉刷新
+		api.setRefreshHeaderInfo({
+			visible: true,
+			loadingImg: 'widget://image/refresh.png',
+			bgColor: '#ccc',
+			textColor: '#fff',
+			textDown: '下拉刷新...',
+			textUp: '松开刷新...',
+			showTime: true
+		}, function(ret, err) {
+			//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			assigment.page = 1;
+			assigment.init();
+		});
+		//上拉加载
+		api.addEventListener({
+			name: 'scrolltobottom',
+			extra: {
+				threshold: 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+			}
+		}, function(ret, err) {
+			if (assigment.loadEnd) {
+				api.toast({
+					msg: "没有更多的数据了...",
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			assigment.page++;
+			assigment.init();
+		});
+
+	};
+</script>
+
+</html>

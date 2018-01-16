@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>日程</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	html,body{
+    		height:100%;
+    		position: relative;
+    		background: #ececec;
+    	}
+    	#main{
+    		position: relative;
+    		height:100%;
+    	}
+    	#main .head{
+    		height:0.88rem;
+    		line-height:0.88rem;
+    		background:#F6F6F6;
+    		position: fixed;
+    		top:0;
+    		width:100%;
+    		z-index: 2;
+    	}
+    	#main .head:before{
+    		position: absolute;
+    		border-bottom: 1px solid #e9e9e9;
+    		bottom:0;left:0;right:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleY(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    	#main .head .username{
+    		color:#FF9900;
+    		font-size:0.3rem;
+    		margin-left:0.3rem;
+    	}
+    	#main .head .exchange{
+    		color:#666;
+    		font-size:0.26rem;
+    	}
+    	#main .head .img{
+    		width:0.28rem;
+    		height:0.88rem;
+    		line-height:0.88rem;
+    		background:url(../image/icon_qm.png) no-repeat center center;
+    		background-size:0.28rem 0.28rem;
+    	}
+    	#main .head .recent{
+    		float:right;
+    		color:#FF9900;
+    		font-size:0.3rem;
+    		margin-right:0.3rem;
+    	}
+    	#main .empty{
+    		margin-top:1.88rem;
+    	}
+    	#main .empty .note{
+    		width:4.71rem;
+    		height:1.19rem;
+    		background:url(../image/icon_note.png) no-repeat center center;
+    		background-size: 100% 100%;
+    		margin:1.13rem auto;
+    	}
+    	#main .empty .note-text{
+    		width:6.24rem;
+    		height:4.99rem;
+    		background:url(../image/bg_note.png) no-repeat center center;
+    		background-size: 100% 100%;
+    		margin: -0.23rem auto;
+    		position: relative;
+    	}
+    	#main .empty .note-text .note1{
+    		height:1.8rem;
+    		line-height:1.8rem;
+    		text-align: center;
+    		font-size:0.36rem;
+    		color:#333;
+    	}
+    	#main .empty .note-text .note2{
+    		text-align:left;
+    		width:75%;
+    		margin:0.2rem auto;
+    		font-size:0.28rem;
+    		color:#666;
+    	}
+    	#main .content{
+    		width:100%;
+    		position: absolute;
+    		top:0.88rem;
+    	}
+    	#main .content .content-date{
+    		width:18%;
+    		float:left;
+    		position: relative;
+    		padding-top: 0.24rem;
+    		height:100%;
+    	}
+    	#main .content .content-date:before{
+    		position: absolute;
+    		border-right: 1px solid #d9d9d9;
+    		right:0;top:0;bottom:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleX(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    	#main .content .content-schedule{
+    		width:82%;
+    		float:left;
+    		position: relative;
+    		padding-top: 0.24rem;
+    		height:100%;
+    	}
+    	#main .content .content-schedule:before{
+    		position: absolute;
+    		border-left: 1px solid #FFF;
+    		left:0;top:0;bottom:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleX(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    	#main .content .content-date .date-inner{
+    		width:70%;
+    		margin: 0 auto;
+    		text-align: center;
+    		height:2.8rem;
+    		position: relative;
+    	}
+    	#main .content .content-date .date-inner .ring1{
+    		position: absolute;
+    		background: #FF9900;
+    		width:0.28rem;
+    		height:0.28rem;
+    		border-radius: 0.14rem;
+    		top:0.35rem;
+    		right:-0.36rem;
+    	}
+    	#main .content .content-date .date-inner .ring2{
+    		position: absolute;
+    		background: #FFF;
+    		width:0.14rem;
+    		height:0.14rem;
+    		border-radius: 0.07rem;
+    		top:0.42rem;
+    		right:-0.28rem;
+    	}
+    	#main .content .content-date .date-inner .date-c{
+    		color:#333;
+    		font-size:0.24rem;
+    	}
+    	#main .content .content-date .date-inner .date-note{
+    		color:#FF9900;
+    		font-size:0.28rem;
+    	}
+    	#main .content .content-schedule .schedule-inner{
+    		width:90%;
+    		margin: 0 auto;
+    		margin-top:0.4rem;
+    		background: #FFF;
+    		border-radius: 0.03rem;
+    		position: relative;
+    	}
+    	#main .content .content-schedule .schedule-inner.current{
+    		background: #ffb240;
+    	}
+    	#main .content .content-schedule .schedule-inner .judgment{
+    		position: absolute;
+    		top:0;right:0;
+    		background: url(../image/icon_judgment_1.png) no-repeat center center;
+    		background-size:100% 100%;
+    		width: 0.83rem;
+    		height: 0.83rem;
+    	}
+    	.content-schedule .schedule-inner .inner-top{
+    		height:1.7rem;
+    		background:url(../image/bg_schedule_inner.png) no-repeat center center;
+    		background-size: 5rem 1.34rem;
+    	}
+    	.content-schedule .schedule-inner .inner-top .top-1{
+    		height:0.85rem;
+    		line-height:1.2rem;
+    		font-size:0.3rem;color:#333;
+    		margin-left:0.6rem;
+    		margin-right:0.6rem;
+    	}
+    	.content-schedule .schedule-inner .inner-top span{
+    		font-size:0.26rem;color:#666;
+    	}
+    	.content-schedule .schedule-inner .inner-top .top-2{
+    		font-size:0.26rem;color:#683523;
+    		margin-left:0.6rem;
+    		margin-right:0.6rem;
+    	}
+    	.content-schedule .schedule-inner .inner-bottom{
+    		height:0.7rem;
+    		line-height:0.7rem;
+    		position: relative;
+    		font-size: 0.26rem;
+    		color:#683523;padding-left: 0.21rem;
+    	}
+    	.content-schedule .schedule-inner .inner-bottom:before{
+    		position: absolute;
+    		border-top: 1px solid #ececec;
+    		top:0;left:0;right:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleY(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    </style>
+</head>
+<body>
+	<div id="main">
+		<div class="head">
+			<span class="username"></span>
+			[ <span class="exchange" ontouchend="exchange();">切换</span> ]
+			<span class="img" ontouchend="showHelp();">&nbsp;</span>
+			<a class="recent" href="#there">最近比赛</a>
+		</div>
+		<div class="empty" style="display: none;">
+			<div class="note">
+			</div>
+			<div class="note-text">
+				<div class="note1">选赛后才会有内容哦</div>
+				<div class="note2">您需要先去报名感兴趣的赛事，每个赛事下包含多个比赛项目，选赛后这里就会有具体内容啦</div>
+			</div>
+		</div>
+		<div class="content" id="there">
+			<script type="text/x-dot-template" id="content_date_template">
+			{{ for(var i=0;i<it.length;i++){ }}
+			<div class="date-inner" style="{{=window.currentId&&window.currentId!=userId?'height:2.1rem':''}}">
+				<div class="ring1"></div>
+				<div class="ring2"></div>
+				<div class="date-c">{{=it[i].startDate}}</div>
+				<div class="date-note">至</div>
+				<div class="date-c">{{=it[i].endDate}}</div>
+			</div>
+			{{ } }}
+			</script>
+			<div class="content-date" id="content_date">
+			</div>
+			<script type="text/x-dot-template" id="schedule_template">
+			{{ for(var i=0;i<it.length;i++){ }}
+			<div class="schedule-inner {{=it[i].class}}" onclick="goDetail('{{=it[i].matchItemName}}',{{=it[i].matchItemId}},{{=it[i].isJudge}},'{{=it[i].matchItemArrange}}','{{=it[i].class}}');">
+				<div class="judgment" style="display:{{=it[i].isJudge==1?'block':'none'}}">
+				</div>
+				<div class="inner-top">
+					<div class="top-1">{{=it[i].matchItemName}} <span>{{=it[i].startTime}}</span></div>
+					<div class="top-2">{{=it[i].matchAddress}}</div>
+				</div>
+				<div class="inner-bottom" style="{{=window.currentId&&window.currentId!=userId?'display:none':'display:block'}}" >
+					{{=it[i].class=='current'?(it[i].matchItemArrange==1?"不支持线上提交结果":((it[i].isJudge==1&&it[i].matchItemArrange==0)?"仅参赛选手可提交结果":"点击提交比赛结果")):(it[i].class=='over'?(it[i].matchItemArrange==1?"比赛已结束":((it[i].isJudge==1&&it[i].matchItemArrange==0)?'比赛已结束':'查看比赛结果')):"尚未开始")}}
+				</div>
+			</div>
+			{{ } }}
+			</script>
+			<div class="content-schedule" id="schedule_content">
+			<!--onclick="dealBottom({{=i}},'{{=it[i].class}}');"-->
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript">
+	var userId;
+	var studentInfo ;
+	imready=function(){
+    console.log("打开了frame0页面");
+		api.addEventListener({
+            name: 'viewReady'
+        }, function(ret, err) {
+            if (ret) {
+                 api.getPrefs({
+		            key: 'studentInfo'
+		        }, function(ret, err){
+		            if (ret) {
+		                if (ret.value != "") {
+		                    var Xret = JSON.parse(ret.value);
+		                    studentInfo = Xret;
+		                    userId = Xret.userId;
+		                    window.currentId=userId;
+		                    window.currentName=Xret.userName;
+		                    $api.dom(".username").innerHTML= window.currentName;
+		                    requestSchedule(userId);
+		                } else {
+		                }
+		            } else {
+		            }
+		        });
+            } else {
+            }
+        });
+		 api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    studentInfo = Xret;
+                    userId = Xret.userId;
+                    window.currentId=userId;
+                    window.currentName=Xret.userName;
+                    $api.dom(".username").innerHTML= window.currentName;
+                    requestSchedule(userId);
+                } else {
+                }
+            } else {
+            }
+        });
+       	api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+            showTime: true
+        }, function(ret, err) {
+            //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+            $api.dom(".username").innerHTML=window.currentName;
+             requestSchedule(window.currentId);
+        });
+	}
+
+	function exchange(event){
+		var event = event||window.event;
+		var port = 8090;
+		var server = "/user/list/item/friend/get"
+		var param = [{name:'userId',value:userId}]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			if(ret){
+				var data = ret.data;
+				if(data&&data.length>0){
+				openPopwindow(event,data);
+				}else{
+					alert("暂无队友可切换！")
+				}
+			}else{
+				alert(err.msg)
+			}
+		})
+	}
+
+	function showHelp(){
+		api.openWin({
+	        name: 'help',
+	        url: './schedule/help.html'
+        });
+	}
+
+	function openPopwindow(event,data){
+		var mnPopups = api.require('MNPopups');
+		var detalY = 88/750*api.winWidth;
+		var y ;
+		if(api.systemType=='ios'){
+			y =  event.changedTouches[0].clientY+detalY+20;
+		}else{
+			y = event.changedTouches[0].screenY;
+		}
+		var x = event.changedTouches[0].clientX;
+
+		
+		for(var i=0;i<data.length;i++){
+			data[i].title=data[i].userName;
+		}
+		mnPopups.open({
+		    rect: {
+		        w: 120,
+		        h: 45*data.length
+		    },
+		    position: {
+		        x:x,
+		        y:y
+		    },
+		    styles: {
+		        mask: 'rgba(0,0,0,0.2)',
+		        bg: '#eee',
+		        cell: {
+		            bg: {
+		                normal: '',
+		                highlight: ''
+		            },
+		            h: 45,
+	             	title: {
+			            marginL: 45,
+			            color: '#636363',
+			            size: 12,
+			        },
+		            icon: {
+		                marginL: 0,
+		                w: 25,
+		                h: 25,
+		                corner: 2
+		            }
+		        },
+		        pointer: {
+		            size: 7,
+		            xPercent: 50,
+		            yPercent: 0,
+		            orientation: 'downward'
+		        }
+		    },
+		    datas:data,
+		    animation: true
+		}, function(ret) {
+		    if (ret) {
+		        if(ret.eventType=='click'){
+		        	var index = ret.index;
+		        	window.currentId = data[index].userId;
+		        	window.currentName = data[index].userName;
+		        	$api.dom(".username").innerHTML=data[index].userName;
+		        	requestSchedule(data[index].userId);
+		        }
+		    }
+		});
+	}
+
+	function  requestSchedule(cuid){
+		var port = 8090;
+		var server = "/match/enter/user/items";
+		var param = [{
+			name:'userId',
+			value:cuid
+		},{
+			name:'playerId',
+			value:cuid
+		}]
+		ajaxRequestWithGet(port,server,param,function(ret,err){
+			api.refreshHeaderLoadDone();
+			if(ret){
+				var data = dealWithData(ret.rows);
+				window.list = data;
+				if(data.length==0){
+					$api.dom(".empty").style.display="block";
+					$api.dom(".content").style.display="none";
+				}else{
+					$api.dom(".empty").style.display="none";
+					$api.dom(".content").style.display="block";
+					getInnerByDot("schedule_content","schedule_template",data);
+					getInnerByDot("content_date","content_date_template",data);
+				}
+			}else{
+				$api.dom(".empty").style.display="block";
+				$api.dom(".content").style.display="none";
+				alert(err.msg)
+			}
+		})
+	}
+
+	function dealWithData(data){
+		var d = new Date();
+		var time = d.getTime();
+		for(var i=0;i<data.length;i++){
+			var item = data[i];
+			var sDate = new Date(item.matchBeginTime.replace(/-/g,"/"));
+			item.startDate = sDate.Format("MM-dd")
+			var eDate = new Date(item.matchEndTime.replace(/-/g,"/"));
+			item.endDate = eDate.Format("MM-dd")
+			item.startTime = sDate.Format("hh:mm");
+			if(time<=eDate.getTime()&&time>=sDate.getTime()){//进行中
+				item.class='current'
+			}else if(time<sDate.getTime()){//未开始
+				item.class="fut"
+			}else{//已结束
+				item.class="over"
+			}
+		}
+//		var isHaveCurrent=false;
+//		for(var i=0;i<data.length;i++){
+//			if(data[i].class=='current'){
+//				isHaveCurrent=true;
+//				break;
+//			}
+//		}
+//		if(!isHaveCurrent){
+//			data[0].class='current';
+//		}
+		return data;
+	}
+
+
+	function dealBottom(index,cls){
+		var item = window.list[index];
+		if(item.matchItemArrange==1){
+			return alert("线下提交比赛结果");
+		}
+		var isJudge=item.isJudge;
+		var matchname = item.matchItemName;
+		var id = item.matchItemId;
+		if(isJudge==1){//裁判
+			if(item.matchItemArrange==0){
+				return alert("只有参赛选手可以提交比赛结果")
+			}else{
+				if(cls=='fut'){
+					return alert("比赛尚未开始")
+				}else if(cls=='over'){
+					api.openWin({
+				        name: 'matchdetail',
+				        url: 'schedule/matchdetail_title.html',
+				        pageParam:{
+				        	name:matchname,
+				        	id:id,
+				        	isJudge:isJudge
+				        }
+			        });
+				}else{
+					api.openWin({
+				        name: 'matchdetail',
+				        url: 'schedule/matchdetail_title.html',
+				        pageParam:{
+				        	name:matchname,
+				        	id:id,
+				        	isJudge:isJudge
+				        }
+			        });
+				}
+			}
+		}else{
+			if(cls=='fut'){
+				return alert("比赛尚未开始")
+			}else if(cls=='over'){
+				api.openWin({
+			        name: 'matchdetail',
+			        url: 'schedule/matchdetail_title.html',
+			        pageParam:{
+			        	name:matchname,
+			        	id:id,
+			        	isJudge:isJudge
+			        }
+		        });
+			}else{
+				api.openWin({
+			        name: 'matchdetail',
+			        url: 'schedule/matchdetail_title.html',
+			        pageParam:{
+			        	name:matchname,
+			        	id:id,
+			        	isJudge:isJudge
+			        }
+		        });
+			}
+		}
+	}
+
+
+	/**
+	 * 点击条目跳转到赛事详情，需要传递id等数据。待完善
+	 */
+	function goDetail(matchname,id,isJudge,arrange,cls){
+		if(window.currentId&&window.currentId!=userId){
+			return alert("只能本人提交比赛结果，请切换！")
+		}
+		//马拉松和啤酒（不编排）只有选手提交比赛结果（非编排）裁判无法点击，提示“只有参赛选手可以提交比赛结果”
+		//编排比赛不能点击详情。提示 “线下提交比赛结果”
+		//麦克马洪都可点击
+		if(arrange==1){
+			return alert("线下提交比赛结果");
+		}
+		if(isJudge==1){//裁判
+			if(arrange==0){
+				return alert("只有参赛选手可以提交比赛结果")
+			}else{
+				if(cls=='fut'){
+					return alert("比赛尚未开始")
+				}
+				api.openWin({
+			        name: 'matchdetail',
+			        url: 'schedule/matchdetail_title.html',
+			        pageParam:{
+			        	name:matchname,
+			        	id:id,
+			        	isJudge:isJudge,
+			        	arrange:arrange
+			        }
+		        });
+			}
+		}else{
+			if(cls=='fut'){
+				return alert("比赛尚未开始")
+			}
+			api.openWin({
+		        name: 'matchdetail',
+		        url: 'schedule/matchdetail_title.html',
+		        pageParam:{
+		        	name:matchname,
+		        	id:id,
+		        	isJudge:isJudge,
+		        	arrange:arrange
+		        }
+	        });
+		}
+
+	}
+
+</script>

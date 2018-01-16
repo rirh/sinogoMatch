@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/fontstyle.css" />
+	<style>
+		body {
+			font-size: 0.24rem;
+		}
+		/*-------header----------*/
+
+		#header {
+			background: #fff;
+			text-align: center;
+			width: 100%;
+			position: relative;
+			height: 0.98rem;
+		}
+
+		#header h1 {
+			font-size: 0.36rem;
+			height: 0.98rem;
+			line-height: 0.98rem;
+			font-weight: normal;
+			margin: 0 auto;
+			color: #666;
+		}
+
+		#header  a{
+			position: absolute;
+			height: .98rem;
+			width: .98rem;
+			left: 0;
+
+		}
+
+		#header img {
+				width: .16rem;
+				height: .30rem;
+				margin: 0.34rem 0 0 0.28rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+		<div id="top-header"></div>
+		<div id="header">
+			<a onclick="closeWin()" >
+				<img class="back-icon" tapmode="active" src="../../image/icon_arrow_left.png" alt="" tapmode="active" >
+			</a>
+			<h1 id="title">赛事</h1>
+		</div>
+		<div id="main" class="flex-con">
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	imready = function() {
+		init();
+	};
+	init = function() {
+		var id = api.pageParam.msg.id;
+    console.log("比赛id："+JSON.stringify(id))
+		var port = 8091;
+		var server = "/match/player/item/detail";
+		var param = [{name:"itemId",value:id}]
+		ajaxRequestWithGet(port,server,param, function(ret, err) {
+			if (ret) {
+				console.log("返回数据" + JSON.stringify(ret));
+				$api.text($api.dom("#title"), ret.matchItemName);
+				var headerPos = $api.offset($api.byId('header'));
+				var y = headerPos.h;
+				var h = api.winHeight - y;
+				api.openFrame({
+					name: 'matchdetail_con',
+					url: 'matchdetail_con.html',
+					rect: {
+						x: 0,
+						y: y,
+						w: api.winWidth,
+						h: h
+					},
+					pageParam: {
+						message: ret
+					}
+				});
+			} else {
+				api.toast({
+					msg: err.msg,
+					duration: 2000,
+					location: 'bottom'
+				});
+
+			}
+		});
+
+	}
+</script>
+
+</html>

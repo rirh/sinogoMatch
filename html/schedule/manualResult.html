@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+    	html,body{
+    		height:100%;
+    		width:100%;
+    		text-align: center;
+    		background: url(../../image/icon_bg_dialog.png);
+    		overflow: hidden;
+    	}
+    	.empty{
+			width:100%;
+			height:30%;
+    	}
+    	#bottom{
+    		width:76%;
+    		height:40%;
+    		left:12%;
+    		border-radius:0.2rem;
+    		background:#FFF;
+    		position:absolute;
+    	}
+    	#bottom .note{
+    		color:#FF8344;
+    		font-size: 0.28rem;
+    		height:1.2rem;
+    		line-height:1.2rem;
+    		position: relative;
+    	}
+    	#bottom .note:before{
+    		position: absolute;
+    		border-bottom: 1px solid #eee;
+    		bottom: 0;left:0;right:0;
+    		transform: scaleY(0.5);
+    		transform-origin: 0 0;
+    		content:"";display:block;
+    	}
+    	#bottom .btn{
+    		height:0.9rem;
+    		line-height:0.9rem;
+    		text-align: center;
+    		color:#FFF;
+    		background: #FF8344;
+    		font-size:0.32rem;
+    		border-radius:0 0 0.2rem 0.2rem ;
+    	}
+    	.content{
+    		position: relative;
+    		margin-top: 10%;
+    	}
+    	.content .item{
+    		width:90%;
+    		margin: 0 auto;
+    		height:30%;
+    		position: relative;
+    	}
+    	.content .item .box{
+    		float: left;
+    		width:50%;
+    	}
+    	.content .item .box span{
+    		background:url(../../image/icon_unchecked.png) no-repeat center left;
+    		background-size: 0.32rem 0.32rem;
+    		padding-left: 0.36rem;
+    		font-size: 0.3rem;
+    		color:#666;
+    	}
+    	.content .item .box.checked span{
+    		background:url(../../image/icon_checked.png) no-repeat center left;
+    		background-size: 0.32rem 0.32rem;
+    		padding-left: 0.36rem;
+    		font-size: 0.3rem;
+    		color:#666;
+    	}
+    </style>
+</head>
+<body>
+	<div class="empty" onclick="closeSelf();"></div>
+	<div id="bottom" class="flex-wrap flex-vertical">
+		<div class="note">请认真核对比赛结果，提交后不能更改！</div>
+		
+		<div class="flex-con content">
+			<div class="item">
+				<div class="box checked" value='1'>
+					<span>黑胜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</div>
+				<div class="box" value='4'>
+					<span>黑弃权&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</div>
+			</div>
+			<div class="item">
+				<div class="box" value='2'>
+					<span>白胜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</div>
+				<div class="box" value='5'>
+					<span>白弃权&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</div>
+			</div>
+			<div class="item">
+				<div class="box" value='6'>
+					<span>双方弃权</span>
+				</div>
+				<div class="box" value='3'>
+					<span>和棋&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				</div>
+			</div>
+		
+		</div>
+		<div class="btn" >提交</div>
+		
+	</div>
+	<div class="empty" onclick="closeSelf();"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var index = 0;
+	var userId ;
+	imready = function(){
+		var type = api.pageParam.type;//0是不编排
+		var itemId = api.pageParam.id;
+		var boxes = $api.domAll(".box");
+		api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    studentInfo = Xret;
+                    userId = Xret.userId;
+                } else {
+                }
+            } else {
+            }
+        });
+		for(var i=0;i<boxes.length;i++){
+			boxes[i].index = i;
+			boxes[i].onclick=function(){
+				var lastel = $api.dom(".checked");
+				$api.removeCls(lastel, "checked");
+				$api.addCls(this,"checked");
+				index = this.index;
+			}
+		}
+		$api.dom(".btn").onclick=function(){
+			if(type==0||api.pageParam.isJudge==0){//不编排
+				//requestSubmitResult();
+				var el = $api.dom(".checked");
+	        	var result = $api.attr(el,'value');
+	        	var data= {
+				        "handleStatus": null,
+				        "matchResult": result,
+				        "opponentId": api.pageParam.whiteId,
+				        "opponentIdcard": api.pageParam.whiteInfo.userIdNumber,
+				        "opponentName": api.pageParam.whiteInfo.userName,
+				        "playerId": api.pageParam.blackId,
+				        "playerIdcard": api.pageParam.blackInfo.userIdNumber,
+				        "playerName": api.pageParam.blackInfo.userName,
+				        "playerPhone":api.pageParam.blackInfo.userPhone,
+				        "opponentPhone":api.pageParam.whiteInfo.userPhone,
+				        "resultImage": null
+				    }
+//	        	if(userId==api.pageParam.blackId){
+//	        		data 
+//	        	}else{
+//	        		data = {
+//				        "handleStatus": null,
+//				        "matchResult": result,
+//				        "opponentId": api.pageParam.whiteId,
+//				        "opponentIdcard": api.pageParam.whiteInfo.userIdNumber,
+//				        "opponentName": api.pageParam.whiteInfo.userName,
+//				        "playerId": api.pageParam.blackId,
+//				        "playerIdcard": api.pageParam.blackInfo.userIdNumber,
+//				        "playerName": api.pageParam.blackInfo.userName,
+//				        "resultImage": null
+//				    }
+//	        	}
+
+			    api.pageParam.data=data;
+				api.openWin({
+		            name: 'resultInfo',
+		            url: 'resultInfo.html',
+		            pageParam:api.pageParam
+	            });
+				setTimeout("closeSelf("+true+");",1000);
+			}else{//编排
+				requestSubmitResultArrange();
+			}
+		}
+	};
+	
+	function requestSubmitResultArrange(){
+//		参数:Integer tournamentId,Integer matchRound,Long playerId,byte matchResult
+		api.showProgress({
+        });
+        var el = $api.dom(".checked");
+        var result = $api.attr(el,'value');
+		var port = 8091;
+        var server = "/match/player/pairing/result/edit";
+        var param = [];
+        var p1={name:'tournamentId',value:api.pageParam.id}
+        var p2 ={name:'matchRound',value:api.pageParam.round}
+        var p3 ={name:'playerId',value:api.pageParam.blackId}
+        var p4 ={name:'matchResult',value:result}
+        param.push(p1)
+        param.push(p2)
+        param.push(p3)
+        param.push(p4)
+        ajaxRequestWithGet(port,server,param,function(ret,err){
+        	api.hideProgress();
+        	if(ret){
+        		if(ret.code==0&&ret.data==true){
+        			alert("结果提交成功！")
+        			closeSelf(true);
+        		}else{
+        			alert("提交出错！"+ret.msg)
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+
+        })
+	}
+	
+	function requestSubmitResult(){
+		api.showProgress({
+        });
+        var el = $api.dom(".checked");
+        var result = $api.attr(el,'value');
+        var port = 8091;
+        var server = "/match/player/nopairing/create";
+        var param = [];
+        var p1={name:'tournamentId',value:api.pageParam.id}
+        var p2 ={name:'blackPlayerId',value:api.pageParam.blackId}
+        var p3 ={name:'whitePlayerId',value:api.pageParam.whiteId}
+        var p4 ={name:'matchResult',value:result}
+        param.push(p1)
+        param.push(p2)
+        param.push(p3)
+        param.push(p4)
+        
+        ajaxRequestWithGet(port,server,param,function(ret,err){
+        	api.hideProgress();
+        	if(ret){
+        		if(ret.code==0&&ret.data==true){
+        			alert("结果提交成功！")
+        			closeSelf(true);
+        		}else{
+        			alert("提交出错！"+ret.msg)
+        		}
+        	}else{
+        		alert(err.msg);
+        	}
+
+        })
+	}
+	
+	function closeSelf(state){
+		api.sendEvent({
+	        name:'frameClosed',
+	        extra:{
+	        	state:state
+	        }
+        });
+		api.closeFrame({
+        });
+	}
+	
+</script>
+</html>

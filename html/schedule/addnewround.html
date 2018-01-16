@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#header{
+		    background-color: rgba(255,255,255,0.8);
+		    text-align: center; 
+		    width: 100%; position: relative;
+		    height:0.88rem;
+		}
+		#header:before{
+			position: absolute;
+			border-bottom: 1px solid #e9e9e9;
+			bottom:0;left:0;right:0;
+			content: "";display: block;
+			-webkit-transform: scaleY(0.5);
+			-webkit-transform-origin: 0 0;
+		}
+		#header .back-icon{
+		    display: inline-block; width: 0.88rem; height: 0.88rem;
+		    background: url(../../image/icon_arrow_left.png) no-repeat center center; 
+		    background-size: 0.16rem 0.28rem;
+		    position: absolute; left: 0; bottom: 0;
+		}
+		#header h1{
+		    font-size: 0.34rem;
+		    height: 0.88rem; line-height: 0.88rem; margin: 0 auto; color: #333;
+		    width:5rem;
+		}
+		#main{
+    		background:#F1F1F1;
+		}
+		#main .match-rule{
+    		height:1.2rem;
+    		line-height:1.5rem;
+    		padding-top: 0.2rem;
+    		position: relative;
+    		background: #F6F6F6;
+    		overflow-y: hidden;
+    	}
+    	#main .match-rule:before{
+    		position: absolute;
+    		border-top: 1px solid #e9e9e9;
+    		top:0;left:0;right:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleY(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    	#main .match-rule:after{
+    		position: absolute;
+    		border-bottom: 1px solid #e9e9e9;
+    		bottom:0;left:0;right:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleY(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    	#main .match-rule .rule-item{
+    		float:left;
+    		width:25%;
+    		font-size:0.24rem;
+    		color:#666;
+    		text-align:center;
+    		position: relative;
+    	}
+    	#main .match-rule .rule-item:nth-child(1){
+    		background:url(../../image/icon_integral.png) no-repeat center top ;
+    		background-size:0.34rem 0.34rem;
+    	}
+    	#main .match-rule .rule-item:nth-child(2){
+    		background:url(../../image/icon_boardsize.png) no-repeat center top;
+    		background-size:0.34rem 0.34rem;
+    	}
+    	#main .match-rule .rule-item:nth-child(3){
+    		background:url(../../image/icon_piece.png) no-repeat center top;
+    		background-size:0.34rem 0.34rem;
+    	}
+    	#main .match-rule .rule-item:nth-child(4){
+    		background:url(../../image/icon_time.png) no-repeat center top;
+    		background-size:0.34rem 0.34rem;
+    	}
+    	#main .note{
+    		height:1.2rem;
+    		line-height:0.6rem;
+    		background: #F6F6F6;
+    		position: relative;
+    		color:#666;
+    		font-size:0.26rem;
+    	}
+    	#main .note:before{
+    		position: absolute;
+    		border-top: 1px solid #e9e9e9;
+    		top:0;left:0;right:0;
+    		content:"";display:block;
+    		-webkit-transform: scaleY(0.5);
+    		-webkit-transform-origin: 0 0;
+    	}
+    	#main .note .note-icon{
+    		width:0.3rem;
+    		height:0.6rem;
+    		background: url(../../image/icon_em.png) no-repeat center center;
+    		float:left;
+    		background-size:0.3rem 0.3rem;
+    	}
+    	#main .content{
+    		background:#FFF;
+    	}
+    	#main .content .item{
+    		height:0.9rem;
+    		line-height:0.9rem;
+    		position: relative;
+    	}
+    	#main .content .item:before{
+    		position: absolute;
+    		border-bottom: 1px solid #eee;
+    		bottom:0;left:0.3rem;right:0.3rem;
+    		content:"";display:block;
+    		transform: scaleY(0.5);
+    		transform-origin: 0 0;
+    	}
+    	#main .content .item span{
+    		padding-left:0.5rem;
+    		margin-left:0.3rem;
+    	}
+    	#main .content .item.black span{
+    		background:url(../../image/icon_chess_black.png) no-repeat center left;
+    		background-size:0.4rem 0.4rem;
+    	}
+    	#main .content .item.white span{
+    		background:url(../../image/icon_chess_white.png) no-repeat center left;
+    		background-size:0.4rem 0.4rem;
+    	}
+    	#footer{
+    		height:0.9rem;
+    		line-height:0.9rem;
+    		text-align: center;
+    		color: #FFF;
+    		background: #FF8344;
+    		font-size: 0.32rem;
+    	}
+    	.content2{
+    		padding: 0.3rem;
+    		display: none;
+    	}
+    	.content2 .item{
+    		min-height:2.15rem;
+    		background: #FFF;
+    		position: relative;
+    	}
+    	.content2 .item.black > span{
+    		width:1.15rem;
+    		background:url(../../image/icon_bg_black.png) no-repeat center left;
+    		background-size:1.15rem 2.15rem;
+    		float: left;
+    	}
+    	.content2 .item.white{
+    		margin-top:0.3rem;
+    	}
+    	.content2 .item.white > span{
+    		width:1.15rem;
+    		background:url(../../image/icon_bg_white.png) no-repeat center left;
+    		background-size:1.15rem 2.15rem;
+    		float: left;
+    	}
+    	.content2 .item div{
+    		float:left;
+    		line-height:0.43rem;
+    		font-size:0.26rem;
+    		color:#666;
+    		padding-left: 0.2rem;
+    	}
+    	.content2 .item div span{
+    		font-size:0.24rem;
+    		color:#999;
+    	}
+    </style>
+</head>
+<body class="flex-wrap flex-vertical">
+	<div id="header">
+		<a class="back-icon" tapmode="active" onclick="closeWin()" ></a>
+		<h1 id="title">name</h1>
+	</div>
+	<div id="main" class="flex-con">
+		<script type="text/x-dot-template" id="rule_template">
+			<div class="rule-item">
+				{{=it.matchItemArrange==0?'无需编排':(it.matchItemArrange==1?'积分编排':'麦克马洪')}}
+			</div>
+			<div class="rule-item">
+				{{=it.matchItemChessboard==0?'未知':it.matchItemChessboard+'路棋盘'}}
+			</div>
+			<div class="rule-item">
+				{{=it.matchHandicapTag?it.matchHandicapTag:(it.matchHandicapType==1?'标准让子':'无')}}
+			</div>
+			<div class="rule-item">
+				{{=it.matchLimitTime==0?'不限时':(it.matchLimitTime==1?'60秒':'包干')}}
+			</div>
+		</script>
+		<div id="match_rule" class="match-rule">
+		</div>
+		<div class="note">
+			<span class="note-icon"></span>务必填写双方正确的ID编码；ID编码可以在“中棋赛事APP”个人信息中查看。
+		</div>
+		<div class="content">
+			<div class="item black">
+				<span>黑：</span><input class="" type="number" placeholder="请输入黑方id" />
+			</div>
+			<div class="item white">
+				<span>白：</span><input class="" type="number" placeholder="请输入白方id" />
+			</div>
+		</div>
+		<script id="c_template" type="text/x-dot-template">
+			ID: <span>{{=it.userId}}</span><br/>
+			姓名:<span>{{=it.userName}}</span><br/>
+			性别:<span>{{=it.userGender==0?'男':'女'}}</span><br/>
+			证件:<span>{{=it.userIdNumber}}</span><br/>
+			电话:<span>{{=it.userPhone}}</span><br/>
+		</script>
+		<div class="content2">
+			<div class="item black">
+				<span></span>
+				<div id="black">
+				</div>
+			</div>
+			<div class="item white">
+				<span></span>
+				<div id="white">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer" ontouchend="submitIds()">提交</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/doT.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var frameOpend=false;
+	var userId;
+	imready = function(){
+		$api.byId("title").innerHTML=api.pageParam.name?api.pageParam.name:"线下对弈"
+		console.log(JSON.stringify(api.pageParam))
+		 api.getPrefs({
+            key: 'studentInfo'
+        }, function(ret, err){
+            if (ret) {
+                if (ret.value != "") {
+                    var Xret = JSON.parse(ret.value);
+                    studentInfo = Xret;
+                    userId = Xret.userId;
+                } else {
+                }
+            } else {
+            }
+        });
+		if(api.pageParam.name){
+			getInnerByDot("match_rule","rule_template",api.pageParam.ret);
+		}else{
+			$api.byId("match_rule").style.display="none"
+		}
+		api.addEventListener({
+	        name:'keyback'
+        },function(ret,err){
+        	if(frameOpend){
+        		api.closeFrame({
+        			name:'manualResult'
+                });
+        	}else{
+        		api.closeWin({
+                });
+        	}
+        });
+        api.addEventListener({
+	        name:'submitok'
+        },function(ret,err){
+        	api.closeWin({
+            });
+        });
+        api.addEventListener({
+	        name:'swiperight'
+        },function(ret,err){
+        	//禁止ios右滑
+        });
+        api.addEventListener({
+	        name:'frameClosed'
+        },function(ret,err){
+        	if(ret.value.state&&ret.value.state==true){
+        		api.closeWin();
+        	}else{
+        		frameOpend=true;
+        	}
+        });
+	};
+	
+	function submitIds(){
+		var blackId = $api.dom(".black input").value;
+		var whiteId = $api.dom(".white input").value;
+		if(!blackId){
+			return alert("请输入黑棋ID");
+		}
+		if(!whiteId){
+			return alert("请输入白棋ID");
+		}
+		if(blackId!=userId&&whiteId!=userId){
+			
+			return alert("对弈双方必须有一人是本人！")
+		}
+		if(blackId==whiteId){
+			return alert("对弈双方不能是同一人！")
+		}
+		window.currentId ;
+		if(blackId==userId){
+			currentId = blackId;
+		}else{
+			currentId = whiteId;
+		}
+		//http://localhost:8090/user/item/choose/get?userId=100068&itemId=10
+		api.showProgress();
+		var port = 8090;
+		var server = "/user/item/choose/get"
+		var param1 = [{name:'userId',value:blackId},{name:'itemId',value:api.pageParam.ret.id}]
+		var param2 = [{name:'userId',value:whiteId},{name:'itemId',value:api.pageParam.ret.id}]
+		ajaxRequestWithGet(port,server,param1,function(ret1,err1){
+			api.hideProgress();
+			if(ret1){
+				if(ret1.code!=0){
+					if(ret1.code==14){
+						return alert("黑棋方选手未选择此赛事！")
+					}else{
+						return alert(ret1.msg)
+					}
+				}
+				api.showProgress();
+				ajaxRequestWithGet(port,server,param2,function(ret2,err2){
+					api.hideProgress();
+					if(ret2){
+						if(ret2.code!=0){
+							if(ret2.code==14){
+								return alert("白棋方选手未选择此赛事！")
+							}else{
+								return alert(ret2.msg)
+							}
+						}
+						window.blackInfo = ret1.data;
+						window.whiteInfo = ret2.data;
+						$api.dom("#main .content").style.display="none";
+						$api.dom("#main .content2").style.display="block";
+						$api.dom(".note").innerHTML='<span class="note-icon"></span>待您确认双方信息一致无误后，请尽快联系棋友确认。'
+						$api.dom("#footer").innerHTML="确认"
+						$api.attr($api.dom("#footer"), "ontouchend", "ok();");
+						
+						if(ret1.data.userIdNumber){
+						   var pre = ret1.data.userIdNumber.substr(0,8);
+				           var last = ret1.data.userIdNumber.substr(14,4);
+				           ret1.data.userIdNumber=pre+"******"+last;
+					   }
+					   if(ret2.data.userIdNumber){
+				           var pre1 = ret2.data.userIdNumber.substr(0,8);
+				           var last1 = ret2.data.userIdNumber.substr(14,4);
+				           ret2.data.userIdNumber=pre1+"******"+last1;
+			           }
+						if(ret1.data.userPhone){
+							ret1.data.selfphone = ret1.data.userPhone
+							var pre2 = ret1.data.userPhone.substr(0,3);
+		                   var last2 = ret1.data.userPhone.substr(7,4);
+		                   ret1.data.userPhone=pre2+"****"+last2;
+						}
+						if(ret2.data.userPhone){
+							ret2.data.selfphone = ret2.data.userPhone
+							var pre2 = ret2.data.userPhone.substr(0,3);
+		                   var last2 = ret2.data.userPhone.substr(7,4);
+		                   ret2.data.userPhone=pre2+"****"+last2;
+						}
+						getInnerByDot("black","c_template",ret1.data);
+						getInnerByDot("white","c_template",ret2.data);
+					}else{
+						alert("白方ID有误，请您查证！")
+					}
+				});
+			}else{
+				api.hideProgress();
+				alert("黑方ID有误，请您查证！")
+			}
+		})
+	}
+	
+	function ok(){
+		api.showProgress();
+		setTimeout("presubmitResult()",100);
+	}
+	
+	function presubmitResult(){
+		api.hideProgress();
+		$api.dom("#footer").innerHTML="提交对弈结果"
+		$api.attr($api.dom("#footer"), "ontouchend", "submitResult();");
+	}
+	
+	function submitResult(){
+		var dialogBox = api.require('dialogBox');
+		dialogBox.alert({
+		    texts: {
+		        title: '是否使用智能裁判系统',
+		        content: '提示：选择是，即使用智能裁判系统；否则需要手动录入比赛结果。',
+		        leftBtnTitle: '否',
+		        rightBtnTitle: '是'
+		    },
+		    styles: {
+		        bg: '#fff',
+		        w: 300,
+		        title: {
+		            marginT: 20,
+		            icon: 'widget://res/icon_notice.png',
+		            iconSize: 25,
+		            titleSize: 18,
+		            titleColor: '#FF8344'
+		        },
+		        content: {
+		            color: '#666',
+		            size: 14
+		        },
+		        left: {
+		            marginB: 7,
+		            marginL: 20,
+		            w: 130,
+		            h: 35,
+		            corner: 2,
+		            bg: '#F6F6F6',
+		            size: 12,
+		            color:"#333"
+		        },
+		        right: {
+		            marginB: 7,
+		            marginL: 10,
+		            w: 130,
+		            h: 35,
+		            corner: 2,
+		            bg: '#FFF3e0',
+		            size: 12,
+		            color:"#FF8344"
+		        }
+		    },
+		    tapClose:true
+		}, function(ret) {
+		    if (ret.eventType == 'left') {
+		    	frameOpend=true;
+		        api.openFrame({
+		           name: 'manualResult',
+		           url: 'manualResult.html',
+		           pageParam:{
+		           	type:0,
+		           	id:api.pageParam.ret.id,
+		           	blackId:window.blackInfo.userId,
+		           	whiteId:window.whiteInfo.userId,
+		           	otherPhone:currentId==window.blackInfo.userId?window.whiteInfo.selfphone:window.blackInfo.selfphone
+		           	,ret:api.pageParam.ret,
+		           	blackInfo:window.blackInfo,
+		           	whiteInfo:window.whiteInfo
+		           },
+		           rect: {
+		               x:0,
+		               y:0,
+		               w:api.winWidth,
+		               h:api.winHeight
+		           }
+		       });
+		    }else if(ret.eventType == 'right'){
+		    	api.openWin({
+		           name: 'takeresultpicture',
+		           url: 'takeresultpicture.html',
+		           pageParam:{
+		           	index:0,
+		           	type:0,
+		           	id:api.pageParam.ret.id,
+		           	blackId:window.blackInfo.userId,
+		           	whiteId:window.whiteInfo.userId,
+		           	otherPhone:currentId==window.blackInfo.userId?window.whiteInfo.selfphone:window.blackInfo.selfphone,
+		           	round:0,
+		           	ret:api.pageParam.ret
+		           }
+		       });
+		    }
+		    var dialogBox = api.require('dialogBox');
+		    dialogBox.close({
+		        dialogName: 'alert'
+		    });
+		});	
+	}
+	
+</script>
+</html>
